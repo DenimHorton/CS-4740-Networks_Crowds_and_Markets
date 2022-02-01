@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  31 JAN 2022 20:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  31 JAN 2022 21:56
 entering extended mode
-**./CS-4720-HW02.tex
-(CS-4720-HW02.tex
+**./CS-4720-HW02_Answers.tex
+(CS-4720-HW02_Answers.tex
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-01-09> xparse <2020-03-03>
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
@@ -419,8 +419,8 @@ tex.def
 File: l3backend-pdftex.def 2021-01-09 L3 backend support: PDF output (pdfTeX)
 \l__kernel_color_stack_int=\count295
 \l__pdf_internal_box=\box53
-) (CS-4720-HW02.aux)
-\openout1 = `CS-4720-HW02.aux'.
+) (CS-4720-HW02_Answers.aux)
+\openout1 = `CS-4720-HW02_Answers.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
 LaTeX Font Info:    ... okay on input line 14.
@@ -510,36 +510,51 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 14.
 LaTeX Info: Redefining \pageref on input line 14.
 LaTeX Info: Redefining \nameref on input line 14.
- (CS-4720-HW02.out) (CS-4720-HW02.out)
+ (CS-4720-HW02_Answers.out) (CS-4720-HW02_Answers.out)
 \@outlinefile=\write3
-\openout3 = `CS-4720-HW02.out'.
+\openout3 = `CS-4720-HW02_Answers.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 34.
 
+Underfull \hbox (badness 10000) in paragraph at lines 33--35
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 37.
 
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 34.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 37.
 
 
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 34--35
+Underfull \hbox (badness 10000) in paragraph at lines 37--38
 
  []
 
-<./Images/Figure_3_21.png, id=3, 709.90219pt x 322.95656pt>
+<./Images/Figure_3_21.png, id=3, 448.67625pt x 279.29344pt>
 File: ./Images/Figure_3_21.png Graphic file (type png)
 <use ./Images/Figure_3_21.png>
-Package pdftex.def Info: ./Images/Figure_3_21.png  used on input line 36.
-(pdftex.def)             Requested size: 425.9446pt x 193.77542pt.
-<./Images/Figure_3_22.png, id=5, 292.84406pt x 333.49594pt>
-File: ./Images/Figure_3_22.png Graphic file (type png)
-<use ./Images/Figure_3_22.png>
-Package pdftex.def Info: ./Images/Figure_3_22.png  used on input line 42.
-(pdftex.def)             Requested size: 175.70778pt x 200.09909pt.
+Package pdftex.def Info: ./Images/Figure_3_21.png  used on input line 39.
+(pdftex.def)             Requested size: 269.20782pt x 167.57735pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 41--48
+
+ []
+
+<./Images/Figure_3_21_Answer.jpg, id=5, 448.67625pt x 279.29344pt>
+File: ./Images/Figure_3_21_Answer.jpg Graphic file (type jpg)
+<use ./Images/Figure_3_21_Answer.jpg>
+Package pdftex.def Info: ./Images/Figure_3_21_Answer.jpg  used on input line 48
+.
+(pdftex.def)             Requested size: 269.20782pt x 167.57735pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -551,17 +566,72 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [1{C:/Users/Admin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
  <./Images/Figure_3_21.png>]
-<./Images/Figure_3_23.png, id=19, 493.845pt x 322.20375pt>
+<./Images/Figure_3_22.png, id=19, 369.63094pt x 341.77687pt>
+File: ./Images/Figure_3_22.png Graphic file (type png)
+<use ./Images/Figure_3_22.png>
+Package pdftex.def Info: ./Images/Figure_3_22.png  used on input line 52.
+(pdftex.def)             Requested size: 221.78026pt x 205.0677pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--60
+
+ []
+
+<./Images/Figure_3_22_Answer.png, id=20, 369.63094pt x 341.77687pt>
+File: ./Images/Figure_3_22_Answer.png Graphic file (type png)
+<use ./Images/Figure_3_22_Answer.png>
+Package pdftex.def Info: ./Images/Figure_3_22_Answer.png  used on input line 60
+.
+(pdftex.def)             Requested size: 221.78026pt x 205.0677pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[2 <./Images/Figure_3_21_Answer.jpg> <./Images/Figure_3_22.png>]
+<./Images/Figure_3_23.png, id=27, 493.845pt x 322.20375pt>
 File: ./Images/Figure_3_23.png Graphic file (type png)
 <use ./Images/Figure_3_23.png>
-Package pdftex.def Info: ./Images/Figure_3_23.png  used on input line 47.
+Package pdftex.def Info: ./Images/Figure_3_23.png  used on input line 64.
 (pdftex.def)             Requested size: 296.30928pt x 193.32373pt.
-<./Images/Figure_3_24.png, id=20, 306.39468pt x 319.1925pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 72--72
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[3 <./Images/Figure_3_22_Answer.png> <./Images/Figure_3_23.png>]
+<./Images/Figure_3_24_Answer.png, id=35, 493.845pt x 322.20375pt>
+File: ./Images/Figure_3_24_Answer.png Graphic file (type png)
+<use ./Images/Figure_3_24_Answer.png>
+Package pdftex.def Info: ./Images/Figure_3_24_Answer.png  used on input line 72
+.
+(pdftex.def)             Requested size: 296.30928pt x 193.32373pt.
+<./Images/Figure_3_24.png, id=36, 306.39468pt x 319.1925pt>
 File: ./Images/Figure_3_24.png Graphic file (type png)
 <use ./Images/Figure_3_24.png>
-Package pdftex.def Info: ./Images/Figure_3_24.png  used on input line 52.
+Package pdftex.def Info: ./Images/Figure_3_24.png  used on input line 76.
 (pdftex.def)             Requested size: 183.83823pt x 191.51697pt.
 
+Underfull \hbox (badness 10000) in paragraph at lines 84--84
+
+ []
+
+<./Images/Figure_3_25_Answer.png, id=37, 306.39468pt x 319.1925pt>
+File: ./Images/Figure_3_25_Answer.png Graphic file (type png)
+<use ./Images/Figure_3_25_Answer.png>
+Package pdftex.def Info: ./Images/Figure_3_25_Answer.png  used on input line 84
+.
+(pdftex.def)             Requested size: 183.83823pt x 191.51697pt.
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -570,7 +640,7 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[2 <./Images/Figure_3_22.png> <./Images/Figure_3_23.png>]
+[4 <./Images/Figure_3_24_Answer.png> <./Images/Figure_3_24.png>]
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -579,26 +649,27 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3 <./Images/Figure_3_24.png>] (CS-4720-HW02.aux)
-Package rerunfilecheck Info: File `CS-4720-HW02.out' has not changed.
+[5 <./Images/Figure_3_25_Answer.png>] (CS-4720-HW02_Answers.aux)
+Package rerunfilecheck Info: File `CS-4720-HW02_Answers.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 10442 strings out of 481532
- 161563 string characters out of 2915361
- 464717 words of memory out of 3000000
- 27179 multiletter control sequences out of 15000+200000
- 411453 words of font info for 56 fonts, out of 3000000 for 9000
+ 10480 strings out of 481532
+ 162721 string characters out of 2915361
+ 467733 words of memory out of 3000000
+ 27209 multiletter control sequences out of 15000+200000
+ 411799 words of font info for 57 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 71i,11n,79p,277b,485s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 71i,11n,79p,1100b,500s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmr10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmr12.pfb>
-Output written on CS-4720-HW02.pdf (3 pages, 188738 bytes).
+/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on CS-4720-HW02_Answers.pdf (5 pages, 356010 bytes).
 PDF statistics:
- 51 PDF objects out of 1000 (max. 8388607)
- 9 named destinations out of 1000 (max. 500000)
- 21 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 70 PDF objects out of 1000 (max. 8388607)
+ 11 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
