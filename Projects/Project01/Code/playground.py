@@ -48,3 +48,4 @@ for node_pair, neighbor in G.adj.items():
 
 nx.draw(G, pos=nx.circular_layout(G, scale=1, center=None, dim=2), with_labels=True, node_size=600, width=2.5, node_shape="8", node_color="#000000", font_color="#FFFFFF")
 plt.show()
+
