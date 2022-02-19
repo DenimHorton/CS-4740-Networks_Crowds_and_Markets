@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}  
+\usepackage[margin=1in]{geometry}
+\parindent=0in
+\parskip=8pt
+\usepackage{fancyhdr,amssymb,amsmath, graphicx, listings,float,subfig,enumerate,epstopdf,color,multirow,setspace,bm,textcomp}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{./Images}}
+
+\pagestyle{fancy}
+
+
+\begin{document} 
+
+\lhead{Assignment \# 3}
+\chead{Robert Denim Horton}
+\rhead{\today}
+
+\begin{center}\begin{Large}
+CS 4720/5720 Design and Analysis of Algorithms
+
+Homework \#3
+
+Student: (Robert Denim Horton)
+\end{Large}
+\end{center}
+
+
+\section*{Answers to homework problems:}
+
+\begin{enumerate}
+\setcounter{enumi}{1}
+% Question 2
+\item Consider the network shown in Figure 5.18: there is an edge between each pair of nodes, with five of the edges corresponding to positive relationships, and the other five of the edges corresponding to negative relationships.\\\\
+% Uncomment to insert picture from Homeworkxx/Images
+\includegraphics[scale=1]{Figure_5_18}\\
+Each edge in this network participates in three triangles: one formed by each of the additional nodes who is not already an endpoint of the edge. (For example, the A-B edge participates in a triangle on A, B, and C, a triangle on A, B, and D, and a triangle on A, B, and E. We can list triangles for the other edges in a similar way.)\\\\
+For each edge, how many of the triangles it participates in are balanced, and how many are unbalanced. (Notice that because of the symmetry of the network, the answer will be the same for each positive edge, and also for each negative edge; so it is enough to consider this for one of the positive edges and one of the negative edges.\\\\
+\textcolor{gray}{
+Answer:\\
+From the formal definition given in class, a labeled complete graph is considered to have a \textit{Structural Balance Property} if for every set of 3 nodes if the 3 nodes connecting them are either all psoitive or exactly one edge is possitive and the other two are negative.  After trying out different edges between an added node, D, to Graph 5.18 we can see that there is only one possible edge that can be applied to node D to connect it to this graph.  This is simply because the graph presented is already unstable and theirfore is .
+}
+
+% Question 3
+\item  When we think about structural balance, we can ask what happens when a new node tries to join a network in which there is existing friendship and hostility. In Figures 5.19-5.22, each pair of nodes is either friendly or hostile, as indicated by the + or - label on each edge.\\
+% Uncomment to insert picture from Homeworkxx/Images
+\begin{center}
+	\includegraphics[scale=1]{Figure_5_19}\\
+	\includegraphics[scale=1]{Figure_5_19-20}\\
+\end{center}
+First, consider the 3-node social network in Figure 5.19, in which all pairs of nodes know each other, and all pairs of nodes are friendly toward each other. Now, a fourth node D wants to join this network, and establish either positive or negative relations with each existing node A, B, and C. It wants to do this in such a way that it doesn’t become involved in any unbalanced triangles. (I.e. so that after adding D and the labeled edges from D, there are no unbalanced triangles that contain D.) Is this possible?\\\\
+In fact, in this example, there are two ways for D to accomplish this, as indicated in Figure 5.20. First, D can become friends with all existing nodes; in this way, all the triangles containing it have three positive edges, and so are balanced. Alternately, it can become enemies with all existing nodes; in this way, each triangle containing it has exactly one positive edge, and again these triangles would be balanced.\\\\
+So for this network, it was possible for D to join without becoming involved in any unbalanced triangles. However, the same is not necessarily possible for other networks\\\\
+We now consider this kind of question for some other networks.\\\\
+\begin{center}
+	\includegraphics[scale=1]{Figure_5_21}\\
+\end{center}
+	\begin{enumerate}[(a)]
+		% Question 3: Part 1
+		\item Consider the 3-node social network in Figure 5.21, in which all pairs of nodes know each other, and each pair is either friendly or hostile as indicated by the + or - label on each edge. A fourth node D wants to join this network, and establish either positive or negative relations with each existing node A, B, and C. Can node D do this in such a way that it doesn’t become involved in any unbalanced triangles?\\
+		\begin{enumerate}[*]
+			\item  If there is a way for D to do this, say how many different such ways there are, and give an explanation. (That is, how many different possible labelings of the edges out of D have the property that all triangles containing D are balanced?)
+			\item If there is no such way for D to do this, give an explanation why not. 
+		\end{enumerate}
+(In this and the subsequent questions, it possible to work out an answer by reasoning about the new node’s options without having to check all possibilities.\\
+		% Question 3: Part 2
+		\item Same question, but for a different network. Consider the 3-node social network in Figure 5.22, in which all pairs of nodes know each other, and each pair is either friendly or hostile as indicated by the + or - label on each edge. A fourth node D wants to join this network, and establish either positive or negative relations with each existing node A, B, and C. Can node D do this in such a way that it doesn’t become involved in any unbalanced triangles?
+		\begin{enumerate}[*]
+			\item  If there is a way for D to do this, say how many different such ways there are, and give an explanation. (That is, how many different possible labelings of the edges out of D have the property that all triangles containing D are balanced?)
+			\begin{center}
+				\includegraphics[scale=1]{Figure_5_22}\\
+			\end{center}
+			\item If there is no such way for D to do this, give an explanation why not.
+		\end{enumerate}
+		%Questions 3: Part 3
+		\item Using what you’ve worked out in Questions 2 and 3, consider the following question. Take any labeled complete graph - on any number of nodes - that is not balanced; i.e. it contains at least one unbalanced triangle. (Recall that a labeled complete graph is a graph in which there is an edge between each pair of nodes, and each edge is labeled with either + or -.) A new node X wants to join this network, by attaching to each node using a positive or negative edge. When, if ever, is it possible for X to do this in such a way that it does not become involved in any unbalanced triangles? Give an explanation for your answer. (Hint: Think about any unbalanced triangle in the network, and how X must attach to the nodes in it.)
+	\end{enumerate}
+\textcolor{gray}{
+Answers:
+\begin{enumerate}[(a)]
+	\item PART A
+	\item PART B
+	\item PART C
+\end{enumerate}}
+
+
+% Canvas Question 1
+\item CANVAS QUESTION 1
+
+% Canvas Question 2
+\item CANVAS QUESTION 2
+
+\end{enumerate}
+\end{document}
