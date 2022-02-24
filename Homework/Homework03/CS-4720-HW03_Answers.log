@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  23 FEB 2022 21:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  23 FEB 2022 21:51
 entering extended mode
 **./CS-4720-HW03_Answers.tex
 (CS-4720-HW03_Answers.tex
@@ -550,23 +550,24 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [1{C:/Users/Admin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
  <./Images/Figure_5_18.png>]
-<example_ballanced_and_not_ballanced_graph.png, id=17, 370.986pt x 328.22626pt>
-
-File: example_ballanced_and_not_ballanced_graph.png Graphic file (type png)
-<use example_ballanced_and_not_ballanced_graph.png>
-Package pdftex.def Info: example_ballanced_and_not_ballanced_graph.png  used on
- input line 60.
-(pdftex.def)             Requested size: 185.49254pt x 164.11272pt.
+<./Images/example_ballanced_and_not_ballanced_graph.png, id=17, 322.806pt x 301
+.72725pt>
+File: ./Images/example_ballanced_and_not_ballanced_graph.png Graphic file (type
+ png)
+<use ./Images/example_ballanced_and_not_ballanced_graph.png>
+Package pdftex.def Info: ./Images/example_ballanced_and_not_ballanced_graph.png
+  used on input line 60.
+(pdftex.def)             Requested size: 161.4026pt x 150.86325pt.
 
 Underfull \hbox (badness 10000) in paragraph at lines 60--60
 
  []
 
-<Figure_3_2_1.png, id=18, 294.50024pt x 247.82588pt>
-File: Figure_3_2_1.png Graphic file (type png)
-<use Figure_3_2_1.png>
-Package pdftex.def Info: Figure_3_2_1.png  used on input line 60.
-(pdftex.def)             Requested size: 147.24976pt x 123.91263pt.
+<./Images/Figure_3_2_1.png, id=18, 276.73387pt x 239.09325pt>
+File: ./Images/Figure_3_2_1.png Graphic file (type png)
+<use ./Images/Figure_3_2_1.png>
+Package pdftex.def Info: ./Images/Figure_3_2_1.png  used on input line 60.
+(pdftex.def)             Requested size: 138.3666pt x 119.54633pt.
 <Figure_3_2_2.png, id=19, 322.20375pt x 266.49562pt>
 File: Figure_3_2_2.png Graphic file (type png)
 <use Figure_3_2_2.png>
@@ -580,8 +581,8 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[2 <./example_ballanced_and_not_ballanced_graph.png> <./Figure_3_2_1.png> <./Fi
-gure_3_2_2.png>]
+[2 <./Images/example_ballanced_and_not_ballanced_graph.png> <./Images/Figure_3_
+2_1.png> <./Figure_3_2_2.png>]
 <Figure_3_2_3.png, id=27, 347.19713pt x 290.2845pt>
 File: Figure_3_2_3.png Graphic file (type png)
 <use Figure_3_2_3.png>
@@ -719,7 +720,7 @@ Package rerunfilecheck Info: File `CS-4720-HW03_Answers.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  10446 strings out of 481532
- 162126 string characters out of 2915361
+ 162216 string characters out of 2915361
  470733 words of memory out of 3000000
  27188 multiletter control sequences out of 15000+200000
  404681 words of font info for 31 fonts, out of 3000000 for 9000
@@ -730,7 +731,7 @@ cmbx12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmr10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/amsfonts/cm/cmr12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/
 type1/public/amsfonts/cm/cmti10.pfb>
-Output written on CS-4720-HW03_Answers.pdf (6 pages, 545484 bytes).
+Output written on CS-4720-HW03_Answers.pdf (6 pages, 537511 bytes).
 PDF statistics:
  89 PDF objects out of 1000 (max. 8388607)
  24 named destinations out of 1000 (max. 500000)
