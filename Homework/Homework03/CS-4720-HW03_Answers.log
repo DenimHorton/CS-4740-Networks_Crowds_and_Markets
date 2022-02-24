@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  24 FEB 2022 00:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  24 FEB 2022 01:46
 entering extended mode
 **./CS-4720-HW03_Answers.tex
 (CS-4720-HW03_Answers.tex
@@ -646,4 +646,212 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [4 <./Images/Figure_3_2_5.png> <./Images/Figure_3_2_6.png>]
-<./Images/Figure_5_19-20.png, id=45
+<./Images/Figure_5_19-20.png, id=45, 418.56375pt x 211.992pt>
+File: ./Images/Figure_5_19-20.png Graphic file (type png)
+<use ./Images/Figure_5_19-20.png>
+Package pdftex.def Info: ./Images/Figure_5_19-20.png  used on input line 88.
+(pdftex.def)             Requested size: 418.56271pt x 211.99147pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--94
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--94
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--94
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--94
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 90--94
+
+ []
+
+<./Images/Figure_5_21.png, id=46, 236.98538pt x 121.35338pt>
+File: ./Images/Figure_5_21.png Graphic file (type png)
+<use ./Images/Figure_5_21.png>
+Package pdftex.def Info: ./Images/Figure_5_21.png  used on input line 95.
+(pdftex.def)             Requested size: 236.98479pt x 121.35307pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[5 <./Images/Figure_5_19.png> <./Images/Figure_5_19-20.png>]
+
+LaTeX Warning: The counter will not be printed.
+             The label is: * on input line 100.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 104--106
+
+ []
+
+
+LaTeX Warning: The counter will not be printed.
+             The label is: * on input line 107.
+
+<./Images/Figure_5_22.png, id=53, 396.58162pt x 132.495pt>
+File: ./Images/Figure_5_22.png Graphic file (type png)
+<use ./Images/Figure_5_22.png>
+Package pdftex.def Info: ./Images/Figure_5_22.png  used on input line 110.
+(pdftex.def)             Requested size: 396.58064pt x 132.49466pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[6 <./Images/Figure_5_21.png> <./Images/Figure_5_22.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
+
+ []
+
+<./Images/Figure_3_3_1.png, id=67, 285.76762pt x 290.2845pt>
+File: ./Images/Figure_3_3_1.png Graphic file (type png)
+<use ./Images/Figure_3_3_1.png>
+Package pdftex.def Info: ./Images/Figure_3_3_1.png  used on input line 143.
+(pdftex.def)             Requested size: 142.88345pt x 145.14189pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
+
+ []
+
+<./Images/Figure_3_3_2.png, id=68, 312.86888pt x 313.77225pt>
+File: ./Images/Figure_3_3_2.png Graphic file (type png)
+<use ./Images/Figure_3_3_2.png>
+Package pdftex.def Info: ./Images/Figure_3_3_2.png  used on input line 143.
+(pdftex.def)             Requested size: 156.43405pt x 156.88573pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[7 <./Images/Figure_3_3_1.png> <./Images/Figure_3_3_2.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
+
+ []
+
+<./Images/Figure_3_3_3.png, id=77, 312.26663pt x 308.05087pt>
+File: ./Images/Figure_3_3_3.png Graphic file (type png)
+<use ./Images/Figure_3_3_3.png>
+Package pdftex.def Info: ./Images/Figure_3_3_3.png  used on input line 143.
+(pdftex.def)             Requested size: 156.13292pt x 154.02505pt.
+<./Images/Figure_3_3_4.png, id=78, 317.38576pt x 304.13625pt>
+File: ./Images/Figure_3_3_4.png Graphic file (type png)
+<use ./Images/Figure_3_3_4.png>
+Package pdftex.def Info: ./Images/Figure_3_3_4.png  used on input line 143.
+(pdftex.def)             Requested size: 158.69249pt x 152.06775pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[8 <./Images/Figure_3_3_3.png> <./Images/Figure_3_3_4.png>]
+<./Images/canvas-1.png, id=86, 231.86626pt x 124.21407pt>
+File: ./Images/canvas-1.png Graphic file (type png)
+<use ./Images/canvas-1.png>
+Package pdftex.def Info: ./Images/canvas-1.png  used on input line 149.
+(pdftex.def)             Requested size: 231.86568pt x 124.21375pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 163--163
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 163
+.
+(C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 163
+.
+
+(C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Underfull \hbox (badness 10000) in paragraph at lines 167--168
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 167--168
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[9 <./Images/canvas-1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[10] (CS-4720-HW03_Answers.aux)
+Package rerunfilecheck Info: File `CS-4720-HW03_Answers.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
+Here is how much of TeX's memory you used:
+ 10570 strings out of 481532
+ 164521 string characters out of 2915361
+ 471735 words of memory out of 3000000
+ 27271 multiletter control sequences out of 15000+200000
+ 411799 words of font info for 57 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 71i,12n,79p,808b,520s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmbx12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmmi10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Admin/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Admin/AppData/Loc
+al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on CS-4720-HW03_Answers.pdf (10 pages, 882280 bytes).
+PDF statistics:
+ 138 PDF objects out of 1000 (max. 8388607)
+ 31 named destinations out of 1000 (max. 500000)
+ 86 words of extra memory for PDF output out of 10000 (max. 10000000)
+
