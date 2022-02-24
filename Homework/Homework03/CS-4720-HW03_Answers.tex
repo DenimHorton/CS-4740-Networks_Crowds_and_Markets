@@ -42,25 +42,42 @@ Answer:\\
 From the formal definition given in class and in chapter 5, a connection between two nodes can be considered either a positive edge of a negative edge.  For the sake of this class we consider a complete graph to have the \textit{Structural Balance Property} if for every set of 3 nodes in the graph, the 3 nodes are connected with edges that are either all positive or exactly one edge is positive and the other two are negative. In Figure 3.1 we see several examples of graphs labelled either balanced or unbalanced.  Each graph is labelled as such representing balanced graph as graphs that have an structure balance property.\\
 \begin{center}
 	\includegraphics[scale=0.5]{example_ballanced_and_not_ballanced_graph}\\
+	Figure 3.1\\
 \end{center}
 Now with the established definition and visual examples it is easier to show how many balanced and unbalanced triangles exists for each edge in Figure 5.18. Due to the symmetry From Figure 3.2 we can simply look at one positive edge and one negative edge and assume the same for every positive and negative edge. Looking at the positive edge between nodes D and E we now evaluate each possibly triangle with this edge as its base.  So nodes D, E, and B  form the graph shown in the following Figure 3.2.1.\\
 \begin{center}
 	\includegraphics[scale=0.5]{Figure_3_2_1}\\
+	Figure 3.2.1\\
 \end{center}
 here we see that there is two positive connections, between nodes D and E and nodes D and B.  There is one negative edge between nodes E and B. For triangle formed by nodes D, E, and A we get the graph in Figure 3.2.2.
 \begin{center}
 	\includegraphics[scale=0.5]{Figure_3_2_2}\\
+	Figure 3.2.2\\
 \end{center}
 Here we see one positive connections and two negative edges. The negative edges include the edge between nodes A and D and between nodes A and E.  The only positive edge is between the nodes D and E. For the last triangle, that shares and edge with D and E we have a shared connection to node C.  So for the triangle formed by nodes D, E, and C we get the graph in Figure 3.2.3.
 \begin{center}
 	\includegraphics[scale=0.5]{Figure_3_2_3}\\
+	Figure 3.2.3\\
 \end{center}
 Once again we see two positive connections and one negative edge. The negative edge is along the inside edge between nodes D and C.  The positive edges include the base edge between nodes D and E, and the second positive edge is between nodes E and C.\\\\
-So we can say that for this graph, every positive edge is part of a triangle with a total of two positive edges and one negative edge, which makes these triangles unbalanced triangles.\\\\
+So we can say that for this symmetric graph, every triangle with a positive edge as its base will have a total of two unbalanced triangle and one unbalanced triangle.\\\\
 For the negative edge we will consider the edge between B and C.  Here we evaluate three different triangles formed with one edge in-between nodes B and C. The first triangle to evaluate is the one formed by nodes B, C, and A.  We see the triangle in Figure 3.2.4. 
 \begin{center}
 	\includegraphics[scale=0.5]{Figure_3_2_4}\\
+	Figure 3.2.4\\
 \end{center}
+Here we see that the triangle has two positive edges and one negative edge.  The two positive edges are between the nodes B and A and nodes A and C.  The one negative edge is located between edges B and C.  The next triangle to evaluate is between nodes B, C, and E showed in Figure 3.2.5.
+\begin{center}
+	\includegraphics[scale=0.5]{Figure_3_2_5}\\
+	Figure 3.2.5\\
+\end{center}
+Here we see that the triangle has two negative edges and one positive edge.  The two negative edges are between the nodes B and C and nodes B and E.  The one positive edge is located between edges C and E.  The next triangle to evaluate is between nodes B, C, and D showed in Figure 3.2.6.
+\begin{center}
+	\includegraphics[scale=0.5]{Figure_3_2_6}\\
+	Figure 3.2.6\\
+\end{center}
+Here we see that the triangle has two negative edges and one positive edge.  The two negative edges are between the nodes B and C and nodes C and D.  The one positive edge is located between edges B and D.  \\\\
+So due to the symmetry of the graph, we can say that for every triangle with a base that is a negative edge shares the base with two balanced triangles and one unbalanced triangle. 
 }
 
 % Question 3
@@ -101,7 +118,16 @@ We now consider this kind of question for some other networks.\\\\
 \textcolor{gray}{
 Answers:
 \begin{enumerate}[(a)]
-	\item PART A
+	\item Well, since the graph we are evaluating is made up of all negative edges we can rule out adding just negative edges between node D and the other nodes in the graph A, B, and C.  This would only make all the edges in the graph negative and  therefore make all existing triangles consisting of only negative edges.  Same can be said for adding only positive edges since they are all leaving from the same node, D, and any two nodes it connects to would be connected by negative edges making only unbalanced triangle graphs. As for connecting the node D through different types of nodes there are several different situations to consider.  If the outside edges between nodes D and B and in between nodes D and C were both positive like show in Figure 3.3.1, we see that the overall graph does now contain two balanced triangles.  However there is still one a unbalanced graph made up of nodes A, B, and C.\\
+\begin{center}
+	\includegraphics[scale=1]{Figure_3_3_1}\\
+	Figure 3.3.1
+\end{center}
+\begin{center}
+	\includegraphics[scale=1]{Figure_3_3_2}\\
+	Figure 3.3.2
+\end{center}
+If we were to make the outside edges negative and the inside edge positive then we get the near the same results as before.  There ends up being two balanced triangles for with nodes ADC and nodes ABD.  However once again the triangle with nodes ABC form an unbalanced graph.  Therefore the overall graph is unbalanced.  Thus, we have shown that the node D can not be added to the graph with any kind of positive or negative connection that would make the overall graph a balanced complete graph.   \\
 	\item PART B
 	\item PART C
 \end{enumerate}}
