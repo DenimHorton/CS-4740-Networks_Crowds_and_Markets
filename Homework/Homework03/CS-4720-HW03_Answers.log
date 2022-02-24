@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  23 FEB 2022 21:42
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  23 FEB 2022 21:48
 entering extended mode
 **./CS-4720-HW03_Answers.tex
 (CS-4720-HW03_Answers.tex
@@ -547,4 +547,192 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[
+[1{C:/Users/Admin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
+
+ <./Images/Figure_5_18.png>]
+<example_ballanced_and_not_ballanced_graph.png, id=17, 370.986pt x 328.22626pt>
+
+File: example_ballanced_and_not_ballanced_graph.png Graphic file (type png)
+<use example_ballanced_and_not_ballanced_graph.png>
+Package pdftex.def Info: example_ballanced_and_not_ballanced_graph.png  used on
+ input line 60.
+(pdftex.def)             Requested size: 185.49254pt x 164.11272pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--60
+
+ []
+
+<Figure_3_2_1.png, id=18, 294.50024pt x 247.82588pt>
+File: Figure_3_2_1.png Graphic file (type png)
+<use Figure_3_2_1.png>
+Package pdftex.def Info: Figure_3_2_1.png  used on input line 60.
+(pdftex.def)             Requested size: 147.24976pt x 123.91263pt.
+<Figure_3_2_2.png, id=19, 322.20375pt x 266.49562pt>
+File: Figure_3_2_2.png Graphic file (type png)
+<use Figure_3_2_2.png>
+Package pdftex.def Info: Figure_3_2_2.png  used on input line 60.
+(pdftex.def)             Requested size: 161.10147pt x 133.24748pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[2 <./example_ballanced_and_not_ballanced_graph.png> <./Figure_3_2_1.png> <./Fi
+gure_3_2_2.png>]
+<Figure_3_2_3.png, id=27, 347.19713pt x 290.2845pt>
+File: Figure_3_2_3.png Graphic file (type png)
+<use Figure_3_2_3.png>
+Package pdftex.def Info: Figure_3_2_3.png  used on input line 60.
+(pdftex.def)             Requested size: 173.59813pt x 145.14189pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 60--61
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 63--65
+
+ []
+
+<./Images/Figure_5_19.png, id=28, 417.66037pt x 140.62538pt>
+File: ./Images/Figure_5_19.png Graphic file (type png)
+<use ./Images/Figure_5_19.png>
+Package pdftex.def Info: ./Images/Figure_5_19.png  used on input line 66.
+(pdftex.def)             Requested size: 417.65935pt x 140.62502pt.
+<./Images/Figure_5_19-20.png, id=29, 418.56375pt x 211.992pt>
+File: ./Images/Figure_5_19-20.png Graphic file (type png)
+<use ./Images/Figure_5_19-20.png>
+Package pdftex.def Info: ./Images/Figure_5_19-20.png  used on input line 67.
+(pdftex.def)             Requested size: 418.56271pt x 211.99147pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[3 <./Figure_3_2_3.png> <./Images/Figure_5_19.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 69--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--73
+
+ []
+
+<./Images/Figure_5_21.png, id=37, 236.98538pt x 121.35338pt>
+File: ./Images/Figure_5_21.png Graphic file (type png)
+<use ./Images/Figure_5_21.png>
+Package pdftex.def Info: ./Images/Figure_5_21.png  used on input line 74.
+(pdftex.def)             Requested size: 236.98479pt x 121.35307pt.
+
+LaTeX Warning: The counter will not be printed.
+             The label is: * on input line 79.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--79
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[4 <./Images/Figure_5_19-20.png> <./Images/Figure_5_21.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 83--85
+
+ []
+
+
+LaTeX Warning: The counter will not be printed.
+             The label is: * on input line 86.
+
+<./Images/Figure_5_22.png, id=45, 396.58162pt x 132.495pt>
+File: ./Images/Figure_5_22.png Graphic file (type png)
+<use ./Images/Figure_5_22.png>
+Package pdftex.def Info: ./Images/Figure_5_22.png  used on input line 89.
+(pdftex.def)             Requested size: 396.58064pt x 132.49466pt.
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[5 <./Images/Figure_5_22.png>]
+<./Images/canvas-1.png, id=59, 231.86626pt x 124.21407pt>
+File: ./Images/canvas-1.png Graphic file (type png)
+<use ./Images/canvas-1.png>
+Package pdftex.def Info: ./Images/canvas-1.png  used on input line 109.
+(pdftex.def)             Requested size: 231.86568pt x 124.21375pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 121--122
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 123--124
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[6 <./Images/canvas-1.png>] (CS-4720-HW03_Answers.aux)
+Package rerunfilecheck Info: File `CS-4720-HW03_Answers.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
+Here is how much of TeX's memory you used:
+ 10446 strings out of 481532
+ 162126 string characters out of 2915361
+ 470733 words of memory out of 3000000
+ 27188 multiletter control sequences out of 15000+200000
+ 404681 words of font info for 31 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 71i,11n,79p,789b,578s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmbx12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmr10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmr12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/
+type1/public/amsfonts/cm/cmti10.pfb>
+Output written on CS-4720-HW03_Answers.pdf (6 pages, 545484 bytes).
+PDF statistics:
+ 89 PDF objects out of 1000 (max. 8388607)
+ 24 named destinations out of 1000 (max. 500000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+
