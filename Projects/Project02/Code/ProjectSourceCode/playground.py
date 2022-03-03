@@ -4,7 +4,7 @@ from black import format_file_contents
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
-import math, random, time, logging, json
+import math, random, time, logging, json, glob, os
 from matplotlib.animation import FuncAnimation
 from alive_progress import alive_bar
  
@@ -12,6 +12,15 @@ logging.basicConfig(filename='Content\\LogInfo\\logInfo.log', filemode='w', leve
 logging = logging.getLogger('alive_progress')
 
 team_map = {0:"Empty Space", 1:"Red Residence", -1:"Blue Residence"}
+
+files = glob.glob('./Content/**/*.png', recursive=True)
+
+
+for f in files:
+    try:
+        os.remove(f)
+    except OSError as e:
+        print("Error: %s : %s" % (f, e.strerror))
 
 class GraphGenerator(object):
     def __init__(self, t=0.5, os=0.5, mxd=0.5, g_size=20, grph_ind_num="TestDefault", num_iter = 100):
@@ -35,13 +44,15 @@ class GraphGenerator(object):
         obj_str += f"Graph:\n{self.graph}"
         return obj_str 
 
-    def showGraph(self):
+    def showGraph(self, iter=0):
         plt.matshow(self.graph, cmap='seismic')
+        plt.title(f"{self.graph_instance_name}-{iter:03}")
         plt.show()
         plt.close()
 
     def saveGraph(self, iter=0):
         plt.matshow(self.graph, cmap='seismic')
+        plt.title(f"{self.graph_instance_name}-{iter:03}")
         plt.savefig(f".\\Content\\GenoratedGraphs\\{self.graph_instance_name}-{iter:03}.png")
         plt.close()
 
@@ -175,7 +186,7 @@ class GraphGenerator(object):
                             
             t2 = time.time()
             self.runtime = t2 - t1 
-            self.showGraph()
+            self.showGraph(iter=iter)
             logging.info(f"\t{self.graph_instance_name}: {graph_ctf}")    
             self.graph = temp_graph
 
