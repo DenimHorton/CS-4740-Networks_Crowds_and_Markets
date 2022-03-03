@@ -1,5 +1,6 @@
 import logging
 from re import X
+from black import format_file_contents
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
@@ -20,8 +21,8 @@ class GraphGenerator(object):
         self.open_spots = os  
         self.red_blue_split = mxd
         self.runtime = 0.0
-        self.num_of_interations = num_iter
-        self.iter_tracker = dict([(i, 0) for i in range(0, self.num_of_interations)])
+        self.num_of_iterations = num_iter
+        self.iter_tracker = dict([(i, 0) for i in range(0, self.num_of_iterations)])
 
     def __str__(self):
         obj_str = f"----------- {self.graph_instance_name} -----------\n"
@@ -35,7 +36,7 @@ class GraphGenerator(object):
 
     def showGraph(self):
         plt.matshow(self.graph, cmap='seismic')
-        plt.show(block=False)
+        plt.show()
 
     def setGraphName(self, new_name):
         self.graph_instance_name = f"Graph-{new_name}"
@@ -64,27 +65,27 @@ class GraphGenerator(object):
         if verbosity:
             logging.info(f"  Checking if this residence is content . . .")
 
-        blue_counter, red_counter, open_counter = self.getNeighborCount(indx_row, indx_col)
+        blue_counter, red_counter, open_counter = self.getNeighborCount(indx_row, indx_col, verbosity=verbosity)
+        num_local_neghbors = (8 - open_counter)
 
-        if (self.graph[indx_row][indx_col] == 1 ) and (blue_counter / 8 < self.t_value):
-            return True
-        elif (self.graph[indx_row][indx_col] == -1 ) and (red_counter / 8 < self.t_value):
-            return True
+        # Has only open spots around it.
+        if num_local_neghbors == 0:
+            return True, 0.0
+        elif (self.graph[indx_row][indx_col] == 1 ) and (blue_counter / num_local_neghbors  < self.t_value):
+            return True, blue_counter / num_local_neghbors 
+
+        elif (self.graph[indx_row][indx_col] == -1 ) and (blue_counter / num_local_neghbors  < self.t_value):
+            return True, blue_counter / num_local_neghbors
+
+        elif (self.graph[indx_row][indx_col] == 1 ) and (blue_counter / num_local_neghbors  >= self.t_value):
+            return False, blue_counter / num_local_neghbors 
+            
+        elif (self.graph[indx_row][indx_col] == -1 ) and (red_counter / num_local_neghbors  >= self.t_value):
+            return False, red_counter / num_local_neghbors 
+        # Evaluating open spot which will be content because its an open spot . . . 
         else:
-            return False
+            return True,  1.0
 
-    def isContentEnough(self, indx_row, indx_col, verbosity=False):
-        if verbosity:
-            logging.info(f"  Checking if this residence is content . . .")
-
-        blue_counter, red_counter, open_counter = self.getNeighborCount(indx_row, indx_col)
-
-        if (self.graph[indx_row][indx_col] == 1 or 0) and (blue_counter / 8 < self.t_value):
-            return True
-        elif (self.graph[indx_row][indx_col] == -1 or 0) and (red_counter / 8 < self.t_value):
-            return True
-        else:
-            return False
 
     def getNeighborCount(self, indx_row, indx_col, verbosity=False):
 
@@ -102,8 +103,8 @@ class GraphGenerator(object):
 
 
 
-        blue_counter = sub_arry_lst.count("1")
-        red_counter = sub_arry_lst.count("-1")
+        blue_counter = sub_arry_lst.count("-1")
+        red_counter = sub_arry_lst.count("1")
         open_counter = sub_arry_lst.count("0")
 
         if verbosity:
@@ -137,19 +138,19 @@ class GraphGenerator(object):
         y = psbl_nw_lst_set[rndm_res_indx][1]
         return x, y
 
-    def runSchellingSegregation(self, verbosity=False):
+    def runSchellingSegregationAtRandom(self, verbosity=False):
         temp_graph = self.graph.copy()   
         t1 = time.time()
         iter = 0
         graph_ctf = 0.0
 
-        with alive_bar(self.num_of_interations, bar='solid', title=f'{self.graph_instance_name}') as bar:
-            for iter in range(0, self.num_of_interations):
-                if graph_ctf >= 0.45:
+        with alive_bar(self.num_of_iterations, bar='solid', title=f'{self.graph_instance_name}') as bar:
+            for iter in range(0, self.num_of_iterations):
+                if graph_ctf >= 1:
                     logging.info(f"Homophily! Segregation achived: {graph_ctf}")
                     self.showGraph()
                     break
-                if iter % 100 == 0:
+                if iter % 5 == 0:
                     print(f"\t{self.graph_instance_name}: {graph_ctf}")
                     logging.info(f"\tIteration {iter} : {graph_ctf}")
 
@@ -159,16 +160,15 @@ class GraphGenerator(object):
                 if verbosity:
                     logging.info(f" Graph neighbor {team_map.get(self.graph[random_index_row][random_index_col]):>3} @ ({random_index_row}, {random_index_col})")
 
-                if self.isContentEnough(random_index_row, random_index_col):
-                # if self.isContent(random_index_row, random_index_col):
+                content_or_not, contentdeness = self.isContent(random_index_row, random_index_col)
+                if content_or_not:
                     if verbosity:
-                        logging.info("\tContent!")
+                        logging.info(f"\tContent! (%{contentdeness:0.2})")
                 else:
                     posible_new_streets = np.where(self.graph==0)
                     random_new_space = random.choice(range(0, len(posible_new_streets[0])))
-                    
                     if verbosity:
-                        logging.warning("\tDiscontent!")
+                        logging.warning("\tDiscontent! (%{contentdeness:0.2})")
                         logging.warning(f"\tPossible Row Address:\t\t{posible_new_streets[0]}")
                         logging.warning(f"\tPossible Column Address:\t{posible_new_streets[1]}")                
                         logging.warning(f"\tCONGRATIONLATIONS {team_map.get(self.graph[random_index_row][random_index_col])}!! YOUR MOVING TO YOUR NEW HOME which is at ({posible_new_streets[0][random_new_space]}, {posible_new_streets[1][random_new_space]}). Moving into {team_map.get(self.graph[posible_new_streets[0][random_new_space]][posible_new_streets[1][random_new_space]])} ")
@@ -184,6 +184,55 @@ class GraphGenerator(object):
         self.showGraph()
         logging.info(f"\t{self.graph_instance_name}: {graph_ctf}")    
         self.graph = temp_graph
+
+    def runSchellingSegregation(self, verbosity=False):
+        temp_graph = self.graph.copy()   
+        t1 = time.time()
+        iter = 0
+        graph_ctf = 0.0
+
+        with alive_bar(self.num_of_iterations, bar='solid', title=f'{self.graph_instance_name}') as bar:
+            for iter in range(0, self.num_of_iterations):
+                if graph_ctf >= 1.0:
+                    logging.info(f"Homophily! Segregation achived: {graph_ctf}")
+                    print(f"\t{self.graph_instance_name}: {graph_ctf}")
+                    break
+                if iter % (self.num_of_iterations / 5) == 0:
+                    print(f"\t{self.graph_instance_name}: {graph_ctf}")
+                    logging.info(f"\tIteration {iter:>3} : CTF : {graph_ctf:0.4f}")
+                    self.showGraph()
+
+                for row in range(0, len(self.graph[0])):
+                    for col in range(0, len(self.graph[row])):
+    
+                        if verbosity:
+                            logging.info(f" Graph neighbor {team_map.get(self.graph[row][col]):>3} @ ({row}, {col})")
+
+                        content_or_not, contentdeness = self.isContent(row, col)
+                        if content_or_not:
+                            if verbosity:
+                                logging.info(f"\tContent! (%{contentdeness:0.2})")
+                        else:
+                            posible_new_streets = np.where(self.graph==0)
+                            posible_new_address = tuple(zip(posible_new_streets[0], posible_new_streets[1]))
+                            random_new_space = random.choice(posible_new_address)
+                            if verbosity:
+                                logging.warning("\tDiscontent! (%{contentdeness:0.2})")
+                                logging.warning(f"\tPossible New Address':\t\t{posible_new_address}")
+                                logging.warning(f"\tCONGRATIONLATIONS {team_map.get(self.graph[row][col])}!! YOUR MOVING TO YOUR NEW HOME which is at ({random_new_space[0]}, {random_new_space[1]}). Moving into {team_map.get(self.graph[random_new_space[0]][random_new_space[1]])} ")
+                                 
+                            self.graph[random_new_space[0]][random_new_space[1]] = self.graph[row][col]
+                            self.graph[row][col] = 0
+
+                graph_ctf =  self.calculateCTF(verbosity=verbosity)
+                self.iter_tracker[iter] = graph_ctf
+
+                bar()
+            t2 = time.time()
+            self.runtime = t2 - t1 
+            self.showGraph()
+            logging.info(f"\t{self.graph_instance_name}: {graph_ctf}")    
+            self.graph = temp_graph
 
     def calculateCTF(self, verbosity=False):
 
@@ -218,48 +267,55 @@ class GraphGenerator(object):
 def PlotGraphCTFOverIter(graph_iter_lst, number_iters, verbosity=False):
     # print(Graph)
     plt.plot(graph_iter_lst.keys(), graph_iter_lst.values())
-    x_vals_lst = [x_tick_val for x_tick_val in range(0, number_iters, 100)]
-    y_vals_lst = [y_tick_val for y_tick_val in list(np.linspace(0, 1, 10))]
-
-    plt.xticks(x_vals_lst, x_vals_lst)
-    plt.yticks()
+    x_vals_lst = [x_tick_val for x_tick_val in range(0, number_iters)]
+    y_vals_lst = [y_tick_val for y_tick_val in np.linspace(min(graph_iter_lst.values()), max(graph_iter_lst.values()), 10)]
+    plt.xlabel('Iterations')
+    plt.ylabel('CTF')
+    plt.xticks(x_vals_lst)
+    plt.yticks(y_vals_lst)
+    plt.title(f'Popullation Schelling Segregation\nAverage CTF Over ({len(graph_iter_lst.keys())}) Iterations')
     plt.show()
     
 def PlotAvgGraphCTFOverIter(Graph, amount_episodes=3, verbosity=False):
     graph_agv_acum_dict = dict([(i, j) for i, j in Graph.iter_tracker.items()]) 
     for episode in range(0, amount_episodes):
+
         # Test Schelling Segregation 
-        Graph.setGraphName(f"TestsRun{episode:06}")
+        Graph.setGraphName(f" AvgTestsRun-{episode:03}")
+        # Graph.runSchellingSegregationAtRandom(verbosity=verbosity)
         Graph.runSchellingSegregation(verbosity=verbosity)
+
 
         [graph_agv_acum_dict.update({i : j + Graph.iter_tracker.get(i)}) for i, j in graph_agv_acum_dict.items()]
         
         logging.info(f"\tAverage Run Reults {amount_episodes}:{graph_agv_acum_dict}")
+    
+    [graph_agv_acum_dict.update({i : j / amount_episodes}) for i, j in graph_agv_acum_dict.items()]
 
-        PlotGraphCTFOverIter(graph_agv_acum_dict, Graph.num_of_interations, verbosity=False)
+    PlotGraphCTFOverIter(graph_agv_acum_dict, Graph.num_of_iterations, verbosity=True)
 
    
 '''
 Test showing graphing functionality
 '''
-# # GLOBAL number of tst to run for each configuration to calculate avg.
-# TST_GRAPH_RUNS = 3
+# GLOBAL number of tst to run for each configuration to calculate avg.
+TST_GRAPH_RUNS = 3
 
-# # Quickly shows what works and how through log statments when verbose is turned to 'True'.
-# # We only run for 10 iterations with modest values to give multiple logical branch offs
-# # and to show overall functionality. 
-# tstGraph = GraphGenerator(g_size=20, t=0.1, os=0.2, mxd=0.5, num_iter=10)
-# tstGraph.createGraph()
-# # Test Schelling Segregation 
-# tstGraph.runSchellingSegregation(verbosity=True)
-
-# logging.info(f"- - - - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-
-
-logging.info(f"- - - - - - - - - - -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-avgTstGraph = GraphGenerator(g_size=10, t=0.01, os=0.7, mxd=0.1, num_iter=10000)
+# Quickly shows what works and how through log statments when verbose is turned to 'True'.
+# We only run for 10 iterations with modest values to give multiple logical branch offs
+# and to show overall functionality.
+logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+logging.info(f"- - - - - - - - - - - - - -  - - Test Proof Of Concept - - - - - - - - - - - - - - - - -") 
+logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
+tstGraph = GraphGenerator(g_size=5, t=0.1, os=0.2, mxd=0.5, num_iter=15)
+tstGraph.createGraph()
+# Test Schelling Segregation 
+tstGraph.runSchellingSegregation(verbosity=True)
+logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+logging.info(f"- - - - - - - - - - - - - Average Test Run (Limited Verbosity) - - - - - - - - - - - - -") 
+logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
+avgTstGraph = GraphGenerator(g_size=50, t=0.3, os=0.1, mxd=0.3, num_iter=30)
 avgTstGraph.createGraph()
-avgTstGraph.showGraph()
 
 PlotAvgGraphCTFOverIter(avgTstGraph, amount_episodes=1, verbosity=False)
 
