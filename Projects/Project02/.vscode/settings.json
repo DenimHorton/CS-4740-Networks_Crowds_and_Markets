@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Code/social-network-animation"
+    ]
+}
