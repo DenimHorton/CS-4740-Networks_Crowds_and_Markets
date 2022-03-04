@@ -98,14 +98,14 @@ We now consider this kind of question for some other networks.\\\\
 		% Question 3: Part 1
 		\item Consider the 3-node social network in Figure 5.21, in which all pairs of nodes know each other, and each pair is either friendly or hostile as indicated by the + or - label on each edge. A fourth node D wants to join this network, and establish either positive or negative relations with each existing node A, B, and C. Can node D do this in such a way that it doesn’t become involved in any unbalanced triangles?\\
 		\begin{enumerate}[*]
-			\item  If there is a way for D to do this, say how many different such ways there are, and give an explanation. (That is, how many different possible labelings of the edges out of D have the property that all triangles containing D are balanced?)
+			\item  If there is a way for D to do this, say how many different such ways there are, and give an explanation. (That is, how many different possible labellings of the edges out of D have the property that all triangles containing D are balanced?)
 			\item If there is no such way for D to do this, give an explanation why not. 
 		\end{enumerate}
 (In this and the subsequent questions, it possible to work out an answer by reasoning about the new node’s options without having to check all possibilities.\\
 		% Question 3: Part 2
 		\item Same question, but for a different network. Consider the 3-node social network in Figure 5.22, in which all pairs of nodes know each other, and each pair is either friendly or hostile as indicated by the + or - label on each edge. A fourth node D wants to join this network, and establish either positive or negative relations with each existing node A, B, and C. Can node D do this in such a way that it doesn’t become involved in any unbalanced triangles?
 		\begin{enumerate}[*]
-			\item  If there is a way for D to do this, say how many different such ways there are, and give an explanation. (That is, how many different possible labelings of the edges out of D have the property that all triangles containing D are balanced?)
+			\item  If there is a way for D to do this, say how many different such ways there are, and give an explanation. (That is, how many different possible labellings of the edges out of D have the property that all triangles containing D are balanced?)
 			\begin{center}
 				\includegraphics[scale=1]{Figure_5_22}\\
 			\end{center}
@@ -123,7 +123,7 @@ Answers:
 	\includegraphics[scale=0.5]{Figure_3_3_1}\\
 	Figure 3.3.1
 \end{center}
-Now considering the edge AD as a poisitive edge we must make the edges between DB and DC negative to make these two triangle graphs balanced.  However once again the triangle with nodes ABC forms an unbalanced graph as shown in Figure 3.3.2. \\
+Now considering the edge AD as a positive edge we must make the edges between DB and DC negative to make these two triangle graphs balanced.  However once again the triangle with nodes ABC forms an unbalanced graph as shown in Figure 3.3.2. \\
 \begin{center}
 	\includegraphics[scale=0.5]{Figure_3_3_2}\\
 	Figure 3.3.2\\
@@ -147,19 +147,25 @@ Continuing to evaluate edge AD as the test edge we now test it as a negative con
 	\item Consider the following graph:
 	\begin{center}
 		\includegraphics[scale=1]{canvas-1}\\
+		Figure Canvas-1
 	\end{center}
  	Does this graph show evidence of homophily? Justify your answer from concepts we discussed in class.
 \end{enumerate}
 \textcolor{gray}{
 Answers:
 \begin{enumerate} [\text{Canvas-}1.]
-		\item Well since we can consider a graph to be considered homophily when the number of connections made between opposite type of nodes is well below half the number of overall connections made in the graph. To get an quantitative amount to see how close we are to this we can use the formula provided in class.\\\\
+		\item As discussed in class we can use several different methods and attributes associated with a graph of interest to deduce whether a graph can be considered to have homophily or not.  The first intuitive way is to look at the amount of different types of nodes  and in most graphs the chances of there being homphily are much higher where the probability of edges forming in between each pair of nodes is higher.  However this is not always the case, nor is it all ways the case the just because a graph has more than half of one type of node then the other that there will not be homphily.  So obviously just looking at a graph and beelining it as such is not good enough to deduce confidently whether a graph has homophily or not.\\\\
+Continue with what was discussed in class we also derived the described equations below that can be used along with randomly rearranging all the nodes and their edges. After shuffling around the graph the number of connections made between opposite type of nodes can be counted up as well as the edges in between two nodes of the same type.  These number then can be used to calculate the probability of an edge being picked at random will be a mixed type node pair edge or a single type node pair edge. This along with the formula we derived in class, will give a quantitative amount to latter use and see how close a graph is to be having homphily or not.\\\\
 	\begin{align}
 		p 	&=	\frac{\text{number of non-mixed connections}}{\text{total number of connections}}\\
 		q 	&=	\frac{\text{number of mixed connections}}{\text{total number of connections}}\\
 		2pq &= \text{Degree of homophily}
 	\end{align} 
-So continuing with the given information above we find p by counting all the edges that are mixed which i have redrawn as blue connections in Figure canvas.1.1.  As we can see by counting up there are 12 mixed connections.  Counting all the possible connections we see 22.  So we get $p = \frac{12}{22} \approx 0.5454$.  For $q$ we get the rest of the edges which is the amount of existing edges minus the number of mixed connections which is $22 - 12 = 10$.  So $q=\frac{10}{22} \approx 0.4545$.  multiplying these fractions give us $\frac{30}{121} \approx 0.2479$. Multiplying this by two we get $\frac{60}{121} \approx 0.4959$.  This number is very close to 0.5 which is close enough for me to say that this graph does not have strong homophilly 
+So continuing with the given information above we find p by counting all the edges that are mixed which i have redrawn as blue connections in Figure canvas.1.1.\\\\
+	\begin{center}
+		\includegraphics[scale=1]{canvas_1_1}\\                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           		Figure Canvas.1.1
+	\end{center}
+As we can see by counting up there are 12 mixed connections.  Counting all the possible connections we see 22.  So we get $p = \frac{12}{22} \approx 0.5454$.  For $q$ we get the rest of the edges which is the amount of existing edges minus the number of mixed connections which is $22 - 12 = 10$.  So $q=\frac{10}{22} \approx 0.4545$.  multiplying these fractions give us $\frac{30}{121} \approx 0.2479$. Multiplying this by two we get $\frac{60}{121} \approx 0.4959$.  This number can then be used to compare to the original probability of a random edge on the graph being a mixed type node pair edge to see how much they differ. Since we already know this probability as $q=\frac{10}{22} \approx 0.4545$.  Comparing this amount to the amount we just calculated we see the difference to be, $\frac{10}{22} - \frac {60}{121} = \frac{5}{121} \approx{0.04132}$.  This difference is very small and suggests that this graph indeed does have homphily even though at first glance might now seem to be so. 
 \end {enumerate}}
 \begin{enumerate} [\text{Canvas-}1.]
 	\setcounter{enumi}{1} 
@@ -172,7 +178,7 @@ Is it possible to extend this concept to other contentedness thresholds, and con
 	Answers:
 	\begin{enumerate} [\text{Canvas-}1.]
 	\setcounter{enumi}{1} 
-		\item something.
+		\item Going back to what discussed in class about Schelling Segregation given a big enough space it seem and contented society can be achieved over time.  However when considering that the society may made be constrained to moving agents to the largest groups of society members or if the space in which society members can move is limited might take a while if not ever achieve full contentedness due to size.  However, we can assume that these societies for the most part will eventually reach segregation.\\\\
+When considering smaller and bigger $t$ values in which members might be more picky about the Neighbors or not.  With values of $t$ that are low we see that it might some times take a little longer for segregation to happen since most members are not to picky how ever segregation is almost guaranteed every time.  As it slowly goes up segregations seem to happen more and more rapidly slowly forming bigger and bigger groups of neighbours as the members get greedy.  All the way up to almost t=25 do we see rapid convergence on segregation models but any higher and the society start to become integrated again and less segregated since they are so picky and can never find a location to move. Constraints on space especially reflect this. 
 	\end {enumerate}}
-
 \end{document}

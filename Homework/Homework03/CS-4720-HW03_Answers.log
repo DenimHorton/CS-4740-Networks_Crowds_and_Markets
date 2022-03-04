@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  24 FEB 2022 01:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  25 FEB 2022 19:11
 entering extended mode
 **./CS-4720-HW03_Answers.tex
 (CS-4720-HW03_Answers.tex
@@ -779,35 +779,31 @@ File: ./Images/canvas-1.png Graphic file (type png)
 Package pdftex.def Info: ./Images/canvas-1.png  used on input line 149.
 (pdftex.def)             Requested size: 231.86568pt x 124.21375pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--163
+Underfull \hbox (badness 10000) in paragraph at lines 169--169
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 163--163
+Underfull \hbox (badness 10000) in paragraph at lines 169--169
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 163
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--169
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 169
 .
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 163
+LaTeX Font Info:    Trying to load font information for U+msb on input line 169
 .
 
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 167--168
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 167--168
-
- []
-
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -817,7 +813,32 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
 [9 <./Images/canvas-1.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 169--170
+Underfull \hbox (badness 10000) in paragraph at lines 169--169
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--169
+
+ []
+
+<./Images/canvas_1_1.png, id=95, 178.266pt x 90.93974pt>
+File: ./Images/canvas_1_1.png Graphic file (type png)
+<use ./Images/canvas_1_1.png>
+Package pdftex.def Info: ./Images/canvas_1_1.png  used on input line 169.
+(pdftex.def)             Requested size: 178.26555pt x 90.9395pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 173--174
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 175--176
 
  []
 
@@ -829,18 +850,31 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[10] (CS-4720-HW03_Answers.aux)
+[10 <./Images/canvas_1_1.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 183--183
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[11] (CS-4720-HW03_Answers.aux)
 Package rerunfilecheck Info: File `CS-4720-HW03_Answers.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 10570 strings out of 481532
- 164521 string characters out of 2915361
- 471735 words of memory out of 3000000
- 27271 multiletter control sequences out of 15000+200000
+ 10579 strings out of 481532
+ 164706 string characters out of 2915361
+ 472735 words of memory out of 3000000
+ 27278 multiletter control sequences out of 15000+200000
  411799 words of font info for 57 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 71i,12n,79p,808b,520s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 71i,12n,79p,3077b,520s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmmi10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -849,9 +883,9 @@ ublic/amsfonts/cm/cmr10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts
 eX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Admin/AppData/Local/Progra
 ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Admin/AppData/Loc
 al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on CS-4720-HW03_Answers.pdf (10 pages, 882280 bytes).
+Output written on CS-4720-HW03_Answers.pdf (11 pages, 914866 bytes).
 PDF statistics:
- 138 PDF objects out of 1000 (max. 8388607)
- 31 named destinations out of 1000 (max. 500000)
- 86 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 144 PDF objects out of 1000 (max. 8388607)
+ 32 named destinations out of 1000 (max. 500000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 
