@@ -263,7 +263,12 @@ def PlotGraphCTFOverIter(graph_iter_lst, number_iters, t_val, mxd_val, os_val, v
     plt.xticks(x_vals_lst)
     plt.yticks(y_vals_lst)
     plt.title(f'Popullation Schelling Segregation Average\n T-Value:{t_val} Red Blue Mix:{mxd_val} Open Spaces:{os_val} ')
-    plt.savefig(f".\\Content\\GenoratedPlots\\AveragePlot-{t_val}-{mxd_val}-{os_val}.png")
+
+    save_img_path = f".\\Content\\GenoratedPlots"
+    isExist = os.path.exists(save_img_path)
+    if not isExist:
+        os.makedirs(save_img_path)
+    plt.savefig(f"{save_img_path}\\AveragePlot-{t_val}-{mxd_val}-{os_val}.png")
 
     if verbosity:
         plt.show()
