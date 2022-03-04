@@ -18,18 +18,6 @@ logging = logging.getLogger('alive_progress')
 
 team_map = {0:"Empty Space", 1:"Red Residence", -1:"Blue Residence"}
 
-files = glob.glob('.\\Content\\**\\**\\*.png', recursive=True)
-print(type(files))
-files.append(glob.glob('.\\Content\\**\\**\\'))
-print(files)
-
-for i in list(files[0]):
-    try:
-        shutil.rmtree(i)
-    except OSError as e:
-        print("Error: %s : %s" % (i, e.strerror))
-
-
 class GraphGenerator(object):
     def __init__(self, t=0.5, os=0.5, mxd=0.5, g_size=20, grph_ind_num="TestDefault", num_iter = 100):
         self.graph_instance_name = f"Graph-{grph_ind_num}"
@@ -71,8 +59,8 @@ class GraphGenerator(object):
     def saveGraph(self, iter=0, epsd=0):
         sub_dir=f"{epsd}"
         plt.matshow(self.graph, cmap='seismic')
-        plt.title(f"{self.graph_instance_name}-{iter:03}")
-        save_img_path = f".\\Content\\GenoratedGraphs\\GraphTestSet{sub_dir:03}"
+        plt.title(f"{self.graph_instance_name}-T-Value:{self.t_value}-{self.red_blue_split}-{self.open_spots}-{iter:03}")
+        save_img_path = f".\\Content\\GenoratedGraphs\\{self.graph_instance_name}-{self.t_value}-{self.red_blue_split}-{self.open_spots}"
         isExist = os.path.exists(save_img_path)
         if not isExist:
             os.makedirs(save_img_path)
@@ -244,16 +232,17 @@ class GraphGenerator(object):
 '''
 Assignment method and graphing methods
 '''
-def toGiff(graph_location):
+def toGiff(graph_location, g_t_val, g_mxd, g__os):
     # Create the frames
     frames = []
-    imgs = glob.glob(f'{graph_location}\\*.png')
+    imgs = glob.glob(f'{graph_location}*.png')
+
     for i in imgs:
         new_frame = Image.open(i)
         frames.append(new_frame)
     
     # Save into a GIF file that loops forever
-    frames[0].save(f'{graph_location}.gif', format='GIF',
+    frames[0].save(f'.\\Content\\GenoratedGiffs\\Giff-000-{g_t_val}-{g_mxd}-{g__os}.gif', format='GIF',
                    append_images=frames[1:],
                    save_all=True,
                    duration=300, loop=0)
@@ -268,8 +257,8 @@ def PlotGraphCTFOverIter(graph_iter_lst, number_iters, t_val, mxd_val, os_val, v
     plt.legend((f"CTF"), loc='upper center', shadow=True)
     plt.xticks(x_vals_lst)
     plt.yticks(y_vals_lst)
-    plt.title(f'Popullation Schelling Segregation Average\n t:{t_val} mxd:{mxd_val} opn:{os_val} ')
-    plt.savefig(f".\\Content\\GenoratedGraphs\\TestAverage-{t_val}-{mxd_val}-{os_val}-Plot.png")
+    plt.title(f'Popullation Schelling Segregation Average\n T-Value:{t_val} Red Blue Mix:{mxd_val} Open Spaces:{os_val} ')
+    plt.savefig(f".\\Content\\GenoratedPlots\\AveragePlot-{t_val}-{mxd_val}-{os_val}.png")
 
     if verbosity:
         plt.show()
@@ -283,7 +272,7 @@ def PlotAvgGraphCTFOverIter(Graph, training_sesseions=3, verbosity=False):
 
         # Test Schelling Segregation 
         logging.info(f"EPSD-{episode:03}-TVAL{Graph.t_value}-OPEN{Graph.open_spots}-MIXD{Graph.red_blue_split:03}")
-        Graph.setGraphName(f"{episode:03}-{Graph.t_value:<0.2}-{Graph.open_spots:<0.2}-{Graph.red_blue_split:03}")
+        Graph.setGraphName(f"{episode:03}")
         # Graph.runSchellingSegregationAtRandom(verbosity=verbosity)
         Graph.runSchellingSegregation(verbosity=verbosity)
 
@@ -324,7 +313,7 @@ avgTstGraph = GraphGenerator(g_size=50, t=0.3, os=0.1, mxd=0.4, num_iter=50)
 avgTstGraph.createGraph()
 PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
 print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Genorated\\GraphTestSetGraph-000-{avgTstGraph.t_value}-{avgTstGraph.open_spots}-{avgTstGraph.red_blue_split}")
+toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
 
 
@@ -337,7 +326,7 @@ avgTstGraph.setMixedValue(0.4)
 [avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
 PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
 print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\GraphTestSetGraph-000-{avgTstGraph.t_value}-{avgTstGraph.open_spots}-{avgTstGraph.red_blue_split}")
+toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
@@ -348,7 +337,7 @@ avgTstGraph.setMixedValue(0.4)
 [avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
 PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
 print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\GraphTestSetGraph-000-{avgTstGraph.t_value}-{avgTstGraph.open_spots}-{avgTstGraph.red_blue_split}")
+toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
@@ -359,7 +348,7 @@ avgTstGraph.setMixedValue(0.4)
 [avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
 PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
 print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\GraphTestSetGraph-000-{avgTstGraph.t_value}-{avgTstGraph.open_spots}-{avgTstGraph.red_blue_split}")
+toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
@@ -370,7 +359,7 @@ avgTstGraph.setMixedValue(0.4)
 [avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
 PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
 print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\GraphTestSetGraph-000-{avgTstGraph.t_value}-{avgTstGraph.open_spots}-{avgTstGraph.red_blue_split}")
+toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
@@ -381,4 +370,4 @@ avgTstGraph.setMixedValue(0.2)
 [avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
 PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
 print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\GraphTestSetGraph-000-{avgTstGraph.t_value}-{avgTstGraph.open_spots}-{avgTstGraph.red_blue_split}")
+toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
