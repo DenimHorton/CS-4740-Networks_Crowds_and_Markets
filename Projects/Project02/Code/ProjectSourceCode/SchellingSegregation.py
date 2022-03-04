@@ -13,7 +13,7 @@ from PIL import Image
 '''
 File/Program Configuration Setup
 '''
-logging.basicConfig(filename='Content\\LogInfo\\logInfo.log', filemode='w', level=logging.INFO)
+logging.basicConfig(filename='Content\\LogInfo\\loginfo.log', filemode='w', level=logging.INFO)
 logging = logging.getLogger('alive_progress')
 
 team_map = {0:"Empty Space", 1:"Red Residence", -1:"Blue Residence"}
@@ -241,6 +241,11 @@ def toGiff(graph_location, g_t_val, g_mxd, g__os):
         new_frame = Image.open(i)
         frames.append(new_frame)
     
+    save_img_path = ".\\Content\\GenoratedGiffs"
+    isExist = os.path.exists(save_img_path)
+    if not isExist:
+        os.makedirs(save_img_path)
+
     # Save into a GIF file that loops forever
     frames[0].save(f'.\\Content\\GenoratedGiffs\\Giff-000-{g_t_val}-{g_mxd}-{g__os}.gif', format='GIF',
                    append_images=frames[1:],
