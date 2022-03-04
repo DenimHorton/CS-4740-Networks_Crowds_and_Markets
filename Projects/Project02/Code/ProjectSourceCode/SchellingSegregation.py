@@ -59,7 +59,7 @@ class GraphGenerator(object):
     def saveGraph(self, iter=0, epsd=0):
         sub_dir=f"{epsd}"
         plt.matshow(self.graph, cmap='seismic')
-        plt.title(f"{self.graph_instance_name}-T-Value:{self.t_value}-{self.red_blue_split}-{self.open_spots}-{iter:03}")
+        plt.title(f"{self.graph_instance_name}\nT-Value:\t{self.t_value}Mixed:\t{self.red_blue_split}Openspot:\t{self.open_spots}-{iter:03}")
         save_img_path = f".\\Content\\GenoratedGraphs\\{self.graph_instance_name}-{self.t_value}-{self.red_blue_split}-{self.open_spots}"
         isExist = os.path.exists(save_img_path)
         if not isExist:
