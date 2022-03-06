@@ -1,6 +1,5 @@
 import logging
 from re import X
-from black import format_file_contents
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
@@ -8,18 +7,24 @@ import math, random, time, logging, json, glob, os, sys, shutil
 from matplotlib.animation import FuncAnimation
 from alive_progress import alive_bar
 from PIL import Image
-
  
 '''
 File/Program Configuration Setup
 '''
-logging.basicConfig(filename='Content\\LogInfo\\loginfo.log', filemode='w', level=logging.INFO)
+
+save_log_path = f".\\Content\\LogInfo\\"
+isExist = os.path.exists(save_log_path)
+
+if not isExist:
+    os.makedirs(save_log_path)  
+
+logging.basicConfig(filename=f"{save_log_path}loginfo.log", filemode='w', level=logging.INFO)
 logging = logging.getLogger('alive_progress')
 
 team_map = {0:"Empty Space", 1:"Red Residence", -1:"Blue Residence"}
 
 class GraphGenerator(object):
-    def __init__(self, t=0.5, os=0.5, mxd=0.5, g_size=20, grph_ind_num="TestDefault", num_iter = 100):
+    def __init__(self, t=0.5, os=0.5, mxd=0.5, g_size=20, grph_ind_num="TestDefault", num_iter = 100, cap_pt_lst=[] ):
         self.graph_instance_name = f"Graph-{grph_ind_num}"
         self.graph = np.array
         self.graph_size = g_size * g_size
@@ -29,6 +34,7 @@ class GraphGenerator(object):
         self.runtime = 0.0
         self.num_of_iterations = num_iter
         self.iter_tracker = dict([(i, 0) for i in range(0, self.num_of_iterations)])
+        self.capture_points = cap_pt_lst
 
     def __str__(self):
         obj_str = f"----------- {self.graph_instance_name} -----------\n"
@@ -49,7 +55,6 @@ class GraphGenerator(object):
     def setMixedValue(self, mxd):
         self.t_value=mxd
 
-
     def showGraph(self, iter=0):
         plt.matshow(self.graph, cmap='seismic')
         plt.title(f"{self.graph_instance_name}-{iter:03}")
@@ -57,17 +62,16 @@ class GraphGenerator(object):
         plt.close()
 
     def saveGraph(self, iter=0, epsd=0):
-        sub_dir=f"{epsd}"
+        sub_dir=f"{epsd}"   
         plt.matshow(self.graph, cmap='seismic')
-        plt.title(f"{self.graph_instance_name}\nT-Value:\t{self.t_value}Mixed:\t{self.red_blue_split}Openspot:\t{self.open_spots}-{iter:03}")
-        save_img_path = f".\\Content\\GenoratedGraphs\\{self.graph_instance_name}-{self.t_value}-{self.red_blue_split}-{self.open_spots}"
-        isExist = os.path.exists(save_img_path)
+        plt.title(f"{self.graph_instance_name}\nT-Value:%{self.t_value}Mixed:%{self.red_blue_split}Openspot:%{self.open_spots}-{iter:03}")
+        save_grph_path = f".\\Content\\GeneratedGraphs\\{self.graph_instance_name}-{self.t_value}-{self.red_blue_split}-{self.open_spots}"
+        isExist = os.path.exists(save_grph_path)
         if not isExist:
-            os.makedirs(save_img_path)
+            os.makedirs(save_grph_path)
 
-        plt.savefig(f"{save_img_path}\\{self.graph_instance_name}-{iter:03}.png")
+        plt.savefig(f"{save_grph_path}\\{self.graph_instance_name}-{iter:03}.png")
         plt.close()
-
 
     def setGraphName(self, new_name):
         self.graph_instance_name = f"Graph-{new_name}"
@@ -117,7 +121,6 @@ class GraphGenerator(object):
         else:
             return True,  1.0
 
-
     def getNeighborCount(self, indx_row, indx_col, verbosity=False):
 
         sub_arry_lst = []
@@ -151,7 +154,7 @@ class GraphGenerator(object):
 
         return blue_counter, red_counter, open_counter
 
-    def runSchellingSegregation(self, verbosity=False, fname="./Content/test.json"):
+    def runSchellingSegregation(self, verbosity=False):
         temp_graph = self.graph.copy()   
         t1 = time.time()
         iter = 0
@@ -164,7 +167,7 @@ class GraphGenerator(object):
                     print(f"\t{self.graph_instance_name}: {graph_ctf}")
                     self.saveGraph(iter, epsd=self.graph_instance_name)
                     break
-                if iter % (self.num_of_iterations / 5) == 0:
+                if iter % (self.num_of_iterations / 5) == 0 or iter in self.capture_points:
                     print(f"\t{self.graph_instance_name}: {graph_ctf}")
                     logging.info(f"\tIteration {iter:>3} : CTF : {graph_ctf:0.4f}")
                     self.saveGraph(iter, epsd=self.graph_instance_name)
@@ -232,7 +235,7 @@ class GraphGenerator(object):
 '''
 Assignment method and graphing methods
 '''
-def toGiff(graph_location, g_t_val, g_mxd, g__os):
+def toGiff(graph_location, g_t_val, g_mxd, g__os, test_run):
     # Create the frames
     frames = []
     imgs = glob.glob(f'{graph_location}*.png')
@@ -241,13 +244,13 @@ def toGiff(graph_location, g_t_val, g_mxd, g__os):
         new_frame = Image.open(i)
         frames.append(new_frame)
     
-    save_img_path = ".\\Content\\GenoratedGiffs"
-    isExist = os.path.exists(save_img_path)
+    save_giff_path = ".\\Content\\GeneratedGiffs"
+    isExist = os.path.exists(save_giff_path)
     if not isExist:
-        os.makedirs(save_img_path)
+        os.makedirs(save_giff_path)
 
     # Save into a GIF file that loops forever
-    frames[0].save(f'.\\Content\\GenoratedGiffs\\Giff-000-{g_t_val}-{g_mxd}-{g__os}.gif', format='GIF',
+    frames[0].save(f'.\\Content\\GeneratedGiffs\\Giff-{test_run}-{g_t_val}-{g_mxd}-{g__os}.gif', format='GIF',
                    append_images=frames[1:],
                    save_all=True,
                    duration=300, loop=0)
@@ -264,7 +267,7 @@ def PlotGraphCTFOverIter(graph_iter_lst, number_iters, t_val, mxd_val, os_val, v
     plt.yticks(y_vals_lst)
     plt.title(f'Popullation Schelling Segregation Average\n T-Value:{t_val} Red Blue Mix:{mxd_val} Open Spaces:{os_val} ')
 
-    save_img_path = f".\\Content\\GenoratedPlots"
+    save_img_path = f".\\Content\\GeneratedPlots"
     isExist = os.path.exists(save_img_path)
     if not isExist:
         os.makedirs(save_img_path)
@@ -296,88 +299,197 @@ def PlotAvgGraphCTFOverIter(Graph, training_sesseions=3, verbosity=False):
     PlotGraphCTFOverIter(graph_agv_acum_dict, Graph.num_of_iterations, Graph.t_value, Graph.red_blue_split, Graph.open_spots, verbosity=verbosity)        
 
 
+def average_CTF(red_blue_split, t, pct_empty):
+    TRAING_SESSIONS = 10
+    randGenGraph_avgCTF = GraphGenerator(t=t, os=pct_empty, mxd=red_blue_split, g_size=50, grph_ind_num="TestDefault", num_iter = 30)
+    randGenGraph_avgCTF.createGraph()
+    PlotAvgGraphCTFOverIter(randGenGraph_avgCTF, training_sesseions=TRAING_SESSIONS, verbosity=False)    
+    print(f"\t\t\t\t\t\t\tTime:{randGenGraph_avgCTF.runtime}")
+    for i in range(0, TRAING_SESSIONS):
+        toGiff(f".\\Content\\GeneratedGraphs\\Graph-{i:03}-{randGenGraph_avgCTF.t_value}-{randGenGraph_avgCTF.red_blue_split}-{randGenGraph_avgCTF.open_spots}\\",
+                            randGenGraph_avgCTF.t_value, randGenGraph_avgCTF.red_blue_split, randGenGraph_avgCTF.open_spots, i)
+    
+    print(randGenGraph_avgCTF.iter_tracker.values())
+    print(list(randGenGraph_avgCTF.iter_tracker.values())[-1])
 
+    return list(randGenGraph_avgCTF.iter_tracker.values())[-1]
 
 
 '''
-Test showing graphing functionality
-'''
-# GLOBAL number of tst to run for each configuration to calculate avg.
-TST_GRAPH_RUNS = 3
+++++++++++++++++++++++++++++++++++++++ DELIVERABLE 01 ++++++++++++++++++++++++++++++++++++++
+Implement Schelling’s model of segregation (on square grids) using code of your own design.
+I will check for copy-pasted code from the internet. You may use any system you like as long
+as the above idea is implemented faithfully.
 
-# Quickly shows what works and how through log statments when verbose is turned to 'True'.
-# We only run for 10 iterations with modest values to give multiple logical branch offs
-# and to show overall functionality.
+The code for your project (you may write your own visualizer or use the
+Python one that I have provided). In the PDF, provide several examples (for example, using
+small 3x3 or 4x4 grids) to verify that your “contentedness” and “move-to-empty” functions
+are operating as intended. Also note: step 2 in the algorithm above is ambiguous (i.e., I
+didn’t tell you whether to iterate over the grid, over the agents, or in what order; I also didn’t
+tell you whether to check satisfaction for all agents before moving any, or if you should check-
+move check-move one-by-one). Your PDF should explain precisely and explicitly how you
+decided to resolve this ambiguity! I.e., give a precise description of your satisfaction-checking
+and agent-moving mechanic.
+'''
+
+# Quickly shows how the code works and that it works properly.  Through a provided graph and generoated
+# '.log' files, verbose is turned to 'True' to output max inforamtion for critical disecsions along the 
+# process'.
+# We only run test with: 
+#   + Iterations (**kwarg: 'num_iter' ):  3  
+#   + T-Value (**kwarg: 't' ):            0.1%  
+#   + Open Space (**kwarg: 'os' ):        0.2%
+#   + red_blu_splt (**kwarg: 'mxd' ):     0.5% 
+   
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
 logging.info(f"- - - - - - - - - - - - - -  - - Test Proof Of Concept - - - - - - - - - - - - - - - - -") 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-
 # Test Schelling Segregation 
 tstGraph = GraphGenerator(g_size=5, t=0.1, os=0.2, mxd=0.5, num_iter=3)
 tstGraph.createGraph()
 tstGraph.runSchellingSegregation(verbosity=False)
+
+
+'''
+++++++++++++++++++++++++++++++++++++++ DELIVERABLE 02 ++++++++++++++++++++++++++++++++++++++
+How segregated is the map throughout a simulation run? Create a function which checks the
+cross-type-fraction (CTF) of a snapshot of the map. As demonstrated in class, this function
+will divide the number of different-type neighbors (summed over all agents) by the total
+number of neighbors (summed over all agents). You should be able to call your function at
+each step along a simulation to see how the CTF changes as agents move around.
+
+Create a series of plots which demonstrate how the CTF changes over the
+course of several simulation runs of the model. Each plot should have iteration number on the
+horizontal axis. You should choose at least 3 sets of parameter values (i.e., at least 3 different
+combinations red/blue split, satisfaction threshold t, and % empty). For each of these 3 sets
+of parameter values, do 5-10 simulation runs and plot their CTF traces together. You should
+have one plot with 5-10 traces for each of the 3 sets of parameter values, for a total of 3 plots.
+Clearly mark what parameter values gave rise to each of the plots.
+
+'''
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - Average Test Run (Limited Verbosity) - - - - - - - - - - - - -") 
+logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
+# Genorate randomnly popualted graph with keyword passed parms.
+#
+# We can do this through simply passing a list of points to see the CTF at specific points. There is also another
+# keyword to break up the amount of iterations to controll logging CTS even with verbosity turned off. 
+
+
+def setCaptureCTFPoints(caputer_list=[]):
+
+    tstGraph = GraphGenerator(g_size=5, t=0.1, os=0.2, mxd=0.5, num_iter=3, cap_pt_lst = caputer_list)
+    tstGraph.createGraph()
+    tstGraph.runSchellingSegregation(verbosity=False) 
+
+
+capture_iter_num = [5, 97]
+setCaptureCTFPoints(capture_iter_num)
+
+
+
+
+'''
+ ++++++++++++++++++++++++++++++++++++++ DELIVERABLE 03 ++++++++++++++++++++++++++++++++++++++
+How does segregation depend on parameter values? Create a function which measures the
+average CTF at the end of a simulation run as a function of input parameters. Your function’s
+call signature should be
+
+                average CTF(red blue split, t, pct empty)
+
+When called, this function should perform 10 simulation runs with those parameters, record
+the CTF found at the end of each run, and then return the average of those 10 CTF values.
+
+Three plots created using your average CTF function:
+
+    (a) Plot 1 should display average CTF as a function of red blue split with the other
+        parameters held constant,
+    (b) Plot 2 should display average CTF as a function of t with the other parameters held
+        constant, and
+    (c) Plot 3 should display average CTF as a function of pct empty with the other parameters
+        held constant.
+
+Each plot should have at least 10 points on the horizontal axis so that you can see the general
+shape of the curve. Note that each time you call average CTF, it performs 10 simulation
+runs, so if you have 10 points on the horizontal axis of each of these plots, this deliverable
+requires a total of 300 simulation runs. Plan your time accordingly, and if your code is very
+slow, you might want to consider saving the results of each simulation to disk after each run
+just in case your code hits a bug before it performs all 300 runs.
+'''
+
+
+def plotCTFOverIterWithVaryingTValue(Graph, training_sesseions=10, verbosity=False):
+    graph_agv_acum_dict = dict([(i, j) for i, j in Graph.iter_tracker.items()]) 
+    logging.info(f"Graph -Total {training_sesseions:03}Episode - T-Value -  Open Spots - Split Ratio ")
+    for episode in range(0, training_sesseions):
+        # Test Schelling Segregation 
+        logging.info(f"EPSD-{episode:03}-TVAL{Graph.t_value}-OPEN{Graph.open_spots}-MIXD{Graph.red_blue_split:03}")
+        Graph.setGraphName(f"{episode:03}")
+        # Graph.runSchellingSegregationAtRandom(verbosity=verbosity)
+        Graph.runSchellingSegregation(verbosity=verbosity)
+        Graph.setTValue(float(f"0.{episode:02}"))
+
+        [graph_agv_acum_dict.update({i : j + Graph.iter_tracker.get(i)}) for i, j in graph_agv_acum_dict.items()]
+        
+        logging.info(f"\tAverage Run Reults {training_sesseions}:{graph_agv_acum_dict}")
+    
+    [graph_agv_acum_dict.update({i : j / training_sesseions}) for i, j in graph_agv_acum_dict.items()]
+
+    PlotGraphCTFOverIter(graph_agv_acum_dict, Graph.num_of_iterations, Graph.t_value, Graph.red_blue_split, Graph.open_spots, verbosity=verbosity)        
+
+
+    plt.title(f"")
+    
+    plt.savefig()
+    
+    if verbosity:
+        plt.show()
+    
+    plt.close()
+
+def plotCTFOverIterWithVaryingMixedPop(verbosity=False):
+
+    plt.title(f"")
+    
+    plt.savefig()
+    
+    if verbosity:
+        plt.show()
+    
+    plt.close()
+
+def plotCTFOverIterWithVaryingOpenSpace(verbosity=False):
+
+    plt.title(f"")
+    
+    plt.savefig()
+    
+    if verbosity:
+        plt.show()
+    
+    plt.close    ()
+
+# This deliverable requires 10 test runs on one instance of a graph.  This is set inside the 'avarage_CTF()' 
+# method which is set to 10.
 avgTstGraph = GraphGenerator(g_size=50, t=0.3, os=0.1, mxd=0.4, num_iter=50)
 avgTstGraph.createGraph()
-PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
-print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
+plotCTFOverIterWithVaryingTValue(avgTstGraph)
 
 
 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-avgTstGraph.setTValue(0.4)
-avgTstGraph.setOSValue(0.1)
-avgTstGraph.setMixedValue(0.4)
-[avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
-PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
-print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-avgTstGraph.setTValue(0.5)
-avgTstGraph.setOSValue(0.1)
-avgTstGraph.setMixedValue(0.4)
-[avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
-PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
-print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-avgTstGraph.setTValue(0.6)
-avgTstGraph.setOSValue(0.1)
-avgTstGraph.setMixedValue(0.4)
-[avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
-PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
-print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-avgTstGraph.setTValue(0.7)
-avgTstGraph.setOSValue(0.1)
-avgTstGraph.setMixedValue(0.4)
-[avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
-PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
-print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
+# avgTstGraph.setTValue(0.4)
+# avgTstGraph.setOSValue(0.1)
+# avgTstGraph.setMixedValue(0.4)
+# [avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
+# PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
+# print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
+# toGiff(f".\\Content\\GeneratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\",
+#                                                 avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
+# PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
+# print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
+# toGiff(f".\\Content\\GeneratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\",
+#                         avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - Variation Test Run (Limited Verbosity) - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-avgTstGraph.setTValue(0.3)
-avgTstGraph.setOSValue(0.2)
-avgTstGraph.setMixedValue(0.2)
-[avgTstGraph.iter_tracker.update({ky:0}) for ky in avgTstGraph.iter_tracker.keys()]
-PlotAvgGraphCTFOverIter(avgTstGraph, training_sesseions=TST_GRAPH_RUNS, verbosity=False)
-print(f"\t\t\t\t\t\t\tTime:{avgTstGraph.runtime}")
-toGiff(f".\\Content\\GenoratedGraphs\\Graph-000-{avgTstGraph.t_value}-{avgTstGraph.red_blue_split}-{avgTstGraph.open_spots}\\", avgTstGraph.t_value, avgTstGraph.red_blue_split, avgTstGraph.open_spots)
