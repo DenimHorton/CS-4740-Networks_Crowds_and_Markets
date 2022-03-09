@@ -284,7 +284,7 @@ def runSchellingSegregationSim(City, num_iterations=30, method='discontent order
 
 
 
-sumCity = City(n=5, mxd_pct=0.2, opn_pct=0.2)
+sumCity = City(n=5, mxd_pct=0.2, opn_pct=0.4)
 
 print(sumCity)
 runSchellingSegregationSim(sumCity)

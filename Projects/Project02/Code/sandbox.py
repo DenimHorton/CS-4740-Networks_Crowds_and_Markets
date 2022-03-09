@@ -28,7 +28,11 @@ import sys, glob
 #                   save_all=True,
 #                   duration=300, loop=0)
 
-
+while True:
+    for som in range(0, 10):
+        print(som)
+        if som == 5:
+            break
 
     
 

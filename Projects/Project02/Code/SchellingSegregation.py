@@ -63,6 +63,7 @@ class City(object):
         self.city_name = f"Graph-{grph_ind_num}"
         # Set the total poulation size from either defualt **kwarg or passed 'g_size' parm
         self.city_size = g_size * g_size
+        self.city_n_size = g_size
         # Instance of graph create on instansiation of 
         # self.city = self.generatePopulatedCity()
         self.city = np.array
@@ -111,12 +112,26 @@ class City(object):
     def setGraphName(self, grph_name):
         self.city_name = f"Graph-{grph_name}"
 
+
     def setCapturePoints(self, cap_pts_lst):
         self.capture_points = cap_pts_lst
 
+    def checkAddress(self, resident, location, verbosity=False):
+        self.city[location[0]][location[1]] = resident
+        if verbosity:
+            print(f"({location[0]}, {location[1]})")
+            print(self.city)
+            self.showGraph(graph_name="Address Check")
+        if self.isContent(location[0], location[1], verbosity=verbosity):
+            self.city[location[0]][location[1]] = 0
+            return True 
+        else:
+            self.city[location[0]][location[1]] = 0
+            return False
+
     def showGraph(self, iter=0, graph_name="defualt"):
         # Matplot graph to show grid of 'city' 
-        plt.matshow(self.city, cmap='seismic')
+        plt.matshow(self.city, cmap='RdBu')
         # Set title of graph to be shown 
         plt.title(f"{self.city_name}-{graph_name}")
         # Show the graph
@@ -148,7 +163,7 @@ class City(object):
 
     def saveGraph(self, iter=0, graph_name="defualt", fname=""):
         # Matplot graph to save grid of 'city' 
-        plt.matshow(self.city, cmap='seismic')
+        plt.matshow(self.city, cmap='RdBu')
         # Set title of garph to save
         plt.title(f"{self.city_name}\nT-Value:%{self.t_value}Mixed:%{self.red_blue_split}Openspot:%{self.open_spots}-{iter:03}")
         # Directory to save new graph to
@@ -183,8 +198,6 @@ class City(object):
         plt.savefig(f".\\Content\\GeneratedPlots\\{fname}\\Plot-{plot_name}-{self.t_value}-{self.red_blue_split}-{self.open_spots}.png")        
         # Close the plot
         plt.close()
-
-
 
     def toGif(self, gif_name='defualt'):
         # Instantiate the list to store frames for gif
@@ -224,7 +237,7 @@ class City(object):
         # Shuffle up the list
         random.shuffle(residence_lst)
         # Set np.array to city attribute to represent city population residence and thier location 
-        self.city = np.array(residence_lst).reshape(int(math.sqrt(self.city_size)), int(math.sqrt(self.city_size)))  
+        self.city = np.array(residence_lst).reshape(self.city_n_size, self.city_n_size)  
         
     def isContent(self, indx_row, indx_col, verbosity=False):
         # Verbosity check
@@ -233,10 +246,10 @@ class City(object):
         # Get the count for each type of neighbor or open space that are in the direct vicinity of the indexed residence
         blue_counter, red_counter, open_counter = self.getNeighborCount(indx_row, indx_col, verbosity=verbosity)
         # Gets the total number of actual 'residence' (not including open spots) 
-        num_local_neghbors = (8 - open_counter)
+        num_local_neghbors = (blue_counter + red_counter)
         # If residence has no neighbors they are not above t-value and discontent (takes care of 'DivisionByZero' error)
         if num_local_neghbors == 0:
-            return False, 1.0
+            return True, 1.0
         # If indexed residence is a 'Blue residence' and percentage of 'Blue neighbors' if above or equal to t-value 
         elif (self.city[indx_row][indx_col] == 1 ) and (blue_counter / num_local_neghbors  >= self.t_value):
             return True, blue_counter / num_local_neghbors 
@@ -257,27 +270,31 @@ class City(object):
         # Temp list to build small neighboring residence 
         sub_arry_lst = []
         # Iterate through local neighbors and build list
-        for col in range(indx_col-1, indx_col+2):
-            for row in range(indx_row-1, indx_row+2):
+        for row in range(indx_row-1, indx_row+2):
+            for col in range(indx_col-1, indx_col+2):
                 # If a invalid 'residence address' (out side of the city limits) set to "N/A"
                 try:
                     if col == -1:
                         sub_arry_lst.append("N/A")
+                        if verbosity:
+                            logging.warning(f"\t\tIndex:({row}, {col}) is out of bounds.")                        
                     elif row == -1:
                         sub_arry_lst.append("N/A")
+                        if verbosity:
+                            logging.warning(f"\t\tIndex:({row}, {col}) is out of bounds.")
                     else:
-                        sub_arry_lst.append(str(self.city[col][row]))
+                        sub_arry_lst.append(str(self.city[row][col]))
                 except IndexError:
                     if verbosity:
-                        logging.warning(f"\t\tIndex:({col}, {row}) is out of bounds.")
+                        logging.warning(f"\t\tIndex:({row}, {col}) is out of bounds.")
                     sub_arry_lst.append("N/A")
         # Replace the residence value with something other than its original value to make sure it is not counted when seraching
         # the 'sub_arry_lst' for the amount of each type of neighbor and empty spaces.
         sub_arry_lst[4] = "R"
         # Count up 'Red residence'
-        blue_counter = sub_arry_lst.count("1")
-        # Count up 'Blue residence'
         red_counter = sub_arry_lst.count("-1")
+        # Count up 'Blue residence'
+        blue_counter = sub_arry_lst.count("1")
         # Count up 'Empty spots'
         open_counter = sub_arry_lst.count("0")
         # Verbosity check
@@ -293,7 +310,7 @@ class City(object):
             logging.info(f"\t\tBlue Counter:\t{blue_counter}\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  ")  
         return blue_counter, red_counter, open_counter
 
-    def runSchellingSegregation(self, training_session=0, graph_name="defualt", fname="default", verbosity=False):       
+    def runSchellingSegregation(self, training_session=0, graph_name="defualt", fname="default", verbosity=False, eval_method='Row Major'):       
         # Store copy of original randomnly populated city to reset at end of simulation 
         temp_graph = np.copy(self.city)         
         # Get starting time for method
@@ -305,7 +322,112 @@ class City(object):
         # Show status bar for Schelling Segreagation simulations 
         with alive_bar(self.num_of_iterations, bar='solid', title=f'{self.city_name}') as bar:
             for iter in range(0, self.num_of_iterations):
-                # Check to see when the CTF has reached a certain level 
+                if eval_method == 'Row':
+                    # Iterate through each residence
+                    for row in range(0, self.city_n_size):
+                        for col in range(0, self.city_n_size):
+                            # Verbosity check
+                            if verbosity:
+                                logging.info(f" Graph Residence {team_map.get(self.city[row][col])} @ ({row}, {col})")
+                                # self.showGraph()
+                            # Check if residence is content along with how content for verbosity and functionality checks
+                            content_or_not, contentdeness = self.isContent(row, col, verbosity=verbosity)
+                            # If residence is content with its neighbors continue iterating through residence in city
+                            if content_or_not:
+                                # Verbosity check
+                                if verbosity:
+                                    logging.info(f"\tContent! (%{contentdeness:0.2})")
+                            else:                
+                                # Locate all address in city that are a 'open space'
+                                open_addresses = np.where(self.city==0)                            
+                                # Create list of tuples that represent 'open addresss' 
+                                posible_new_address = list(zip(open_addresses[0], open_addresses[1]))
+                                random.shuffle(posible_new_address)
+                                if verbosity:
+                                    logging.warning(f"\tDiscontent! (%{contentdeness:0.2})")
+                                    logging.warning(f"\tPossible New Address':\t\t{posible_new_address}")                       
+                                # Go through possible spots to move the residence untill a spot that is valid is found
+                                for psbl_adrs in posible_new_address:  
+                                    addressGood = self.checkAddress(self.city[row][col], psbl_adrs, verbosity=verbosity)
+                                    if addressGood:
+                                        self.city[psbl_adrs[0]][psbl_adrs[1]] = self.city[row][col]                                                
+                                        if verbosity:    
+                                            logging.warning(f"\tCONGRATIONLATIONS {team_map.get(self.city[row][col])}!!")
+                                            logging.warning(f"\tYOUR MOVING TO YOUR NEW HOME which is at ({psbl_adrs[0]}, {psbl_adrs[1]}).")
+                                            logging.warning(f"\tMoving into {team_map.get(self.city[psbl_adrs[0]][psbl_adrs[1]])}") 
+                                        # Set discontent's old residence back to an 'open space' (0)                                     
+                                        self.city[row][col] = 0                                    
+                                        break
+                                if not addressGood:
+                                    # Randomnly select empty address to move currently discontent resident to
+                                    random_new_space = random.choice(posible_new_address)   
+                                    # Verbosity check
+                                    if verbosity:    
+                                        logging.warning(f"\tSorry . . . {team_map.get(self.city[row][col])}!!")
+                                        logging.warning(f"\tYOUR MOVING TO YOUR NEW HOME which is at ({random_new_space[0]}, {random_new_space[1]}).")
+                                        logging.warning(f"\tMoving into {team_map.get(self.city[random_new_space[0]][random_new_space[1]])}")                                       
+                                    # Move discontent residence to newly randomnly selected empty address in the city.
+                                    self.city[random_new_space[0]][random_new_space[1]] = self.city[row][col]                                                
+                                    # Set discontent's old residence back to an 'open space' (0) 
+                                    self.city[row][col] = 0
+                    # Callculate Cities CTF 
+                    city_ctf =  self.calculateCTF(verbosity=verbosity)
+                elif eval_method == 'Random':
+                    for i in range(0, self.city_size):
+                        row = np.random.choice([row for row in range(0, self.city_n_size)])
+                        col = np.random.choice([col for col in range(0, self.city_n_size)])
+                        if verbosity:
+                            logging.info(f" Graph Residence {team_map.get(self.city[row][col])} @ ({row}, {col})")
+                            # self.showGraph()
+                        # Check if residence is content along with how content for verbosity and functionality checks
+                        content_or_not, contentdeness = self.isContent(row, col, verbosity=verbosity)
+                        # If residence is content with its neighbors continue iterating through residence in city
+                        if content_or_not:
+                            # Verbosity check
+                            if verbosity:
+                                logging.info(f"\tContent! (%{contentdeness:0.2})")
+                        else:                
+                            # Locate all address in city that are a 'open space'
+                            open_addresses = np.where(self.city==0)                            
+                            # Create list of tuples that represent 'open addresss' 
+                            posible_new_address = list(zip(open_addresses[0], open_addresses[1]))
+                            random.shuffle(posible_new_address)
+                            if verbosity:
+                                logging.warning(f"\tDiscontent! (%{contentdeness:0.2})")
+ # COMMENTED THIS OUT MAYBE PUT IT BACK IN 
+                            #  logging.warning(f"\tPossible New Address':\t\t{posible_new_address}")                       
+                            # # Go through possible spots to move the residence untill a spot that is valid is found
+                            # for psbl_adrs in posible_new_address:  
+                            #     addressGood = self.checkAddress(self.city[row][col], psbl_adrs, verbosity=verbosity)
+                            #     if addressGood:
+                            #         self.city[psbl_adrs[0]][psbl_adrs[1]] = self.city[row][col]                                                
+                            #         if verbosity:    
+                            #             logging.warning(f"\tCONGRATIONLATIONS {team_map.get(self.city[row][col])}!!")
+                            #             logging.warning(f"\tYOUR MOVING TO YOUR NEW HOME which is at ({psbl_adrs[0]}, {psbl_adrs[1]}).")
+                            #             logging.warning(f"\tMoving into {team_map.get(self.city[psbl_adrs[0]][psbl_adrs[1]])}") 
+                            #         # Set discontent's old residence back to an 'open space' (0)                                     
+                            #         self.city[row][col] = 0                                    
+                            #         break
+                            # if not addressGood:
+                                # Randomnly select empty address to move currently discontent resident to
+                                random_new_space = random.choice(posible_new_address)   
+                                # Verbosity check
+                                if verbosity:    
+                                    logging.warning(f"\tSorry . . . {team_map.get(self.city[row][col])}!!")
+                                    logging.warning(f"\tYOUR MOVING TO YOUR NEW HOME which is at ({random_new_space[0]}, {random_new_space[1]}).")
+                                    logging.warning(f"\tMoving into {team_map.get(self.city[random_new_space[0]][random_new_space[1]])}")                                       
+                                # Move discontent residence to newly randomnly selected empty address in the city.
+                                self.city[random_new_space[0]][random_new_space[1]] = self.city[row][col]                                                
+                                # Set discontent's old residence back to an 'open space' (0) 
+                                self.city[row][col] = 0
+                    # Callculate Cities CTF 
+                    city_ctf =  self.calculateCTF(verbosity=verbosity) 
+                else:
+                    print("Wrong method selection try again . . . ")                       
+                    return city_ctf
+                # Add CTF after each iteration to track CTF of iterations
+                self.iteration_ctf_tracked.update({iter:city_ctf})
+               # Check to see when the CTF has reached a certain level 
                 # For now we set to one to allow full iteration run
                 if city_ctf >= 0.5:
                 # if prev_city_ctf - city_ctf < 0.0001: 
@@ -316,59 +438,22 @@ class City(object):
                     # Save the graph 
                     self.saveGraph(iter=iter, graph_name =f"{self.t_value}-{self.red_blue_split}-{self.open_spots}", fname=f"{self.t_value}-{self.red_blue_split}-{self.open_spots}")
                     break
-                prev_city_ctf = city_ctf
                 if iter in self.capture_points:                    
                     # Log CTF for every tenth of the iterations
                     logging.info(f"\tIteration {iter:>3} : CTF : {city_ctf:0.4f}")                    
                     # Print CTF to stdout for every tenth of the iterations 
                     print(f"\t{self.city_name}: {city_ctf}")                  
                     # Save the graph for every tenth of the iterations
-                    self.saveGraph(iter=iter, graph_name =f"{self.t_value}-{self.red_blue_split}-{self.open_spots}", fname=f"{self.t_value}-{self.red_blue_split}-{self.open_spots}")        
-                # Iterate through each residence
-                for row in range(0, len(self.city[0])):
-                    for col in range(0, len(self.city[row])):
-                        # Verbosity check
-                        if verbosity:
-                            logging.info(f" Graph neighbor {team_map.get(self.city[row][col]):>3} @ ({row}, {col})")
-                        # Check if residence is content along with how content for verbosity and functionality checks
-                        content_or_not, contentdeness = self.isContent(row, col)
-                        # If residence is content with its neighbors continue iterating through residence in city
-                        if content_or_not:
-                            # Verbosity check
-                            if verbosity:
-                                logging.info(f"\tContent! (%{contentdeness:0.2})")
-                        else:                
-                            # Locate all address in city that are a 'open space'
-                            open_address = np.where(self.city==0)                            
-                            # Create list of tuples that represent 'open addresss' 
-                            posible_new_address = tuple(zip(open_address[0], open_address[1]))                           
-                            # Randomnly select empty address to move currently discontent resident to
-                            random_new_space = random.choice(posible_new_address)                          
-                            # Verbosity check
-                            if verbosity:
-                                logging.warning(f"\tDiscontent! (%{contentdeness:0.2})")
-                                logging.warning(f"\tPossible New Address':\t\t{posible_new_address}")
-                                logging.warning(f"\tCONGRATIONLATIONS {team_map.get(self.city[row][col])}!!")
-                                logging.warning(f"\tYOUR MOVING TO YOUR NEW HOME which is at ({random_new_space[0]}, {random_new_space[1]}).")
-                                logging.warning(f"\tMoving into {team_map.get(self.city[random_new_space[0]][random_new_space[1]])}")                                                       
-                            # Move discontent residence to newly randomnly selected empty address in the city.
-                            self.city[random_new_space[0]][random_new_space[1]] = self.city[row][col]                                                
-                            # Set discontent's old residence back to an 'open space' (0) 
-                            self.city[row][col] = 0
-                    # Callculate Cities CTF 
-                    city_ctf =  self.calculateCTF(verbosity=verbosity)
-                # Add CTF after each iteration to track CTF of iterations
-                self.iteration_ctf_tracked.update({iter:city_ctf})
-
+                    self.saveGraph(iter=iter, graph_name =f"{self.t_value}-{self.red_blue_split}-{self.open_spots}", fname=f"{self.t_value}-{self.red_blue_split}-{self.open_spots}")
                 # Status bar method to update it
                 bar()
             # Get end time for method
-            t2 = time.time()
+            t2 = time.time()  
             # Lapsed time for method
             self.runtime = t2 - t1
             # Verbosity check
             if verbosity:
-                self.showGraph(iter=iter,  graph_name =f"{self.t_value}-{self.red_blue_split}-{self.open_spots}")
+                self.showGraph(iter=iter, graph_name =f"{self.t_value}-{self.red_blue_split}-{self.open_spots}")
                 self.showPlot(self.iteration_ctf_tracked, x_label='Iterations', y_label='CTF', plot_name=f"{training_session}")
             # Build .gif
             self.toGif(gif_name=f"Trainging_Ses_{training_session}-{self.t_value}-{self.red_blue_split}-{self.open_spots}")       
@@ -412,7 +497,7 @@ class City(object):
         # Return the Cities CTF 
         return ctf
 
-    def average_CTF(self, red_blue_split, t, pct_empty, training_sessions=10, verbosity=False, avg_ctf_plot_name='AvgCtf', deliv_loc="Misc"):      
+    def average_CTF(self, red_blue_split, t, pct_empty, training_sessions=10, verbosity=False, avg_ctf_plot_name='AvgCtf', deliv_loc="Misc", eval_method="Row Major"):      
         avg_ctf_tracker =  dict([(i, 0) for i in range(0, training_sessions)])
         self.setTValue(t)
         self.setMixedValue(red_blue_split)
@@ -421,7 +506,7 @@ class City(object):
         for ses in range(0, training_sessions):
             logging.info(f"Training Session-{ses:03}-TVAL{self.t_value}-OPEN{self.open_spots}-MIXD{self.red_blue_split:03}")
             self.setGraphName(f"TrainingSession{ses:03}")
-            train_sesion_ctf_reuslt = self.runSchellingSegregation(training_session=ses, verbosity=verbosity)
+            train_sesion_ctf_reuslt = self.runSchellingSegregation(training_session=ses, verbosity=verbosity, eval_method=eval_method)
             avg_ctf_tracker.update({ses : avg_ctf_tracker.get(ses) + train_sesion_ctf_reuslt})            
             logging.info(f"\tAverage Run Reults {ses}:{avg_ctf_tracker}") 
 
@@ -494,9 +579,11 @@ logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 logging.info(f"- - - - - - - - - - - - - -  - - Test Proof Of Concept - - - - - - - - - - - - - - - - -") 
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
 # Test Schelling Segregation 
-tstGraph = City(g_size=5, t=0.5, os=0.2, mxd=0.2, num_iter=5)
+tstGraph = City(g_size=5, t=0.5, os=0.4, mxd=0.4, num_iter=10)
 
-vall = tstGraph.runSchellingSegregation(verbosity=True)
+tstGraph.setCapturePoints([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+vall = tstGraph.runSchellingSegregation(verbosity=False)
 
 print(vall)
 
@@ -550,7 +637,7 @@ logging.info(f"- - - - - - - - - - - - - - - - - Devliverable  2 & 3 - - - - - -
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
 
 # Capture frequency
-CAP_FREQ = 4
+CAP_FREQ = 5
 
 # Constant values for test runs
 t_val_const = 0.3
@@ -562,11 +649,17 @@ tval_var_lst = [0.3, 0.5, 0.7]
 mxd_var_lst =  [0.3, 0.5, 0.7]
 os_var_lst =   [0.3, 0.5, 0.7]
 
+# Set sample size for the program
+CITY_SIZE = 50
+
 # Instantiate graph
-deliverableCity = City(t=0.3, os=0.2, mxd=0.4)
+deliverableCity = City(g_size=CITY_SIZE, t=0.3, os=0.2, mxd=0.4)
+
 
 # Setting capture points example. Lowered to avoid 'Tk_GetPixmap' error (not to save to many images)
 deliverableCity.setCapturePoints([int(capPt) for capPt in np.linspace(1, deliverableCity.num_of_iterations, CAP_FREQ)])
+# deliverableCity.setCapturePoints([1,5,10,15,20,25,30])
+
 
 user_input = ""
 while user_input != "Exit":
@@ -575,7 +668,7 @@ while user_input != "Exit":
         mxd_pop_avg_lst = []
         for variation in mxd_var_lst:
             deliverableCity.generatePopulatedCity()
-            mxdPopVarAvg = deliverableCity.average_CTF(variation, t_val_const, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA')
+            mxdPopVarAvg = deliverableCity.average_CTF(variation, t_val_const, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA', eval_method=method_input)
             mxd_pop_avg_lst.append(mxdPopVarAvg)
         deliverableCity.showPlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value")
         deliverableCity.savePlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value", fname="DeliverableA")
@@ -584,7 +677,7 @@ while user_input != "Exit":
         t_val_avg_lst = []
         for variation in tval_var_lst:
             deliverableCity.generatePopulatedCity()
-            tValVarAvg = deliverableCity.average_CTF(mxd_const, variation, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB')
+            tValVarAvg = deliverableCity.average_CTF(mxd_const, variation, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB', eval_method=method_input)
             t_val_avg_lst.append(tValVarAvg)
         deliverableCity.showPlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value")
         deliverableCity.savePlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value", fname="DeliverableB")
@@ -593,7 +686,7 @@ while user_input != "Exit":
         opn_spt_avg_lst = []
         for variation in os_var_lst:
             deliverableCity.generatePopulatedCity()
-            opnSpcVarAvg = deliverableCity.average_CTF(mxd_const, t_val_const, variation, training_sessions=10, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC')
+            opnSpcVarAvg = deliverableCity.average_CTF(mxd_const, t_val_const, variation, training_sessions=10, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC', eval_method=method_input)
             opn_spt_avg_lst.append(opnSpcVarAvg)    
         deliverableCity.showPlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value")
         deliverableCity.savePlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value", fname="DeliverableC")
@@ -601,27 +694,27 @@ while user_input != "Exit":
         mxd_pop_avg_lst = []
         for variation in mxd_var_lst:
             deliverableCity.generatePopulatedCity()
-            mxdPopVarAvg = deliverableCity.average_CTF(variation, t_val_const, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA')
+            mxdPopVarAvg = deliverableCity.average_CTF(variation, t_val_const, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA', eval_method=method_input)
             mxd_pop_avg_lst.append(mxdPopVarAvg)
-        deliverableCity.showPlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value")
+        # deliverableCity.showPlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value")
         deliverableCity.savePlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value", fname="DeliverableA")
         deliverableCity.clearGraphsPlotsAndGifs()
         # Iterate through different 'T-Values' variaitons
         t_val_avg_lst = []
         for variation in tval_var_lst:
             deliverableCity.generatePopulatedCity()
-            tValVarAvg = deliverableCity.average_CTF(mxd_const, variation, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB')
+            tValVarAvg = deliverableCity.average_CTF(mxd_const, variation, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB', eval_method=method_input)
             t_val_avg_lst.append(tValVarAvg)
-        deliverableCity.showPlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value")
+        # deliverableCity.showPlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value")
         deliverableCity.savePlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value", fname="DeliverableB")
         deliverableCity.clearGraphsPlotsAndGifs()        
         #Iterate through different 'Open Spot' variations
         opn_spt_avg_lst = []
         for variation in os_var_lst:
             deliverableCity.generatePopulatedCity()
-            opnSpcVarAvg = deliverableCity.average_CTF(mxd_const, t_val_const, variation, training_sessions=10, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC')
+            opnSpcVarAvg = deliverableCity.average_CTF(mxd_const, t_val_const, variation, training_sessions=10, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC', eval_method=method_input)
             opn_spt_avg_lst.append(opnSpcVarAvg)      
-        deliverableCity.showPlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value")
+        # deliverableCity.showPlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value")
         deliverableCity.savePlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value", fname="DeliverableC")     
     deliverableCity.clearGraphsPlotsAndGifs()
 
@@ -634,6 +727,10 @@ while user_input != "Exit":
     print("Deliverable 2.A-C . . . . . . . . . . . . . . . . . . . . . . \'All\'")
     print("Exit program  . . . . . . . . . . . . . . . . . . . . . . . . \'Exit\'")
     user_input = input("Enter option from the far right column under \'Input options\': ")
+    if user_input != "Exit":
+        print("Iterate through the residence randomnly . . . . . . . . . \'Random\'")
+        print("Iterate through the residence in Row Major Order. . . . . \'Row\'")        
+        method_input = input("Enter in the method you wish to use to execute the Schelling simulation  ")
 
 
 
