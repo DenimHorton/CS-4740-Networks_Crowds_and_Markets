@@ -7,13 +7,15 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{natbib}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
 \bibliographystyle{aaai}
 % Sudo Code packages
 \usepackage[ruled, linesnumbered]{algorithm2e}
 
 \usepackage{amsfonts}
 
-\graphicspath{../../}
+\graphicspath{./..}
 
 \frenchspacing
 \setlength{\pdfpagewidth}{8.5in}
@@ -38,32 +40,42 @@ Colorado Springs, Colorado 80918\\
 % ----------------------------------------------- Abstract
 \begin{abstract}
 \begin{quote}
-In society when considering segregation amongst several different groups there seems to be just as many physiological phenomenons as there are seemingly counter intuitive revelations.Through coded implementation, an instance of a randomly generated  graph can be generated to run \textit{contentedness}.  With varying parameter values, we analyse dynamic graph interactions amongst agents in a society with spatial awareness of neighbours within a set distance of direct neighbours.   
+In society when considering segregation amongst different groups, there seems to be just as many physiological phenomenons observed during this process but as there are seemingly counter intuitive revelations between relationships between the members of these different groups. Through coded implementation and passed parameters, an instance of a randomly generated graph can be made with different levels of how \textit{mixed} the members in the group are when considering two types of members.  When considering spacial awarness we also evaluate different percentage of \textit{open space} available in the simulated environment.  Then simulations of Schelling Segregations were performed with certain levels of \textit{contentedness}.  With multiple simulations and varying parameter values, we analyse dynamic graph interactions amongst members in a whole.
 \end{quote}
 \end{abstract}
 
 % ----------------------------------------------- Introduction
 \section{Introduction}
 
-Deliv: 01:\\
-In the PDF, provide several examples (for example, using small 3x3 or 4x4 grids) to verify that your “contentedness” and “move-to-empty” functions are operating as intended. Also note: step 2 in the algorithm above is ambiguous (i.e., I didn’t tell you whether to iterate over the grid, over the agents, or in what order; I also didn’t tell you whether to check satisfaction for all agents before moving any, or if you should check- move check-move one-by-one). Your PDF should explain precisely and explicitly how you decided to resolve this ambiguity! I.e., give a precise description of your satisfaction-checking and agent-moving mechanic.\\ \\
-Deliv: 02:\\
-How segregated is the map throughout a simulation run? Create a function which checks the cross-type-fraction (CTF) of a snapshot of the map. As demonstrated in class, this function will divide the number of different-type neighbors (summed over all agents) by the total number of neighbors (summed over all agents). You should be able to call your function at each step along a simulation to see how the CTF changes as agents move around.\\\\
-Create a series of plots which demonstrate how the CTF changes over the course of several simulation runs of the model. Each plot should have iteration number on the horizontal axis. You should choose at least 3 sets of parameter values (i.e., at least 3 differentcombinations red/blue split, satisfaction threshold t, and \% empty). For each of these 3 sets of parameter values, do 5-10 simulation runs and plot their CTF traces together. You should have one plot with 5-10 traces for each of the 3 sets of parameter values, for a total of 3 plots. Clearly mark what parameter values gave rise to each of the plots. 3. How does segregation depend on parameter values? Create a function which measures the average CTF at the end of a simulation run as a function of input parameters. Your function’s call signature should be average CTF(red blue split, t, pct empty) When called, this function should perform 10 simulation runs with those parameters, record the CTF found at the end of each run, and then return the average of those 10 CTF values.  
+When first implementing \textit{Schelling Integration} into a coded simulation there were not many constraints or requirements given for the assignment.  Python was the chosen language to code this project in.   After some research there were several different works that had already been done on the subject.  With out looking to much into the code done for these coded simulation, a general structure was built to generate different environments and runs simulations.  To make sure that the code could be followed along easily and verbosity of how the code executed were output to a .log file and many graphs and plots were generated.  To turn on this verbose setting and get the most information from running the simulations, when ever calling this method or any abstract methods that call this, turn the verbosity keyword argument to \texttt{True}.\\
 
 \begin{center}
-\includegraphics[scale=0.7]{./Content/GeneratedGraphs/Graph-TestDefault-0.1-0.5-0.2/Graph-TestDefault-000}
+\includegraphics[scale=0.7]{./Images/TestExample_Figure_1.1}
+Figure 1.1
 \end{center}
 
 % ----------------------------------------------- Implementation
 \section{Implementation}  
 
+To first implement the graph in which there would be different agents with spacial awareness, we used the NumPy library to generate two dimensional array's to represent the locations of each agents locations and their immediate neighbours.  Through this implementation we can evaluate different agents and keep track of where they are residing on the graphical grid.  On the graph there are two different types of agents, Red or Blue, with open spaces being the third option of what can occupy any of the array indexes at any point in time.  0 represents what are called open address or open spaces. The Red and Blue agents are also refereed to as Red or Blue residence being represented by the numerical value -1 and 1 respectively.  To generate these different graphs that would hold different values to essentially represent the 'Residence' of the 'City'.  There were a couple requirements in how generate the randomly placed residence and open spots.\\
+To generate the City, there are two parameters that have to be chosen and set. The first one was the amount of open spot available in the City.  The second was how mixed the population should be in the city.  These two arguments can be used to generate a city which was done by first building a list that was populated with the different calculated numbers of each residence or open space to make up the entire city size.  The list was then shuffled and put into a NumPy array. Through a third key argument the simulation can be controlled to handle how each agent being evaluated reacts in its given environment.  The agent can be set to satisfied with its amount of same types direct Neighbors and choose to not move locations.  However, if the agent being evaluated does not have enough Neighbors of the same type, they will choice to move to a random address out of all the empty locations.  This was done through a simple method call that takes the index given for the residence under evaluation, and then index its direct neighbours.\\\\
+Once the city has been generated and the contentedness levels for each residence are set, the simulation was left up to us to code in the way we thought best to evaluate the city for each iteration and its CTF value. The CTF was a metric discussed in class that was essentially the amount of cross type neighbours through the whole graph dived by the total number of total neighbours.  Therefore it is basically seeing how content the 'City' is with the current locations of where all the 'Residence' are located.  My first implementation was to choosing random locations and evaluate that way so I coded it to evaluate each residence one by one.  By the time I realized that the better to code this was to have contentedness level for each agent stored to either an object or dictionary it was to late.  So an implementation of evaluating each location in the graph in row major order.  After evaluating each index in the 'City' and possibly some of the same agents more than once, the CTF was calculated.  This implementation would move agents as evaluating so empty spots to move to could run out.  Evaluating each move seem to also maybe raise some concerns as sometimes it might get to the point where an agent has no where to move to, to make it content.  Although this would show convergence we have metrics to show this with a bit more tangibility.\\\\
+Along with being able to control other key word arguments the user can choose the max number of iterations to perform on each simulation along with other attributes to keep track of graph logging and other verbose purposes. When evaluating direct neighbour and calling the method to check for neighbours we can count how many different type neighbours their are for that residence.  To make sure that direct neighbourhood spaces that are considered out of bounds we use a try block.  This way we can set the counter to not count the spaces that the residence cant move to.  The NumPy library was also used to randomly pick a empty location from a list of found locations that are holding 0.  By looking at the .logs files provided we can see that where ever an agent is discontent and by how much.  When turning the verbosity keyword argument to True, we can see all the information proved to show that this implementation works. To run multiple simulations and collect the average for each simulation run, the method \texttt{avd\_ctf} was created.  With this method, it runs 10 training sessions by default and returns the ending average for all the training sessions. There is a keyword available to control the number of runs test runs to training sessions to perform.\\\\
+Through a passed list during initialization or by using one of the setter methods, we can select how often or at which points we would like to to capture and see points plotted for the simulation.  For the deliverable part 2 \& 3 a frequency global constant was given for the simulation to perform average runs with varying values.  The list of capture points also controls the resolution on the .gif generated by the simulations. 
+ 
+% ----------------------- Execution 
+\subsection{Execution}
+
+During execution the segregation amongst the map seemed to stay pretty consistent in between training sessions of the same original generated city and often would converge to looking very similar in where the clusters of 'Red' and 'Blue' residence were first densely populated.  Once we started to change the values for different parameters such as \texttt{red\_blue\_split} and \texttt{pct\_empty} completely new random Cities were generated and populated. The shapes of the segregated Cities would lose their consistent shape in between varying values for this reasons.  This is not to say that it would or would not if we simply took out residence or change the colour amongst the residence but something that could be implemented further to keep the consistent shape of the randomized populated city would be interesting to further research.\\
+When performing runs with different values the first one that was evaluated was the difference in open space percentages we notice while keeping the other varaibles constant that none of the agent were rarely dissatisfied and would take longer for groups to forms but would reach a segregation moderately slower since no agents had neighbours.  As intuitive as it was when there was more open space the graph seem to converge to a CTF value very quickly 
+
+When performing the different training sessions as long as the t-value stayed within a certain range the CTF value would not seem to vary 
+
 Book for the class  (\cite{10.5555/1805895})\\
 web site for python (\cite{AdilMoujahid})\\
 paper for segregation with graphs (\cite{ijcai2019-38})\\
 
-% ----------------------- Execution 
-\subsection{Execution}
+
 
 % ----------------------- Analyisis 
 \subsection{Analyisis}

@@ -3,21 +3,21 @@ from re import X
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter as tk
-import math, random, time, logging, json, glob, os, sys, shutil
+import math, random, time, logging, json, glob, os, sys, shutil, msvcrt
 from matplotlib.animation import FuncAnimation
 from alive_progress import alive_bar
 from PIL import Image
- 
+import threading
+
+
+# Basic directory setup for output and configure logging
 files = glob.glob('.\\Content\\*', recursive=True)
 
-for i in files :
-    print(i)
-
-# for f in files:
-#     try:
-#         shutil.rmtree(f)
-#     except OSError as e:
-#         print(e)
+for f in files:
+    try:
+        shutil.rmtree(f)
+    except OSError as e:
+        print(e)
 
 # Directory paths to store outputs
 save_log_path = f".\\Content\\LogInfo\\"
@@ -68,6 +68,8 @@ class City(object):
         self.city = np.array
         # Instansiate timmer
         self.runtime = 0.0
+        # Prev ctf tracker
+        self.prev_city_ctf = 1.0
         # Max number of epsiodes
         self.num_of_iterations = num_iter
         # List of points to capture 
@@ -104,7 +106,7 @@ class City(object):
         self.open_spots=o_spts
 
     def setMixedValue(self, mxd):
-        self.t_value=mxd
+        self.red_blue_split=mxd
 
     def setGraphName(self, grph_name):
         self.city_name = f"Graph-{grph_name}"
@@ -123,9 +125,9 @@ class City(object):
         # Close the graph
         plt.close()
 
-    def showPlot(self, plot_dict, iter=0, plot_name="defualt", x_label="default", y_label="default"):
+    def showPlot(self, plot_dict, iter=0, plot_name="defualt", x_label="default", y_label="default", method="-g"):
         # PyPlot to plot the dictionary values and keys
-        plt.plot(plot_dict.keys(), plot_dict.values())
+        plt.plot(plot_dict.keys(), plot_dict.values(), method)
         # Create list with dictionary keys() and values() each set to plot max and min values along y-axis
         # and 10 ticks along the x-axis
         x_vals_lst = [x_tick_val for x_tick_val in np.linspace(min(plot_dict.keys()), max(plot_dict.keys()), 10)]
@@ -163,9 +165,9 @@ class City(object):
         # Close the plot
         plt.close()
 
-    def savePlot(self, plot_dict, iter=0, plot_name="defualt", x_label="default", y_label="default", fname="Misc"):
+    def savePlot(self, plot_dict, iter=0, plot_name="defualt", x_label="default", y_label="default", fname="Misc", method='-g'):
         # PyPlot to plot the dictionary values and keys
-        plt.plot(plot_dict.keys(), plot_dict.values())
+        plt.plot(plot_dict.keys(), plot_dict.values(), method)
         # Create list with dictionary keys() and values() each set to plot max and min values along y-axis
         # and 10 ticks along the x-axis
         x_vals_lst = [x_tick_val for x_tick_val in np.linspace(min(plot_dict.keys()), max(plot_dict.keys()), 10)]
@@ -181,6 +183,8 @@ class City(object):
         plt.savefig(f".\\Content\\GeneratedPlots\\{fname}\\Plot-{plot_name}-{self.t_value}-{self.red_blue_split}-{self.open_spots}.png")        
         # Close the plot
         plt.close()
+
+
 
     def toGif(self, gif_name='defualt'):
         # Instantiate the list to store frames for gif
@@ -232,7 +236,7 @@ class City(object):
         num_local_neghbors = (8 - open_counter)
         # If residence has no neighbors they are not above t-value and discontent (takes care of 'DivisionByZero' error)
         if num_local_neghbors == 0:
-            return False, 0.0
+            return False, 1.0
         # If indexed residence is a 'Blue residence' and percentage of 'Blue neighbors' if above or equal to t-value 
         elif (self.city[indx_row][indx_col] == 1 ) and (blue_counter / num_local_neghbors  >= self.t_value):
             return True, blue_counter / num_local_neghbors 
@@ -257,10 +261,15 @@ class City(object):
             for row in range(indx_row-1, indx_row+2):
                 # If a invalid 'residence address' (out side of the city limits) set to "N/A"
                 try:
-                    sub_arry_lst.append(str(self.city[row][col]))
+                    if col == -1:
+                        sub_arry_lst.append("N/A")
+                    elif row == -1:
+                        sub_arry_lst.append("N/A")
+                    else:
+                        sub_arry_lst.append(str(self.city[col][row]))
                 except IndexError:
                     if verbosity:
-                        logging.warning(f"\t\tIndex:({row}, {col}) is out of bounds.")
+                        logging.warning(f"\t\tIndex:({col}, {row}) is out of bounds.")
                     sub_arry_lst.append("N/A")
         # Replace the residence value with something other than its original value to make sure it is not counted when seraching
         # the 'sub_arry_lst' for the amount of each type of neighbor and empty spaces.
@@ -291,7 +300,6 @@ class City(object):
         t1 = time.time()        
         # Initialize city CTF and previous CTF
         city_ctf = 0.0
-        prev_city_ctf = 1.0
         # Clear iter CTF tracker for next run
         [self.iteration_ctf_tracked.update({i : 0}) for i in self.iteration_ctf_tracked.keys()]
         # Show status bar for Schelling Segreagation simulations 
@@ -347,10 +355,11 @@ class City(object):
                             self.city[random_new_space[0]][random_new_space[1]] = self.city[row][col]                                                
                             # Set discontent's old residence back to an 'open space' (0) 
                             self.city[row][col] = 0
-                # Callculate Cities CTF 
-                city_ctf =  self.calculateCTF(verbosity=verbosity)
+                    # Callculate Cities CTF 
+                    city_ctf =  self.calculateCTF(verbosity=verbosity)
                 # Add CTF after each iteration to track CTF of iterations
                 self.iteration_ctf_tracked.update({iter:city_ctf})
+
                 # Status bar method to update it
                 bar()
             # Get end time for method
@@ -361,15 +370,13 @@ class City(object):
             if verbosity:
                 self.showGraph(iter=iter,  graph_name =f"{self.t_value}-{self.red_blue_split}-{self.open_spots}")
                 self.showPlot(self.iteration_ctf_tracked, x_label='Iterations', y_label='CTF', plot_name=f"{training_session}")
-                self.savePlot(self.iteration_ctf_tracked, iter=iter, x_label='Iterations', y_label='CTF', plot_name=f"Training_Session_{training_session}", fname=f'Misc')    
-                # Build .gif
-                self.toGif(gif_name=f"Trainging_Ses_{training_session}-{self.t_value}-{self.red_blue_split}-{self.open_spots}")       
+            # Build .gif
+            self.toGif(gif_name=f"Trainging_Ses_{training_session}-{self.t_value}-{self.red_blue_split}-{self.open_spots}")       
+            self.savePlot(self.iteration_ctf_tracked, iter=iter, x_label='Iterations', y_label='CTF', plot_name=f"Training_Session_{training_session}", fname=f'Misc')    
             # Log information for limited verbosity 
             logging.info(f"\t{self.city_name}: {city_ctf}") 
             # Reset city population to originaly randomnly mixed city 
             self.city = temp_graph
-           
-    
         return city_ctf
 
     def calculateCTF(self, verbosity=False):
@@ -379,25 +386,26 @@ class City(object):
         # Iterate through each residence 
         for street in range(0, len(self.city)):
             for residence in range(0, len(self.city[street])):
-                # Get each residence neighbor type count
-                blu_neighbors, red_neighbors, open_neighbors = self.getNeighborCount(street, residence, verbosity=verbosity)
-                # Get total number of actual residence and add it to the accumulator  
-                total_neighbors += (blu_neighbors + red_neighbors)
-                # If the residence is a 'Blue residence' (1) then add the amount of 'Red residence' type residence to the
-                # 'total_cross_neighbors' accumulator.
-                if self.city[street][residence] == 1:
-                    total_cross_neighbors += red_neighbors
-                # If the residence is a 'Red residence' (-1) then add the amount of 'Blue residence' type residence to the
-                # 'total_cross_neighbors' accumulator.                    
-                elif self.city[street][residence] == -1:
-                    total_cross_neighbors += blu_neighbors     
-        # Verbosity check
-        if verbosity:
-            logging.info(f" Calculating CTF . . . ") 
+                if self.city[street][residence] != 0:
+                    # Get each residence neighbor type count
+                    blu_neighbors, red_neighbors, open_neighbors = self.getNeighborCount(street, residence, verbosity=verbosity)
+                    # Get total number of actual residence and add it to the accumulator  
+                    total_neighbors += (blu_neighbors + red_neighbors)
+                    # If the residence is a 'Blue residence' (1) then add the amount of 'Red residence' type residence to the
+                    # 'total_cross_neighbors' accumulator.
+                    if self.city[street][residence] == 1:
+                        total_cross_neighbors += red_neighbors
+                    # If the residence is a 'Red residence' (-1) then add the amount of 'Blue residence' type residence to the
+                    # 'total_cross_neighbors' accumulator.                    
+                    elif self.city[street][residence] == -1:
+                        total_cross_neighbors += blu_neighbors 
+                else:
+                    continue    
         # After iterating through all residence calculate the ctf
         ctf = total_cross_neighbors / total_neighbors
         # Verbosity check
         if verbosity:
+            logging.info(f" Calculating CTF . . . ")             
             logging.info(f"\tTotal Cross Residence Neghbors:\t{total_cross_neighbors}")
             logging.info(f"\tTotal Immediate Neghbors:\t{total_neighbors}")
             logging.info(f"\tCTF:\t{ctf}")
@@ -417,19 +425,53 @@ class City(object):
             avg_ctf_tracker.update({ses : avg_ctf_tracker.get(ses) + train_sesion_ctf_reuslt})            
             logging.info(f"\tAverage Run Reults {ses}:{avg_ctf_tracker}") 
 
-        self.savePlot(avg_ctf_tracker, iter=ses, plot_name=f'{avg_ctf_plot_name}-{ses:03}', x_label="Varying Variable Training Sessions", y_label="CTF Value", fname=deliv_loc)
+        self.savePlot(avg_ctf_tracker, iter=ses, plot_name=f'{avg_ctf_plot_name}-{ses:03}', x_label="Varying Variable Training Sessions", y_label="CTF Value", method='gs', fname=deliv_loc)
         # Verbosity check
         # if verbosity:
         #     self.showPlot(avg_ctf_tracker, iter=0, graph_name=f'{avg_ctf_plot_name}-{ses:03}', x_label="Iterations", y_label="CTF Value")       
         [avg_ctf_tracker.update({i : j / training_sessions}) for i, j in avg_ctf_tracker.items()]
         return list(avg_ctf_tracker.values())[-1]
 
-# debugCity = City(g_size = 10, t=0.5, os=0.2, mxd=0.2)
-# mxdPopVa= debugCity.average_CTF(debugCity.red_blue_split, debugCity.t_value, debugCity.open_spots, avg_ctf_plot_name="Debug", training_sessions=3, verbosity=True)
+    def clearGraphsPlotsAndGifs(self):
+        timeout = 300
+        startTime = time.time()
+        inp = None
+        graph_pngs = glob.glob('.\\Content\\GeneratedGraphs\\*', recursive=True)
+        graph_gifs = glob.glob('.\\Content\\GeneratedGiffs\\*.gif', recursive=True)
+        plot_pngs = glob.glob('.\\Content\\GeneratedPlots\\Misc\\*.png', recursive=True)
 
 
 
+        print(f"Press enter key to delete all city graphs and gifs to conitnue or wait {timeout} seconds and program will do it automatically and continue to run . . .")
+        while True:
+            if msvcrt.kbhit():
+                inp = msvcrt.getch()
+                break
+            elif time.time() - startTime > timeout:
+                break
+            
+        if inp:
+            print("Deleting City Graphs")
+        else:
+            print("Timed out . . . \nDeleting City Graphs")
 
+        for f in graph_pngs:
+            try:
+                shutil.rmtree(f)
+            except OSError as e:
+                print(e)
+        
+        for f in graph_gifs:
+            try:
+                os.remove(f)
+            except OSError as e:
+                print(e)
+
+        for f in plot_pngs:
+            try:
+                os.remove(f)
+            except OSError as e:
+                print(e)
 
 
 '''
@@ -475,44 +517,6 @@ of parameter values, do 5-10 simulation runs and plot their CTF traces together.
 have one plot with 5-10 traces for each of the 3 sets of parameter values, for a total of 3 plots.
 Clearly mark what parameter values gave rise to each of the plots.
 
-'''
-
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - - - - - Devliverable 02 - - - - - - - - - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
-deliverableCity = City(t=0.5, os=0.2, mxd=0.2)
-
-# List of three choosen values to evaluate
-tval_var_lst = [0.3, 0.4, 0.5, 0.6, 0.7]
-mxd_var_lst =  [0.3, 0.4, 0.5, 0.6, 0.7]
-os_var_lst =   [0.3, 0.4, 0.5, 0.6, 0.7]
-
-# Iterate through different 'Mixed Pop' variaitons
-mxd_pop_avg_lst = []
-# Setting capture points example. Lowered to avoid 'Tk_GetPixmap' error (not to save to many images)
-deliverableCity.setCapturePoints([int(capPt) for capPt in np.linspace(0, deliverableCity.num_of_iterations, 4)])
-for variation in mxd_var_lst:
-    deliverableCity.generatePopulatedCity()
-    mxdPopVarAvg = deliverableCity.average_CTF(variation, deliverableCity.t_value, deliverableCity.open_spots, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA')
-    mxd_pop_avg_lst.append(mxdPopVarAvg)
-
-# Iterate through different 'T-Values' variaitons
-t_val_avg_lst = []
-for variation in tval_var_lst:
-    deliverableCity.generatePopulatedCity()
-    tValVarAvg = deliverableCity.average_CTF(deliverableCity.red_blue_split, variation, deliverableCity.open_spots, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB')
-    t_val_avg_lst.append(tValVarAvg)
-
-#Iterate through different 'Open Spot' variations
-opn_spt_avg_lst = []
-for variation in os_var_lst:
-    deliverableCity.generatePopulatedCity()
-    opnSpcVarAvg = deliverableCity.average_CTF(deliverableCity.red_blue_split, deliverableCity.t_value, variation, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC')
-    opn_spt_avg_lst.append(opnSpcVarAvg)    
-
-
-
-'''
  ++++++++++++++++++++++++++++++++++++++ DELIVERABLE 03 ++++++++++++++++++++++++++++++++++++++
 How does segregation depend on parameter values? Create a function which measures the
 average CTF at the end of a simulation run as a function of input parameters. Your function’s
@@ -540,15 +544,98 @@ slow, you might want to consider saving the results of each simulation to disk a
 just in case your code hits a bug before it performs all 300 runs.
 '''
 
+
 logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-logging.info(f"- - - - - - - - - - - - - - - - - Devliverable 03 - - - - - - - - - - - - - - - - - - - -") 
-logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+logging.info(f"- - - - - - - - - - - - - - - - - Devliverable  2 & 3 - - - - - - - - - - - - - - - - -") 
+logging.info(f"- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ") 
 
-deliverableCity.showPlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value")
-deliverableCity.savePlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value", fname="DeliverableA")
+# Capture frequency
+CAP_FREQ = 4
 
-deliverableCity.showPlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value")
-deliverableCity.savePlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value", fname="DeliverableB")
+# Constant values for test runs
+t_val_const = 0.3
+o_space_const = 0.2
+mxd_const = 0.4
 
-deliverableCity.showPlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value")
-deliverableCity.savePlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value", fname="DeliverableC")
+# List of three choosen values to evaluate
+tval_var_lst = [0.3, 0.5, 0.7]
+mxd_var_lst =  [0.3, 0.5, 0.7]
+os_var_lst =   [0.3, 0.5, 0.7]
+
+# Instantiate graph
+deliverableCity = City(t=0.3, os=0.2, mxd=0.4)
+
+# Setting capture points example. Lowered to avoid 'Tk_GetPixmap' error (not to save to many images)
+deliverableCity.setCapturePoints([int(capPt) for capPt in np.linspace(1, deliverableCity.num_of_iterations, CAP_FREQ)])
+
+user_input = ""
+while user_input != "Exit":
+    if user_input == "2.A":
+        # Iterate through different 'Mixed Pop' variaitons
+        mxd_pop_avg_lst = []
+        for variation in mxd_var_lst:
+            deliverableCity.generatePopulatedCity()
+            mxdPopVarAvg = deliverableCity.average_CTF(variation, t_val_const, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA')
+            mxd_pop_avg_lst.append(mxdPopVarAvg)
+        deliverableCity.showPlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value")
+        deliverableCity.savePlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value", fname="DeliverableA")
+    elif user_input == "2.B":
+        # Iterate through different 'T-Values' variaitons
+        t_val_avg_lst = []
+        for variation in tval_var_lst:
+            deliverableCity.generatePopulatedCity()
+            tValVarAvg = deliverableCity.average_CTF(mxd_const, variation, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB')
+            t_val_avg_lst.append(tValVarAvg)
+        deliverableCity.showPlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value")
+        deliverableCity.savePlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value", fname="DeliverableB")
+    elif user_input == "2.C":
+        #Iterate through different 'Open Spot' variations
+        opn_spt_avg_lst = []
+        for variation in os_var_lst:
+            deliverableCity.generatePopulatedCity()
+            opnSpcVarAvg = deliverableCity.average_CTF(mxd_const, t_val_const, variation, training_sessions=10, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC')
+            opn_spt_avg_lst.append(opnSpcVarAvg)    
+        deliverableCity.showPlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value")
+        deliverableCity.savePlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value", fname="DeliverableC")
+    elif user_input == "All":
+        mxd_pop_avg_lst = []
+        for variation in mxd_var_lst:
+            deliverableCity.generatePopulatedCity()
+            mxdPopVarAvg = deliverableCity.average_CTF(variation, t_val_const, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.a", deliv_loc = 'DeliverableA')
+            mxd_pop_avg_lst.append(mxdPopVarAvg)
+        deliverableCity.showPlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value")
+        deliverableCity.savePlot(dict(zip(mxd_var_lst, mxd_pop_avg_lst)),iter=0, plot_name=f'{"Deliverable02.a"}', x_label="Variation Vaues for different \'Mixed Red Blue Residence\'", y_label="CTF Value", fname="DeliverableA")
+        deliverableCity.clearGraphsPlotsAndGifs()
+        # Iterate through different 'T-Values' variaitons
+        t_val_avg_lst = []
+        for variation in tval_var_lst:
+            deliverableCity.generatePopulatedCity()
+            tValVarAvg = deliverableCity.average_CTF(mxd_const, variation, o_space_const, training_sessions=10, avg_ctf_plot_name="Deliverable02.b", deliv_loc = 'DeliverableB')
+            t_val_avg_lst.append(tValVarAvg)
+        deliverableCity.showPlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value")
+        deliverableCity.savePlot(dict(zip(tval_var_lst, t_val_avg_lst)),iter=0, plot_name=f'{"Deliverable02.b"}', x_label="Variation Vaues for different t-values for \'Residence Conteness Threshold\'", y_label="CTF Value", fname="DeliverableB")
+        deliverableCity.clearGraphsPlotsAndGifs()        
+        #Iterate through different 'Open Spot' variations
+        opn_spt_avg_lst = []
+        for variation in os_var_lst:
+            deliverableCity.generatePopulatedCity()
+            opnSpcVarAvg = deliverableCity.average_CTF(mxd_const, t_val_const, variation, training_sessions=10, avg_ctf_plot_name="Deliverable02.c", deliv_loc = 'DeliverableC')
+            opn_spt_avg_lst.append(opnSpcVarAvg)      
+        deliverableCity.showPlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value")
+        deliverableCity.savePlot(dict(zip(tval_var_lst, opn_spt_avg_lst)),iter=0, plot_name=f'{"Deliverable02.c"}', x_label="Variation Vaues for different \'Open Addresses\'", y_label="CTF Value", fname="DeliverableC")     
+    deliverableCity.clearGraphsPlotsAndGifs()
+
+    print("To get output please select enter in the option option for deliverable part that you want")
+    print("Deliverable 2.X . . . . . . . . . . . . . . . . . . . . . . . \'Input options\'")
+    print("----------------------------------------------------------------------------------")
+    print("Deliverable 2.A . . . . . . . . . . . . . . . . . . . . . . . \'2.A\'")
+    print("Deliverable 2.B . . . . . . . . . . . . . . . . . . . . . . . \'2.B\'")
+    print("Deliverable 2.C . . . . . . . . . . . . . . . . . . . . . . . \'2.C\'")
+    print("Deliverable 2.A-C . . . . . . . . . . . . . . . . . . . . . . \'All\'")
+    print("Exit program  . . . . . . . . . . . . . . . . . . . . . . . . \'Exit\'")
+    user_input = input("Enter option from the far right column under \'Input options\': ")
+
+
+
+
+
