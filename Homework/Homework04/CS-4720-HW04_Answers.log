@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  10 MAR 2022 23:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 21.1) (preloaded format=pdflatex 2021.9.16)  11 MAR 2022 00:36
 entering extended mode
 **./CS-4720-HW04_Answers.tex
 (CS-4720-HW04_Answers.tex
@@ -525,18 +525,25 @@ File: ./Images/Question1_Figure1.1.png Graphic file (type png)
 Package pdftex.def Info: ./Images/Question1_Figure1.1.png  used on input line 3
 8.
 (pdftex.def)             Requested size: 312.57016pt x 134.1522pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 74.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 59.
 
 
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 74.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 59.
 
 
 (C:\Users\Admin\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+<./Images/Question2_Figure1.2.png, id=5, 209.28188pt x 101.62968pt>
+File: ./Images/Question2_Figure1.2.png Graphic file (type png)
+<use ./Images/Question2_Figure1.2.png>
+Package pdftex.def Info: ./Images/Question2_Figure1.2.png  used on input line 6
+6.
+(pdftex.def)             Requested size: 125.57007pt x 60.97827pt.
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -548,17 +555,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 [1{C:/Users/Admin/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}
 
  <./Images/Question1_Figure1.1.png>]
-<./Images/Question2_Figure1.2.png, id=25, 209.28188pt x 101.62968pt>
-File: ./Images/Question2_Figure1.2.png Graphic file (type png)
-<use ./Images/Question2_Figure1.2.png>
-Package pdftex.def Info: ./Images/Question2_Figure1.2.png  used on input line 8
-1.
-(pdftex.def)             Requested size: 125.57007pt x 60.97827pt.
-<./Images/Question3_Figure1.3.png, id=26, 295.1025pt x 299.61937pt>
+<./Images/Question3_Figure1.3.png, id=25, 295.1025pt x 299.61937pt>
 File: ./Images/Question3_Figure1.3.png Graphic file (type png)
 <use ./Images/Question3_Figure1.3.png>
 Package pdftex.def Info: ./Images/Question3_Figure1.3.png  used on input line 1
-18.
+03.
 (pdftex.def)             Requested size: 177.06285pt x 179.77301pt.
 
 
@@ -578,18 +579,27 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3] (CS-4720-HW04_Answers.aux)
+[3]
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[4] (CS-4720-HW04_Answers.aux)
 Package rerunfilecheck Info: File `CS-4720-HW04_Answers.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 10491 strings out of 481532
- 162447 string characters out of 2915361
- 473206 words of memory out of 3000000
+ 10492 strings out of 481532
+ 162453 string characters out of 2915361
+ 474049 words of memory out of 3000000
  27190 multiletter control sequences out of 15000+200000
  411799 words of font info for 57 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 71i,12n,79p,949b,523s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 71i,12n,79p,968b,519s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx12.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmex10.pfb><C:/Users/Admin/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -598,9 +608,9 @@ s/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/Admin/AppData/Local/Programs/MiK
 TeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Admin/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Admin/AppData/Lo
 cal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on CS-4720-HW04_Answers.pdf (3 pages, 186767 bytes).
+Output written on CS-4720-HW04_Answers.pdf (4 pages, 188418 bytes).
 PDF statistics:
- 91 PDF objects out of 1000 (max. 8388607)
- 35 named destinations out of 1000 (max. 500000)
+ 95 PDF objects out of 1000 (max. 8388607)
+ 36 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

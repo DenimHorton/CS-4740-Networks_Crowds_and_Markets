@@ -51,24 +51,9 @@ Answers:
 	\item Consider the following graphs in Figure 1.1
 	\begin{enumerate}[a]
 		% Question 1: Part 1
-		\item In Figure 1.1 we see two different directed graphs.  To check if a graph is strongly connected or not a \textit{depth first search} can be done on the graph starting from some node, $x_i$, in set, $X$, of nodes that exists in the graph $G$.  The depth search is a pretty common algorithm the steps through the graph trying to visiting each pair of nodes through the edges that exist. If there exists a path in between any pair of nodes we call the graph strongly connected.  As we can see looking at the graph on the left that there exists a path in-between all the nodes that traverses along the outside of the graph. So we can say that this graph is strongly connected.  As for the graph on the left we see that node 2 is only visited and has no edges leaving it so their fore any pair of nodes that is looking for a path from node 2 to other node does not exsist and we can call this graph weakly connected. 
+		\item In Figure 1.1 we see two different directed graphs.  To check if a graph is strongly connected or not a \textit{depth first search} can be done on the graph starting from some node, $x_i$, in set, $X$, of nodes that exists in the graph $G$.  The depth search is a pretty common algorithm the steps through trying to traverse from one node each node that exist. If there exists a path in between any set of nodes that is cyclical then the starting node will be visited twice and we call the graph strongly connected.  As we can see looking at the graph on the left that there exists a path in-between all the nodes that traverses along the outside of the graph. So we can say that this graph is strongly connected.  As for the graph on the right we see that node 2 is only visited and has no edges leaving it so any path that is traversed from node 2 will not fine a ath back to node 2 and we can call this graph weakly connected. 
 		% Question 1: Part 2
-		\item As for checking if the two graphs in Figure 1.1 are aperiodic or not, in mathematical areas of graph theory, directed graphs are said to be aperiodic if there is no integer, $k$, that is grater than 1 that divides the length of every cycle of the graph.  This is to say that for the matrix made up for the graph on the left,
-		$$\begin{bmatrix} 
-			0 & 0 & 0 & 1 & 1 \\
-			1 & 0 & 0 & 0 & 0 \\
-			1 & 1 & 0 & 0 & 0 \\
-			0 & 0 & 1 & 0 & 0 \\
-			0 & 0 & 0 & 1 & 0
-		\end{bmatrix},$$
-we can call it periodic 
-		$$\begin{bmatrix} 
-			0 & 1 & 0 & 1 & 0 \\
-			0 & 0 & 0 & 0 & 0 \\
-			1 & 1 & 0 & 0 & 0 \\
-			0 & 0 & 1 & 0 & 1 \\
-			1 & 0 & 0 & 0 & 0 \\
-		\end{bmatrix}$$
+		\item As for checking if the two graphs in Figure 1.1 are aperiodic or not, we can see that although not both graphs are strongly connected, they are both cyclical and their fore have some form of periodicity.  For the graph of the left we see multiple loop of different lengths.  The greatest common denominator (GCD) of each of these lengths is one and the graph on the left can be considered as aperiodic.  As for the graph on the right its different loop consists of lengths with a GCD of 3 so the period for this graph on the right is 3.
 	\end{enumerate}
 \end{enumerate}
 }
@@ -149,7 +134,8 @@ Answers:
 	\item Consider again the graph from problem 2 (Figure 1.2).
 	\begin{enumerate}[(a)]
 		% Question 4: Part 1
-		\item By hand, using matrix multiplication, perform 1 step of the Friedkin-Johnsen opnion dynamic model on this graph with initial opinions of (1, 1, 0.5, 0, 0) and lambda values of (0.9, 0.1, 0.8, 1, 0.5).
+		\item By hand, using matrix multiplication, perform 1 step of the Friedkin-Johnsen opnion dynamic model on this graph with initial opinions of (1, 1, 0.5, 0) and lambda values of (0.9, 0.1, 0.8, 1).
+
 		% Question 4: Part 2
 		\item As we discussed in class, in the Friedkin-Johnsen model, nodes usually have differing opinions even after a long time. Keeping the lambda values from part A, experiment with this graph and try to find an assignment of initial opinions that results in the most different limiting opinions. That is, what equilibrium on this graph can have the most disagreement out of all equilibria? You will likely want to use compute code to solve this problem. Full credit is possible if you show understanding and effort; I will award 1 bonus point if you can show that your answer is the most disagreement possible.
 	\end{enumerate}
@@ -161,7 +147,23 @@ Answers:
 	\item Consider again the graph from problem 2 (Figure 1.2).
 	\begin{enumerate}[(a)]
 		% Question 4: Part 1
-		\item By hand, using matrix multiplication, perform 1 step of the Friedkin-Johnsen opnion dynamic model on this graph with initial opinions of (1, 1, 0.5, 0, 0) and lambda values of (0.9, 0.1, 0.8, 1, 0.5).
+		\item By hand, using matrix multiplication, perform 1 step of the Friedkin-Johnsen opnion dynamic model on this graph with initial opinions of (1, 1, 0.5, 0) and lambda values of (0.9, 0.1, 0.8, 1).
+in mathematical areas of graph theory, directed graphs are said to be aperiodic if there is no integer, $k$, that is grater than 1 that divides the length of every cycle of the graph.  This is to say that for the matrix made up for the graph on the left,
+		$$\begin{bmatrix} 
+			0 & 0 & 0 & 1 & 1 \\
+			1 & 0 & 0 & 0 & 0 \\
+			1 & 1 & 0 & 0 & 0 \\
+			0 & 0 & 1 & 0 & 0 \\
+			0 & 0 & 0 & 1 & 0
+		\end{bmatrix}$$
+we can call it periodic 
+		$$\begin{bmatrix} 
+			0 & 1 & 0 & 1 & 0 \\
+			0 & 0 & 0 & 0 & 0 \\
+			1 & 1 & 0 & 0 & 0 \\
+			0 & 0 & 1 & 0 & 1 \\
+			1 & 0 & 0 & 0 & 0 \\
+		\end{bmatrix}$$
 		% Question 4: Part 2
 		\item As we discussed in class, in the Friedkin-Johnsen model, nodes usually have differing opinions even after a long time. Keeping the lambda values from part A, experiment with this graph and try to find an assignment of initial opinions that results in the most different limiting opinions. That is, what equilibrium on this graph can have the most disagreement out of all equilibria? You will likely want to use compute code to solve this problem. Full credit is possible if you show understanding and effort; I will award 1 bonus point if you can show that your answer is the most disagreement possible.
 	\end{enumerate}
