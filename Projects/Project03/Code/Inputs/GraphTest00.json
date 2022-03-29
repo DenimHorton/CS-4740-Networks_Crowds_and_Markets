@@ -1,0 +1,19 @@
+{
+    "Graphs":[
+        {
+        "GraphName":        "Graph 1",
+        "number of nodes":  10,
+        "probability":      0.5
+        },
+        {
+        "GraphName":        "Graph 2",
+        "number of nodes":  10,
+        "probability":      0.1
+        },
+        {
+        "GraphName":        "Graph 3",
+        "number of nodes":  10,
+        "probability":      0.6
+        }
+    ]
+}

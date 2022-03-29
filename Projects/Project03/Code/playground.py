@@ -12,5 +12,24 @@ class Graph(nx.Graph):
             objStr += f"\t{i}+\n"        
         return objStr
 
+class EndPoint:
+    def __init__(self, src_name, dst_name):
+        self.src_name = src_name
+        self.dst_name = dst_name
+
+    
+
+class EndPointWorker:
+    '''
+    '''
+    def __init__(self, end_point):
+        self.end_point = end_point 
+        self.worker_thread = None
+        self.running = False
+
+    def start(self):
+        self._log('Started thread')
+
+
 graph1 = Graph()
 print(graph1)
