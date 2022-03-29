@@ -32,6 +32,7 @@ jobs:
       - name: Run a one-line script
         run: |
               cd ./Projects/Project03/Code
+              python pip install -requirements.txt
               ls
               python3 playground.py
 
