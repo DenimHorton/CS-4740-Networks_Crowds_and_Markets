@@ -17,7 +17,8 @@ class EndPoint:
         self.src_name = src_name
         self.dst_name = dst_name
 
-    
+    # def start(end_):
+    #     self.
 
 class EndPointWorker:
     '''
