@@ -33,9 +33,11 @@ jobs:
       - name: Install Dependencies
         run: |
               cd ./Projects/Project03/Code
+              pwd
               python3 -m pip install -r requirements.txt
 
       # Runs a set of commands using the runners shell
       - name: Run Unittests
         run: |
+              pwd
               python3 -m unittest
