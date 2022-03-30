@@ -1,2 +1,2 @@
 networkx==2.7.1
-unittest==3.10.4
+numpy==1.22.3
