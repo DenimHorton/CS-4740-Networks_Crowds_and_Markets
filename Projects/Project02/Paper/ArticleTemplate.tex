@@ -47,7 +47,7 @@ In society when considering segregation amongst different groups, there seems to
 % ----------------------------------------------- Introduction
 \section{Introduction}
 
-When first implementing \textit{Schelling Integration} into a coded simulation there were not many constraints or requirements given for the assignment.  Python was the chosen language to code this project in.   After some research there were several different works that had already been done on the subject.  With out looking to much into the code done for these coded simulation, a general structure was built to generate different environments and runs simulations.  To make sure that the code could be followed along easily and verbosity of how the code executed were output to a .log file and many graphs and plots were generated.  To turn on this verbose setting and get the most information from running the simulations, when ever calling this method or any abstract methods that call this, turn the verbosity keyword argument to \texttt{True}.\\
+When first implementing \textit{Schelling Integration} into a coded simulation there were not many constraints or requirements given for the assignment.  There was some information included inside the book for the class  (\cite{10.5555/1805895}). Python was the chosen language to code this project in.   After some research there were several different works that had already been done on the subject (\cite{AdilMoujahid}).  With out looking to much into the code done for these coded simulation, a general structure was built to generate different environments and runs simulations.  To make sure that the code could be followed along easily and verbosity of how the code executed were output to a .log file and many graphs and plots were generated.  To turn on this verbose setting and get the most information from running the simulations, when ever calling this method or any abstract methods that call this, turn the verbosity keyword argument to \texttt{True}.\\
 
 \begin{center}
 \includegraphics[scale=0.7]{./Images/TestExample_Figure_1.1}
@@ -66,22 +66,30 @@ Through a passed list during initialization or by using one of the setter method
 % ----------------------- Execution 
 \subsection{Execution}
 
-During execution the segregation amongst the map seemed to stay pretty consistent in between training sessions of the same original generated city and often would converge to looking very similar in where the clusters of 'Red' and 'Blue' residence were first densely populated.  Once we started to change the values for different parameters such as \texttt{red\_blue\_split} and \texttt{pct\_empty} completely new random Cities were generated and populated. The shapes of the segregated Cities would lose their consistent shape in between varying values for this reasons.  This is not to say that it would or would not if we simply took out residence or change the colour amongst the residence but something that could be implemented further to keep the consistent shape of the randomized populated city would be interesting to further research.\\
-When performing runs with different values the first one that was evaluated was the difference in open space percentages we notice while keeping the other varaibles constant that none of the agent were rarely dissatisfied and would take longer for groups to forms but would reach a segregation moderately slower since no agents had neighbours.  As intuitive as it was when there was more open space the graph seem to converge to a CTF value very quickly 
-
-When performing the different training sessions as long as the t-value stayed within a certain range the CTF value would not seem to vary 
-
-Book for the class  (\cite{10.5555/1805895})\\
-web site for python (\cite{AdilMoujahid})\\
-paper for segregation with graphs (\cite{ijcai2019-38})\\
-
-
+During execution the segregation amongst the map seemed to stay pretty consistent in between training sessions of the same original generated city and often would converge to looking very similar in where the clusters of 'Red' and 'Blue' residence were first densely populated.  Once we started to change the values for different parameters such as \texttt{red\_blue\_split} and \texttt{pct\_empty} completely new random Cities were generated and populated. The shapes of the segregated Cities would lose their consistent shape in between varying values for this reasons.  This is not to say that it would or would not if we simply took out residence or change the colour amongst the residence but something that could be implemented further to keep the consistent shape of the randomized populated city would be interesting to further research.  When implementing i Wasn't sure which way would be best, whether to pick randomnly thorugh the city and evaluate residence ro to go through each one for each iteration.  So a keyword has been added to choose which method to execute during simulation.  This is done throuh the user input interface that ask the user whether to get one of the deliverable out puts or all of them.  This helped keep the program from crashing when asking it to develop only one deliverable.  The All option was added and for every 10 runs it seems to fail on the last deliverable.  Once a proper output has been chosen, the user input interface then ask ths user to choose which method of execution to run.   To run in iteration over each resident, choose 'Row' to choose at random choose "Random".  Row major seems to be the fastest and get higher results for CTF.
 
 % ----------------------- Analyisis 
 \subsection{Analyisis}
- 
+
+When performing training sessions with varying mixed population values It seemed like there didn't really seem to be much difference when keeping the rest of the values constant all though this could be different with other varying open percentage and open space values.  Signs of segregation would show them selves through various runs but still seem to have the same max CTF and rate of convergence with some slight differnces between training simulations.  When looking at the varying valued simulations it seemed to show that the CTF between runs would seem to drop as the mixed percetage got closed to 0.5 compared to the other values that seem to have a slightly higher CTF value.  Figure 1.2 and this suggests that the more offset a population is the higher the CTF value will be which makes sense.\\ 
+\begin{center}
+\includegraphics[scale=0.6]{./Images/DeliverableA_Figure1.2}
+Figure 1.2
+\end{center}
+As for the training sessions for varying t-values we seem where the CTF  has a almost linear decline as the t-value gets higher.  Ultimately these values give us the lost CTF out of all the other combinations or varying values. This suggests that to achieve a high CTF, the t-values that are closer to higher are the best value to achieve higher CTF values and more segregation. \\
+\begin{center}
+\includegraphics[scale=0.6]{./Images/Deliverableb_Figure1.3} 
+Figure 1.3
+\end{center}
+When performing the different training sessions with varying open space percentage we would still see clusters start to form but when the open space got big enough for most neighbours to be content with their environment we start to see very little to no clusters.  Any clusters that do form do not seem to be very dense and will have lots of open hole in the collection of like type neighbours.  This probably also led to there being little to no spaces to move to and their fore were forced to either move randomly or stay were that are.  When looking at CTF values we see a spike when the percentage gets to 0.5 .  In Figure 1.4 we that the CTF values go down a little bit more when closer 0.7 then when using .02 percent open spots.  As for 0.5 we see it go to the highest CTF.  Ultimately less to half percentage ended in higher CTF values.  In the end their usually tended to be more open space often leading to very scattered less dense collection of like type neighbours. \\
+\begin{center}
+\includegraphics[scale=0.6]{./Images/DeliverableC_Figure1.4}
+Figure 1.4
+\end{center}
+
 % ----------------------------------------------- Conclusion
 \section{Conclusion}
+In conclusion i learned alot about this subject and the interesting correlation it has with different values.  I learned alot about rendering gifs and using the NumPy library.  Ultimately I learned how to try to think about coding more efficient and after coding this up twice I still ran into or thought of different ways i could have implemented it better.  In the end the higher the t-value generally the loser the CTF.
 
 % ----------------------------------------------- References 
 

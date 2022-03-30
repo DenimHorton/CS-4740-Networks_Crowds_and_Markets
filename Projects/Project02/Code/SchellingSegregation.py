@@ -645,9 +645,9 @@ o_space_const = 0.2
 mxd_const = 0.4
 
 # List of three choosen values to evaluate
-tval_var_lst = [0.3, 0.5, 0.7]
-mxd_var_lst =  [0.3, 0.5, 0.7]
-os_var_lst =   [0.3, 0.5, 0.7]
+tval_var_lst = [0.2, 0.4, 0.5, 0.6, 0.8]
+mxd_var_lst =  [0.2, 0.4, 0.5, 0.6, 0.8]
+os_var_lst =   [0.2, 0.4, 0.5, 0.6, 0.8]
 
 # Set sample size for the program
 CITY_SIZE = 50
