@@ -50,6 +50,7 @@ class NetWork(nx.DiGraph):
 
     @timer
     def buildGraphFromJSON(self, json_file_path):
+        self.clear()
         jsonFile = open(json_file_path)
         data = json.load(jsonFile)
         np_lst_rows = []
@@ -145,7 +146,7 @@ print(jfModel)
 
 # graph1.showNetworkGraph()
 
-# for i in graph1.adjacency():
-#     print(i)
-
+for i in graph1.adjacency():
+    print(i)
+ 
 
