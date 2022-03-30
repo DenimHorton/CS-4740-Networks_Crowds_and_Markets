@@ -56,7 +56,7 @@ class TestGraphBuilder(unittest.TestCase):
         adjanc_tst_set = dict()
         # for i in testGraph.adjacency():
         #     adjanc_tst_set.add(i)
-        self.assertDict(adjanc_tst_set, projectGraphEdgeDict)
+        self.assertDictEqual(adjanc_tst_set, projectGraphEdgeDict)
 
 
 
