@@ -30,7 +30,6 @@ class TestGraphBuilder(unittest.TestCase):
         self.assertEqual(9, testGraph.number_of_edges())
 
     # def test_adjancecny_dict(self):
-    #     testGraph.buildGraphFromJSON('.\\Inputs\\GraphTest01.json')
     #     adjanc_tst_set = dict()
     #     # for i in testGraph.adjacency():
     #     #     adjanc_tst_set.add(i)
