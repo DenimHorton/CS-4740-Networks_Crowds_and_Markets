@@ -3,7 +3,7 @@ import logging
 
 save_log_path = ".\\Outputs\\"
 
-if not os.path.exsits(save_log_path):
+if not os.path.exists(save_log_path):
     os.makedirs(save_log_path)
     
 logging.basicConfig(filename=f"{save_log_path}loginfo.log", filemode='w', level=logging.INFO)
