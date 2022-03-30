@@ -45,4 +45,4 @@ jobs:
       - name: Run Playground Environment
         run: |
               cd ./Projects/Project03/Code
-              python3 -m playground.py
+              python3 playground.py
