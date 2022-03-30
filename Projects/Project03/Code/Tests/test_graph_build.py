@@ -20,7 +20,7 @@ class TestGraphBuilder(unittest.TestCase):
                         [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0],
                         [0.0, 0.0, 0.8, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1, 0.0]]
         projectGraphNP=np.array(projectGraphLst)
-        testGraph.buildGraphFromJSON('.\\Inputs\\GraphTest01.json')
+        testGraph.buildGraphFromJSON('./Inputs/GraphTest01.json')
         comparison = testGraph.network == projectGraphNP
         self.assertTrue(comparison.all())
 
