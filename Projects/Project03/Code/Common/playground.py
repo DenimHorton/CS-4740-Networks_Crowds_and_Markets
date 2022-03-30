@@ -22,7 +22,7 @@ class NetWork(nx.DiGraph):
         self.lambda_opinions_diag = np.array
         self.pandas_df = pd.DataFrame
         self.buildGraphFromJSON(jsn_fl_pth)
-    
+
     @timer
     def __str__(self, show_mthd_atrb = False):
         objStr = f"Grpah with {len(self.nodes)} nodes and {len(self.edges)} edges . . . \n"
@@ -30,8 +30,8 @@ class NetWork(nx.DiGraph):
             objStr += f"Also here are my Attributes and class methods\n"
             for i in self.__dict__:
                 objStr += f"\t{i}+\n"    
-        objStr += f" \u03BB Opinions:\n\t\t{self.lambda_opinions}" 
-        objStr += f" \n \u03BB Diagonal:\n"
+        objStr += f" Lambda Opinions:\n\t\t{self.lambda_opinions}" 
+        objStr += f" \n Lambda Diagonal:\n"
         objStr = printPrettyMatrix(objStr, self.lambda_opinions_diag)
         objStr += f"\n Adjacency Matrix:\n" 
         objStr = printPrettyMatrix(objStr, self.network_np_matrix)
