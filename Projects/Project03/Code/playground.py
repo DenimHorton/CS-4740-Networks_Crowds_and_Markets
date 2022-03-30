@@ -4,7 +4,7 @@ import unittest
 class Graph(nx.Graph):
     def __init__(self, grph_nm=""):
         super().__init__()
-        self.graph_name = f"Graph--{grph_nm}"
+        self.graph_name = f"Graph--{grph_nm:03}"
 
     def __str__(self):
         objStr = f"Grpah with {len(self.nodes)} nodes and {len(self.edges)} edges . . . \n"
@@ -33,5 +33,5 @@ class EndPointWorker:
         self._log('Started thread')
 
 
-graph1 = Graph()
-print(graph1)
+# graph1 = Graph()
+# print(graph1)
