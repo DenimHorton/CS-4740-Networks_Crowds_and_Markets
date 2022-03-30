@@ -40,3 +40,9 @@ jobs:
         run: |
               cd ./Projects/Project03/Code
               python3 -m unittest
+
+      # Runs a set of commands using the runners shell
+      - name: Run playground.py
+        run: |
+              cd ./Projects/Project03/Code
+              python3 -m playground.py
