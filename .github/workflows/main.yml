@@ -34,6 +34,9 @@ jobs:
               cd ./Projects/Project03/Code
               python3 -m pip install -r requirements.txt
               pwd
+              ls
+              cd ./Tests
+              ls
               python3 -m unittest
 
       # Runs a set of commands using the runners shell
