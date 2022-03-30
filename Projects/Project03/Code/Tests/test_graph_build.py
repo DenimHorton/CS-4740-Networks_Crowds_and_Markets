@@ -9,7 +9,6 @@ testGraph=Graph("TestGraph")
 class TestGraphBuilder(unittest.TestCase):
     
     def test_simple_build(self):
-
         projectGraphLst = [[0.0, 0.9, 0.0, 0.1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                         [0.0, 0.0, 0.2, 0.1, 0.4, 0.3, 0.0, 0.0, 0.0, 0.0],
                         [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0],

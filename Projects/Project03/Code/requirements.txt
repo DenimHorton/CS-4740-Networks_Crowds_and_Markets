@@ -1,2 +1,2 @@
 networkx==2.7.1
-unitest==3.10.4
+unittest==3.10.4
