@@ -45,11 +45,19 @@ class TestGraphBuilder(unittest.TestCase):
         comparison = testGraph.network_np_matrix == projectGraphNP
         self.assertTrue(comparison.all())
 
+    def test_simple_graph(self):
+        self.assertEqual(10, len(testGraph.nodes))
+        self.assertEqual(19, len(testGraph.edges))
+
     def test_assignment_network_np_matrix_build(self):
         projectGraphNP=np.array(projectGraphMatrix)
         testGraph.buildGraphFromJSON('.\\Inputs\\GraphTest01.json')
         comparison = testGraph.network_np_matrix == projectGraphNP
-        self.assertTrue(comparison.all())     
+        self.assertTrue(comparison.all())    
+
+    def test_project_graph(self):
+        self.assertEqual(10, len(testGraph.nodes))
+        self.assertEqual(19, len(testGraph.edges)) 
 
     # def test_adjancecny_dict(self):
     #     testGraph.buildGraphFromJSON('.\\Inputs\\GraphTest01.json')

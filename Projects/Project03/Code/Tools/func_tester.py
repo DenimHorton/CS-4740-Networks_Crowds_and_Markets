@@ -14,6 +14,6 @@ def recursiveMethodTester(func, num_calls = 5000):
         time_stp = time.time()
         logging.info(f"\t\t[Execute Stop:\t\t{time.gmtime(time_stp).tm_hour}:{time.gmtime(time_stp).tm_min}:{time.gmtime(time_stp).tm_sec}]")
         timeDiff = (time_stp - time_strt)
-        logging.info(f"\t[Overall Execution: {timeDiff:.3f}  Sec ({timeDiff / 100000:.8f} Micro Sec )]")
+        logging.info(f"\t\t[Overall Execution: {timeDiff:.3f}  Sec ({timeDiff / 100000:.8f} Micro Sec )]")
         return result
     return timerwrapper

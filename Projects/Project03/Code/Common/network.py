@@ -2,23 +2,34 @@ import networkx as nx
 import numpy as np
 import matplotlib as plt
 import pandas as pd
-import unittest
-import json
+import unittest, sys, os, json
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from Tools.func_tester import *
+from Tools.func_timer import *
+from Tools.print_matrix_pretty import *
 
 class NetWork(nx.DiGraph):
     def __init__(self, grph_nm="", jsn_fl_pth='.\\Inputs\\GraphTest00.json'):
         super().__init__()
         self.graph_name = f"Graph--{grph_nm}"
         self.network_np_matrix = np.array
-        self.lambda_opnions = np.array
+        self.lambda_opinions = np.array
+        self.lambda_opinions_diag = np.array
         self.pandas_df = pd.DataFrame
         self.buildGraphFromJSON(jsn_fl_pth)
-
-    def __str__(self):
+        # self.buildPandasDF()
+    
+    def __str__(self, show_mthd_atrb = False):
         objStr = f"Grpah with {len(self.nodes)} nodes and {len(self.edges)} edges . . . \n"
-        objStr += f"Also here are my Attributes and class methods"
-        for i in self.__dict__:
-            objStr += f"\t{i}+\n"        
+        if show_mthd_atrb:
+            objStr += f"Also here are my Attributes and class methods\n"
+            for i in self.__dict__:
+                objStr += f"\t{i}+\n"    
+        objStr+= f" \u03BB Opinions:\n\t\t{self.lambda_opinions}" 
+        objStr+= f" \n \u03BB Diagonal:\n"
+        objStr = printPrettyMatrix(objStr, self.lambda_opinions_diag)
+        objStr+= f"\n Adjacency Matrix:\n" 
+        objStr = printPrettyMatrix(objStr, self.network_np_matrix)
         return objStr
     
     def setGraphName(self, new_grph_nm):
@@ -37,11 +48,12 @@ class NetWork(nx.DiGraph):
         for tstGraph in data['TestGraphs']:
             for tstGraphMtrxRow in tstGraph['Matrix']:
                 np_lst_rows.append(tstGraphMtrxRow)
+            self.lambda_opinions = np.array(tstGraph['Lambdas'])
+            self.lambda_opinions_diag = np.diag(tstGraph['Lambdas'])
         self.network_np_matrix = np.array(np_lst_rows)
+
         jsonFile.close()
         self.buildGraphFromNPArray_withForLoop()
-        self.buildPandasDF()
-
 
     def buildGraphFromNPArray_withForLoop(self):        
         n = len(self.network_np_matrix)
@@ -49,8 +61,7 @@ class NetWork(nx.DiGraph):
             for col in range(n):
                 effect = self.network_np_matrix[row][col]
                 if effect != 0.0:
-                    self.add_edge(f"q_{row}", f"q_{col}", weight = effect)
-
+                    self.add_edge(f"q_{row}", f"q_{col}", weight=effect)
     def showNetworkGraph(self, network_graph_title=""):
         # Set tittle of graph
         plt.title(f"{self.graph_name}\n{network_graph_title}")
@@ -62,7 +73,7 @@ class NetWork(nx.DiGraph):
                                                    font_color="#FFFFFF")        
         # Show each graph.                    
         plt.show()
-
+    
     def showNetworkGraphWithLabels(self, network_graph_title=""): 
         # Set tittle of graph
         plt.title(f"{self.graph_name}\n{network_graph_title}")
@@ -71,4 +82,3 @@ class NetWork(nx.DiGraph):
         nx.draw_networkx_edge_labels(self, pos=nx.circular_layout(self, scale=1, center=None, dim=2),  edge_labels=labels)      
         # Show each graph.                    
         plt.show()      
-
