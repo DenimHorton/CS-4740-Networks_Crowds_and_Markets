@@ -29,14 +29,7 @@ class Graph(nx.Graph):
         self.network = np.array(np_lst_rows)
         jsonFile.close()
 
-class EndPoint:
-    def __init__(self, src_name, dst_name):
-        self.src_name = src_name
-        self.dst_name = dst_name
-
-    # def start(end_):
-    #     self.
-
+    
 class EndPointWorker:
     '''
     '''
@@ -47,6 +40,15 @@ class EndPointWorker:
 
     def start(self):
         self._log('Started thread')
+
+
+class EndPoint:
+    def __init__(self, src_name, dst_name):
+        self.src_name = src_name
+        self.dst_name = dst_name
+
+
+
 
 
 

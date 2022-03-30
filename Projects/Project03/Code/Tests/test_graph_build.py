@@ -1,10 +1,9 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from playground import * 
+from Common.network import NetWork 
 import unittest
 
-testGraph=Graph("TestGraph")
+testGraph=NetWork("TestGraph")
 
 class TestGraphBuilder(unittest.TestCase):
     
