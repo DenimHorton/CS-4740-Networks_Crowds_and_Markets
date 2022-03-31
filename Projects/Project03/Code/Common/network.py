@@ -21,7 +21,7 @@ class NetWork(nx.DiGraph):
     def __str__(self, show_mthd_atrb = False):
         objStr = ""
         if show_mthd_atrb:
-            objStr += f"\tAlso here are my Attributes and class methods\n"
+            objStr += f"Also here are my Attributes and class methods\n"
             for i in self.__dict__:
                 objStr += f"\t{i}+\n"    
         objStr += f" Lambda Opinions:\n\t\t{self.lambda_opinions}" 
@@ -62,6 +62,7 @@ class NetWork(nx.DiGraph):
                 effect = self.network_np_matrix[row][col]
                 if effect != 0.0:
                     self.add_edge(f"q_{row}", f"q_{col}", weight=effect)
+                    
     def showNetworkGraph(self, network_graph_title=""):
         # Set tittle of graph
         plt.title(f"{self.graph_name}\n{network_graph_title}")
