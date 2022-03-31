@@ -1,0 +1,10 @@
+{
+    "TestGraphs":[
+        {"Graph Name": "Test Graph",
+         "Matrix": [[1, 0, 0],
+                    [0, 1, 0],
+                    [0.5, 0, 0.5]],
+         "Lambdas": [0.1,0.2,0.3] 
+        }
+    ]
+}

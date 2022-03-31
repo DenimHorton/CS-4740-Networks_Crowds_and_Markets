@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 import pandas as pd
 import unittest, sys, os, json
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,18 +17,17 @@ class NetWork(nx.DiGraph):
         self.lambda_opinions_diag = np.array
         self.pandas_df = pd.DataFrame
         self.buildGraphFromJSON(jsn_fl_pth)
-        # self.buildPandasDF()
-    
+
     def __str__(self, show_mthd_atrb = False):
-        objStr = f"Grpah with {len(self.nodes)} nodes and {len(self.edges)} edges . . . \n"
+        objStr = ""
         if show_mthd_atrb:
-            objStr += f"Also here are my Attributes and class methods\n"
+            objStr += f"\tAlso here are my Attributes and class methods\n"
             for i in self.__dict__:
                 objStr += f"\t{i}+\n"    
-        objStr+= f" \u03BB Opinions:\n\t\t{self.lambda_opinions}" 
-        objStr+= f" \n \u03BB Diagonal:\n"
+        objStr += f" Lambda Opinions:\n\t\t{self.lambda_opinions}" 
+        objStr += f" \n Lambda Diagonal:\n"
         objStr = printPrettyMatrix(objStr, self.lambda_opinions_diag)
-        objStr+= f"\n Adjacency Matrix:\n" 
+        objStr += f"\n Adjacency Matrix:\n" 
         objStr = printPrettyMatrix(objStr, self.network_np_matrix)
         return objStr
     
@@ -42,6 +41,7 @@ class NetWork(nx.DiGraph):
         return self.pandas_df
 
     def buildGraphFromJSON(self, json_file_path):
+        self.clear()
         jsonFile = open(json_file_path)
         data = json.load(jsonFile)
         np_lst_rows = []
@@ -81,4 +81,28 @@ class NetWork(nx.DiGraph):
         # Set graph visual representation attributes.
         nx.draw_networkx_edge_labels(self, pos=nx.circular_layout(self, scale=1, center=None, dim=2),  edge_labels=labels)      
         # Show each graph.                    
-        plt.show()      
+        plt.show()   
+        
+    def buildGraphFromArray_withNPWhere(self, array): 
+        '''
+        Method takes 5 times as long compared to for loop 
+        '''       
+        found_edges = np.where(self.network_np_matrix!=0.0)
+        found_edges_loc = zip(found_edges[0], found_edges[1])
+        for i in found_edges_loc:
+            print(f"\t{i}:\t{array[i[0]][i[1]]}")
+            self.add_edge(i[0], i[1], weight = array[i[0]][i[1]])
+            
+    def buildMatrixFromJSON(self, json_file_path):
+        '''
+        Proved to be just a little bit slower barely made any difference at 5000 recursive calls
+        '''
+        jsonFile = open(json_file_path)
+        data = json.load(jsonFile)
+        np_lst_rows = []
+        for tstGraph in data['TestGraphs']:
+            for tstGraphMtrxRow in tstGraph['Matrix']:
+                np_lst_rows.append(tstGraphMtrxRow)
+        self.network_np_matrix = np.array(np_lst_rows)
+        jsonFile.close()
+        self.buildGraphFromNPArray_withForLoop(self.network_np_matrix) 

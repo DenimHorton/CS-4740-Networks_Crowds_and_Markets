@@ -13,7 +13,7 @@ simpleGraphLst = [[1, 2, 3],
 
 tst_lambda_aray = np.array([0.1,0.2,0.3])
 
-class TestGraphBuilder(unittest.TestCase):
+class TestGraphSimple(unittest.TestCase):
 
     def test_simple_network_np_matrix_build(self):
         projectGraphNP=np.array(simpleGraphLst)
