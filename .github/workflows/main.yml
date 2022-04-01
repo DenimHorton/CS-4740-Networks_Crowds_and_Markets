@@ -42,7 +42,7 @@ jobs:
               python3 -m unittest
 
       # Runs a set of commands using the runners shell
-      - name: Run Playground Environment
+      - name: Run  Environment
         run: |
-              cd ./Projects/Project03/Code
-              python3 ./Common/playground.py
+              cd ./Projects/Project03/Code/Common
+              ls
