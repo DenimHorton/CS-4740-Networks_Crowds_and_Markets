@@ -107,3 +107,24 @@ class NetWork(nx.DiGraph):
         self.network_np_matrix = np.array(np_lst_rows)
         jsonFile.close()
         self.buildGraphFromNPArray_withForLoop(self.network_np_matrix) 
+
+    # def performStep(self, max_steps=10, method="Friedkin-Johnsen"):
+    #     t = 0
+    #     og_opinions = [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     for i in range(max_steps):
+    #         # print(self.network.network_np_matrix)
+    #         # print(self.network.lambda_opinions_diag)
+    #         # print(self.step_t_db[0])
+    #         # print(np.identity(self.n_size))
+    #         # print(self.network.network_np_matrix @ self.network.lambda_opinions_diag)
+    #         if method == "Friedkin-Johnsen":
+    #            fjm.friedkin_johnsen(self.lambda_opinions_diag,
+    #                                 self.network_np_matrix,
+    #                                 max_steps,
+    #                                 og_opinions,
+    #                                 plot_result = False)
+    #         else:
+    #             print("Method not reconginzed")
+    #             break
+
+    #         t += 1

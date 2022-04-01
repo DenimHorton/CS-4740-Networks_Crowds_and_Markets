@@ -1,35 +1,46 @@
 from network import NetWork
 import numpy as np
+import matplotlib.pyplot as plt
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Tools.print_matrix_pretty import *
 
 
 class FriedkinJohnsenModel:
-    def __init__(self, network=NetWork, trn_ses=0, max_steps=20):
-        self.network = network
-        self.n_size = len(network.network_np_matrix)
-        self.max_steps = max_steps
-        self.step_t_db = np.zeros((max_steps, self.n_size))
-        
+  def __init__(self, network=NetWork, trn_ses=0, max_steps=20):
+      self.network = network
+      self.n_size = len(network.network_np_matrix)
+      self.time_step = 0
+      self.step_t_db = np.array
+      
+  def __str__(self):
+      objStr = "\n\t--- Friedkin Johnsen Model ---"
+      objStr += f"\n Row-Stochastic Matrix size:\n\t\t{self.n_size} x {self.n_size}"
+      objStr += f"\n Time Steps:\n"
+      objStr = printPrettyMatrix(objStr, self.step_t_db)
+      objStr += "\n\t--- Network  ---\n"
+      objStr += self.network.__str__(True)
+      return objStr
 
-    def __str__(self):
-        objStr = "\n\t--- Friedkin Johnsen Model ---"
-        objStr += f"\n Row-Stochastic Matrix size:\n\t\t{self.n_size} x {self.n_size}"
-        objStr += f"\n Time Steps:\n"
-        objStr = printPrettyMatrix(objStr, self.step_t_db)
-        objStr += "\n\t--- Network  ---\n"
-        objStr += self.network.__str__(True)
-        return objStr
+  def performTrainingSes(self, max_steps=10, plot_result=False, verbose=False):
+    n = self.network.network_np_matrix.shape[0] # assuming everything is dimensioned right
+    I = np.eye(n)
+    self.step_t_db = np.zeros((n,max_steps))
+    og_opinions = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    self.step_t_db[:,0] = og_opinions     
+    for step in range(1, max_steps):
+      self.step_t_db = self.performFriedkinJohnsenStep(max_steps, og_opinions, step, I, 
+                                      self.network.lambda_opinions, verbose)
+      if verbose:
+        print(self.step_t_db)   
+        print()            
+    if plot_result:
+      plt.plot(self.step_t_db.T)
+    return self.step_t_db 
 
-    def performStep(self):
-        t = 0
-        for i in range(self.max_steps):
-            print(self.network.network_np_matrix)
-            print(self.network.lambda_opinions_diag)
-            print(self.step_t_db[0])
-            print(np.identity(self.n_size))
-            print(self.network.network_np_matrix @ self.network.lambda_opinions_diag)
-            print((self.network.network_np_matrix @ self.network.lambda_opinions_diag * np.transpose(self.step_t_db[t-1])) + (np.identity(self.n_size)) - self.network.network_np_matrix)
-            # self.step_t_db[t]= (self.network.network_np_matrix @ self.network.lambda_opinions_diag * np.transpose(self.step_t_db[t-1])) + (np.identity(self.n_size)) - self.network.network_np_matrix
-            t += 1
+  def performFriedkinJohnsenStep(self, mx_stps, og_opnins, step, I, Lam,  verbose):
+    if verbose:
+      print(Lam@self.network.network_np_matrix@self.step_t_db[:,step-1] + (I-Lam)@og_opnins)
+    self.step_t_db[:,step] = Lam@self.network.network_np_matrix@self.step_t_db[:,step-1] + (I-Lam)@og_opnins
+    return self.step_t_db
+

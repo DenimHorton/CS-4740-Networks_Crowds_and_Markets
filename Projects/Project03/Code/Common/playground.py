@@ -15,11 +15,14 @@ jfModel = FriedkinJohnsenModel(graph1)
 
 
 
-# print(jfModel)
 
-jfModel.performStep()
+
+print(jfModel.performTrainingSes(verbose=True))
+print(jfModel)
+
 
 # graph1.showNetworkGraph()
+
 
 # for i in graph1.adjacency():
 #     print(i)
