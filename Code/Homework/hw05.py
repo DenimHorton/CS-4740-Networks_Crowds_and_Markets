@@ -13,10 +13,10 @@ def printPrettyMatrix(objStr, matrix):
     return objStr  
 
 def showPlot(PlotSS, PlotII, PlotRR, node, ts):
-    plt.title(f"Node {node}")
-    S_i = plt.plot(PlotSS[node,:], label=f'S{node}({ts})') # just plot node 0's susceptible over time
-    I_i = plt.plot(PlotII[node,:], label=f'I{node}({ts})') # just plot node 0's infection over time
-    R_i = plt.plot(PlotRR[node,:], label=f'R{node}({ts})') # just plot node 0's recovery over time
+    plt.title(f"Node {node} Infctd:{np.max(PlotII)}")
+    S_i = plt.plot(PlotSS[node,:], label=f'S_{node}({ts})') # just plot node 0's susceptible over time
+    I_i = plt.plot(PlotII[node,:], label=f'I_{node}({ts})') # just plot node 0's infection over time
+    R_i = plt.plot(PlotRR[node,:], label=f'R_{node}({ts})') # just plot node 0's recovery over time
     plt.legend()
     plt.show() 
 
@@ -126,8 +126,8 @@ while  True:
         print(f"Step:\t{q3_timesteps}")
         print(f"Node 2 infection %:{Q3_II[:, q3_timesteps][1]}")
         print(F"The rest of the network {Q3_II[:, q3_timesteps]}")
-        showPlot(Q3_SS, Q3_II, Q3_RR, 2, q3_timesteps)
-    if q3_timesteps > 45:
+        # showPlot(Q3_SS, Q3_II, Q3_RR, 2, q3_timesteps)
+    if q3_timesteps > 10:
         break
     q3_timesteps += 1
 
@@ -145,40 +145,36 @@ print(printPrettyMatrix("", Q3_RR[:, q3_timesteps-10:q3_timesteps]))
 #########################################################
 print("\nQuestion 4:")
 print("\tRepeat that same thought experiment, but this time let the initial\n",
-      "\tinfection start on node 2 (so S_i(0)=0.1 and S_2(0)=0.99, but all other nodes have\n",
-      "\tS_i(0)=1, I_i(0)=0 and R_i(0)=0.  Now can you predict how many people in node 2 would eventually\n",
-      "\tget sick?")
-Q4_og_infection = [0.0, 0.1, 0.0, 0.0, 0.0]
+      "\tinfection start on node 2 (so S_i(0)=0.1 and S_2(0)=0.99, but all other\n",
+      "\tnodes have S_i(0)=1, I_i(0)=0 and R_i(0)=0.  Now can you predict how many\n",
+      "\tpeople in node 2 would eventually get sick?\n")
+Q4_og_infection = [0.0, 0.01, 0.0, 0.0, 0.0]
 Q4_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.0, 0.0, 0.0],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
-q4_timesteps = 50
-Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps, show_plot=False)
+q4_timesteps = 0
 
-print("\tS_i(t):\t")
-print(printPrettyMatrix("", Q4_SS))
-print("\tI_i(t):\t")
-print(printPrettyMatrix("",  Q4_II))
-print("\tR_i(t):\t")
-print(printPrettyMatrix("", Q4_RR))
-
-while  True:
-    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps, node = 2, show_plot=False)
-    if (Q4_II[:, q4_timesteps][1] != 0.0):
-        print(f"Node 2 is infected are infected at time step {q4_timesteps} \t{Q4_II[:, q4_timesteps]}")
-        break
-    if q3_timesteps % 5 == 0:
+while True:
+    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps+1, node = 2, show_plot=False)
+    if q4_timesteps % 25 == 0:
         print(f"Step:\t{q4_timesteps}")
         print(f"Node 2 infection %:{Q4_II[:, q4_timesteps][1]}")
         print(F"The rest of the network {Q4_II[:, q4_timesteps]}")
         showPlot(Q4_SS, Q4_II, Q4_RR, 2, q4_timesteps)
-    if q4_timesteps > 45:
+    if q4_timesteps > 50:
         break
     q4_timesteps += 1
 
 print(f"Last ten time steps of {q4_timesteps-1}")
+print("\tS_i(t):\t")
+print(printPrettyMatrix("",Q4_SS[:, q4_timesteps-10:q4_timesteps]))
+print("\tI_i(t):\t")
+print(printPrettyMatrix("",  Q4_II[:, q4_timesteps-10:q4_timesteps]))
+print("\tR_i(t):\t")
+print(printPrettyMatrix("", Q4_RR[:, q4_timesteps-10:q4_timesteps]))
+
 
 #########################################################
 # Homework 05: Question 5
