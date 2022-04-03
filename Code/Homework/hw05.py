@@ -191,12 +191,24 @@ Q5_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
-q5_timesteps = 20
-Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps, show_plot=False)
 
+q5_timesteps = 0
+
+while True:
+    Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps+1, node = 2, show_plot=False)
+    if q5_timesteps % 25 == 0:
+        print(f"Step:\t{q5_timesteps}")
+        print(f"Node 2 infection %:{Q5_II[:, q5_timesteps][1]}")
+        print(F"The rest of the network {Q5_II[:, q5_timesteps]}")
+        showPlot(Q5_SS, Q5_II, Q5_RR, 2, q5_timesteps)
+    if q5_timesteps > 50:
+        break
+    q5_timesteps += 1
+
+print(f"Last ten time steps of {q5_timesteps-1}")
 print("\tS_i(t):\t")
-print(printPrettyMatrix("", Q5_SS))
+print(printPrettyMatrix("",Q5_SS[:, q5_timesteps-10:q5_timesteps]))
 print("\tI_i(t):\t")
-print(printPrettyMatrix("",  Q5_II))
+print(printPrettyMatrix("",  Q5_II[:, q5_timesteps-10:q5_timesteps]))
 print("\tR_i(t):\t")
-print(printPrettyMatrix("", Q5_RR))
+print(printPrettyMatrix("", Q5_RR[:, q5_timesteps-10:q5_timesteps]))
