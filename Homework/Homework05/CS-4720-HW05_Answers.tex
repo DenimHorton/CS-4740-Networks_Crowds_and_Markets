@@ -41,55 +41,274 @@ Student: (Robert Denim Horton)
 \textcolor{gray}{
 Answers:
 \begin{enumerate}
-		\item Letting $t$ denote the current time step we assign this value 1 since that is the time step we are interested in for finding the values of $S_i(t)$, $I_i(t)$, and $R_i(t)$ (when $t=1$).  So, using the equation given to us in class starting from the time step $t=0$ we can find the next time step, $t=1$, with;\\
-\textcolor{red}{
+		\item Quickly formalizing our network as shown in Figure 1.1 we consider each node to represent a group of people that have different fractions of the people at node $i$ as either susceptible ($S_i(t)$), infectious ($R_i(t)$), or recovered ($I_i(t)$). In class we were also given equations to help apply and track these percentages through each time step, $t$ So we get the following equations below.
 \begin{align*}
-S_i(t+1) 	&=  S_i(t) - \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\right)\\
-		&=	S_i(0) - \left(\frac{\beta \times a_{ij} \times S_i(0) \times I_i(0)}{N_i}\right)\\
-		&=	1  -\left(\frac{0.8 \times a_{ij} \times 0.99 \times 0.01}{1}\right)\\
+	S_i(t+1) 	&=  S_i(t) - \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\right) \\
+	I_i(t+1) 	&=  I_i(t) + \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\right) - (\gamma I_i(t)) \\
+	R_i(t+1) 	&=  R_i(t) + \big(\gamma \times I_i(t)\big) \\
 \end{align*}
+We further defined the equations to have practical applications on networks by defining the part in red as the summation of each of the $i_{th}$ rows and for this problem we know the population at each node is 1 ($N_i=1$). So we get,
 \begin{align*}
-I_i(t+1) 	&=  I_i(t) + \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\right) - (\gamma I_i(t))\\
-		&=	I_i(0) + \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(0)}{N_i}\right) - (\gamma I_i(0))\\
-		&=	0 + \left(\frac{0..8 \times a_{ij} \times 1 \times 0}{1}\right) - (0.5 \times 0)\\
+	S(t+1) 	&=  S(t) - \beta S(t)_{diag} AI(t) \\
+	I(t+1) 	&=  I(t) + \beta S(t)_{diag}AI(t) - (\gamma I(t)) \\
+	R(t+1) 	&=  R(t) + \big(\gamma \times I(t)\big) \\
 \end{align*}
+In early lectures we learned how to represent networks as an adjacent matrix where each row represent a single node with values along the columns representing the edges coming from that node to other corresponding column nodes.  So this network can be represented as the adjacent matrix, $A$, below.\\
+\begin{center}
+	$A=\begin{bmatrix} 
+		0.8  & 0.0 & 0.0 & 0.05 & 0.15 \\
+		1.0  & 0.0 & 0.0 & 0.0   & 0.0 \\
+		0.3  & 0.2 & 0.5 & 0.0 & 0.0 \\
+		0.0  & 0 .0 & 0.05 & 0.95 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 0.2 & 0.8 \\
+	\end{bmatrix}$\\
+\end{center}
+We also defined a matrix, of the same size (filled with 0.0 except along the diagonal), where the values for each node $S(t)$ at time step $t$ is stored along the diagonal of this matrix which is denoted as  $S(t)_{diagonal}$ \textcolor{red}{ which is essentially the probability of each node getting infected through the spreading of the disease to another node}. This matrix is defined below specifically for this problem.\\
+\begin{center}
+ 	$S(t)_{diag}=\begin{bmatrix} 
+		S_1(t)  & 0.0 & 0.0 & 0.0 & 0.0 \\
+		0.0  & S_2(2) & 0.0 & 0.0   & 0.0 \\
+		0.0  & 0.0 & S_3(t) & 0.0 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & S_4(t) & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 0.0 & S_5(t) \\
+	\end{bmatrix}$
+\end{center}
+Now formalizing the network at time step 0, we can define the populations percentages amongst nodes as row-vectors where each column in the row represents the different percentages at that node.  So for this equation we get\\
+\begin{center}
+ 	$S(0)=\begin{bmatrix} 
+		0.99  &
+		1.0  &
+		1.0  &
+		1.0 &
+		1.0  &
+	\end{bmatrix}$\\
+ 	$I(0)=\begin{bmatrix} 
+		0.01  &
+		0.0  &
+		0.0  &
+		0.0  &
+		0.0  &
+	\end{bmatrix}$\\
+ 	$R(0)=\begin{bmatrix} 
+		0.0  &
+		0.0  &
+		0.0  &
+		0.0  &
+		0.0  &
+	\end{bmatrix}$\\
+\end{center}
+Now, to solve the percentage for each nodes populations for time step $t=1$ we can code this into a quick python program to perform dot and matrix multiplication to help check our work and further exploration into this network for further problems.  For this problem we will do the first equation to show understanding of the process.  First we want to solve for S(1), so\\
 \begin{align*}
-R_i(t+1) 	&=  R_i(t) + \big(\gamma \times I_i(t)\big)\\
-		&=  R_i(0) + \big(\gamma \times I_i(0)\big)\\
-		&=  0 + \big(0.5 \times 0 \big)\\
+	S(1) &=
+		\begin{bmatrix} 
+		0.01 &
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		\end{bmatrix}
+		 - 0.8 
+		\begin{bmatrix} 
+		0.99  & 0.0 & 0.0 & 0.0 & 0.0 \\
+		0.0  & 1.0 & 0.0 & 0.0   & 0.0 \\
+		0.0  & 0.0 & 1.0 & 0.0 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 1.0 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 0.0 & 1.0 \\
+		\end{bmatrix}
+		\begin{bmatrix} 
+		0.8  & 0.0 & 0.0 & 0.05 & 0.15 \\
+		1.0  & 0.0 & 0.0 & 0.0   & 0.0 \\
+		0.3  & 0.2 & 0.5 & 0.0 & 0.0 \\
+		0.0  & 0 .0 & 0.05 & 0.95 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 0.2 & 0.8 \\
+		\end{bmatrix}
+		\begin{bmatrix} 
+		0.01 \\
+		0.0 	\\
+		0.0 	\\
+		0.0 	\\
+		0.0 	\\
+		\end{bmatrix}\\
+&=
+		\begin{bmatrix} 
+		0.01 &
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		\end{bmatrix}
+		 - 
+		\begin{bmatrix} 
+		0.72  & 0.0 & 0.0 & 0.0 & 0.0 \\
+		0.0  & 0.8 & 0.0 & 0.0   & 0.0 \\
+		0.0  & 0.0 & 0.8 & 0.0 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 0.8 & 0.0 \\
+		0.0  & 0 .0 & 0.0 & 0.0 & 0.8 \\
+		\end{bmatrix}
+		\begin{bmatrix} 
+		0.8  & 0.0 & 0.0 & 0.05 & 0.15 \\
+		1.0  & 0.0 & 0.0 & 0.0   & 0.0 \\
+		0.3  & 0.2 & 0.5 & 0.0 & 0.0 \\
+		0.0  & 0.0 & 0.05 & 0.95 & 0.0 \\
+		0.0  & 0.0 & 0.0 & 0.2 & 0.8 \\
+		\end{bmatrix}
+		\begin{bmatrix} 
+		0.01 \\
+		0.0 	\\
+		0.0 	\\
+		0.0 	\\
+		0.0 	\\
+		\end{bmatrix}\\
+&=
+		\begin{bmatrix} 
+		0.01 &
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		\end{bmatrix}
+		 - 
+		\begin{bmatrix} 
+		0.576  	& 0.0 	& 0.0 	& 0.036 	& 0.108 \\
+		0.8  		& 0.0 	& 0.0 	&  0.0   	& 0.0 \\
+		0.24  	& 0.16 	& 0.4 	& 0.0 	& 0.0 \\
+		0.0  		& 0.0 	& 0.04 	& 0.76 	& 0.0 \\
+		0.0  		& 0.0 	& 0.0 	& 0.16 	& 0.64 \\
+		\end{bmatrix}
+		\begin{bmatrix} 
+		0.01 \\
+		0.0 	\\
+		0.0 	\\
+		0.0 	\\
+		0.0 	\\
+		\end{bmatrix}\\
+&=
+		\begin{bmatrix} 
+		0.01 &
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		0.0 	&
+		\end{bmatrix}
+		 - 
+		\begin{bmatrix} 
+		0.05925912    &
+		0.09257881    &
+		0.09738077 	&
+		0.02193127 	&
+		0.00471134 	&
+		\end{bmatrix}\\
+&=
+		\begin{bmatrix} 
+		0.8424    &
+		0.92    	&
+		0.976 	&
+		1.0 		&
+		1.0 		&
+		\end{bmatrix}\\
 \end{align*}
-}
-\textcolor{blue}{
+Now with out found percentage of people infected at each node for time step 0 we proceed to find the percentage of people infected at each node by using the equation defined earlier.  It is not hard to see that the middle part of the equation is just the same as what we just solved for so we can proceed with the equation for find the percentage of infected at each node like so,\\
 \begin{align*}
-S_i(t+1) 	&=  S_i(t) \times \left( 1 - \frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\right)\\
-		&=	S_i(0) \times \left( 1 - \frac{\beta \times a_{ij} \times S_i(0) \times I_i(0)}{N_i}\right)\\
-		&=	1  \times \left( 1- \frac{0.8 \times a_{ij} \times 0.99 \times 0.01}{1}\right)\\
+	I(1) &=
+		\begin{bmatrix} 
+		0.1    	&
+		0.0    	&
+		0.0 		&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}
+		+
+		\begin{bmatrix} 
+		0.8424   	&
+		0.92    	&
+		0.976 	&
+		1.0 		&
+		1.0 		&
+		\end{bmatrix}
+		- \gamma
+		\begin{bmatrix} 
+		0.1    	&
+		0.0    	&
+		0.0 		&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}\\
+	      &=
+		\begin{bmatrix} 
+		0.1576    	&
+		0.08    	&
+		0.024	&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}
+		- 
+		\begin{bmatrix} 
+		0.04    	&
+		0.0    	&
+		0.0 		&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}\\
+	      &=
+		\begin{bmatrix} 
+		0.1176    	&
+		0.08    	&
+		0.024	&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}\\
 \end{align*}
+Now that we have found the percentage of people infected at each node we can easily find the percentage of people who have recovered.\\
 \begin{align*}
-I_i(t+1) 	&=  I_i(t) + \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\right) - (\gamma I_i(t))\\
-		&=	I_i(0) + \left(\frac{\beta \times a_{ij} \times S_i(t) \times I_i(0)}{N_i}\right) - (\gamma I_i(0))\\
-		&=	0 + \left(\frac{0..8 \times a_{ij} \times 1 \times 0}{1}\right) - (0.5 \times 0)\\
+	R(1) &=
+		\begin{bmatrix} 
+		0.0    	&
+		0.0    	&
+		0.0 		&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}
+		+
+		\begin{bmatrix} 
+		0.04   	&
+		0.0    	&
+		0.0	 	&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}\\
+	      &=
+		\begin{bmatrix} 
+		0.04    	&
+		0.0    	&
+		0.0 		&
+		0.0 		&
+		0.0 		&
+		\end{bmatrix}\\
 \end{align*}
-\begin{align*}
-R_i(t+1) 	&=  R_i(t) + \big(\gamma \times I_i(t)\big)\\
-		&=  R_i(0) + \big(\gamma \times I_i(0)\big)\\
-		&=  0 + \big(0.5 \times 0 \big)\\
-\end{align*}
-}
-\textcolor{green}{
-\begin{align*}
-S_i(t+1) 	&=  S_i(t) - \sum_{j=0}^{n} \frac{\beta \times a_{ij} \times S_i(t) \times I_i(t)}{N_i}\\
-		&=	S_i(0) \times (\beta \times S_i(0)) \times \sum_{j=0}^{n}  a_{ij} \frac{I_i(0)}{N_i}\\
-		&=	1 \times (0.8 \times 1) \times \textcolor{orange}{\sum_{j=0}^{n}  a_{ij} \frac{ I_i(0)}{N_i}}\\
-\end{align*}
-The part of the equation in the orange color can also be described as a matrix with diagnol corresponding values for each iteartion, $n$, 
-$\begin{bmatrix} 
-	s_1(t) & 0.0  & 0.0 & 0.0 \\
-	0.0 & s_2(t)  & 0.0 & 0.0 \\
-	0.0 & 0.0  & . . . .  & 0.0 \\
-	0.0 & 0.0  & 0.0 & s_n(t) \\
-\end{bmatrix}$\\
-}
+So as we can see after one time step with only node 1 being infectious and all the nodes being susceptible that the infection has moved to two more nodes, nodes 2 \& 3, and node 1's population has recovered by 4\%. For our values we found,\\
+\begin{center}
+ 	$S(1)=\begin{bmatrix} 
+		0.8424    &
+		0.92    	&
+		0.976 	&
+		1.0 		&
+		1.0 		&
+	\end{bmatrix}$\\
+ 	$I(1)=\begin{bmatrix} 
+		0.1176    	&
+		0.08    	&
+		0.024	&
+		0.0 		&
+		0.0 		&
+	\end{bmatrix}$\\
+ 	$R(1)=\begin{bmatrix} 
+		0.04  &
+		0.0  &
+		0.0  &
+		0.0  &
+		0.0  &
+	\end{bmatrix}$\\
+\end{center}
 \end{enumerate}
 }
 
@@ -103,7 +322,7 @@ $\begin{bmatrix}
 Answers:
 \begin{enumerate}
 	\setcounter{enumi}{1}
-	\item How many time steps would it take before someone is infected in every node?
+	\item It would appear that it would not take long for the infection to spread as all the network is complete and strongly connected. With the implemented coded network and code provided in the hand out it seems that by time step 4 someone is infected in every node with node 5 being the last to be infected with only \%0.3 of the population being infected.   
 \end{enumerate}
 }
 
