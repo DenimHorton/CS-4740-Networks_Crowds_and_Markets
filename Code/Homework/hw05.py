@@ -45,7 +45,7 @@ def SIR(beta, gamma, A, I0, timesteps, show_plot=False, node=1) :
         SS[:,t] = SS[:,t-1] - new_infections
         II[:,t] = II[:,t-1] + new_infections - heals
         RR[:,t] = RR[:,t-1] + heals
-        
+
     if show_plot:
         showPlot(SS, II, RR, node, timesteps)
 
@@ -131,8 +131,6 @@ while  True:
         break
     q3_timesteps += 1
 
-
-
 print(f"Last ten time steps of {q3_timesteps-1}")
 print("\tS_i(t):\t")
 print(printPrettyMatrix("",Q3_SS[:, q3_timesteps-10:q3_timesteps]))
@@ -140,8 +138,6 @@ print("\tI_i(t):\t")
 print(printPrettyMatrix("",  Q3_II[:, q3_timesteps-10:q3_timesteps]))
 print("\tR_i(t):\t")
 print(printPrettyMatrix("", Q3_RR[:, q3_timesteps-10:q3_timesteps]))
-
-input()
 
 
 #########################################################
@@ -167,6 +163,22 @@ print("\tI_i(t):\t")
 print(printPrettyMatrix("",  Q4_II))
 print("\tR_i(t):\t")
 print(printPrettyMatrix("", Q4_RR))
+
+while  True:
+    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps, node = 2, show_plot=False)
+    if (Q4_II[:, q4_timesteps][1] != 0.0):
+        print(f"Node 2 is infected are infected at time step {q4_timesteps} \t{Q4_II[:, q4_timesteps]}")
+        break
+    if q3_timesteps % 5 == 0:
+        print(f"Step:\t{q4_timesteps}")
+        print(f"Node 2 infection %:{Q4_II[:, q4_timesteps][1]}")
+        print(F"The rest of the network {Q4_II[:, q4_timesteps]}")
+        showPlot(Q4_SS, Q4_II, Q4_RR, 2, q4_timesteps)
+    if q4_timesteps > 45:
+        break
+    q4_timesteps += 1
+
+print(f"Last ten time steps of {q4_timesteps-1}")
 
 #########################################################
 # Homework 05: Question 5
