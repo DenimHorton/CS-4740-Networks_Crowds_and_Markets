@@ -71,7 +71,8 @@ class NetWork(nx.DiGraph):
                                                    with_labels=True, node_size=300, 
                                                    width=2.5, node_shape="8", 
                                                    node_color="#000000", 
-                                                   font_color="#FFFFFF")        
+                                                   font_color="#FFFFFF",
+                                                   font_size=8)        
         # Show each graph.                    
         plt.show()
     
