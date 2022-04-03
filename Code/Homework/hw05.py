@@ -201,6 +201,7 @@ while True:
         print(f"Node 2 infection %:{Q5_II[:, q5_timesteps][1]}")
         print(F"The rest of the network {Q5_II[:, q5_timesteps]}")
         showPlot(Q5_SS, Q5_II, Q5_RR, 2, q5_timesteps)
+
     if q5_timesteps > 50:
         break
     q5_timesteps += 1
