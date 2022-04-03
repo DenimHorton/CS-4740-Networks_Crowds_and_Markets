@@ -12,13 +12,15 @@ def printPrettyMatrix(objStr, matrix):
     objStr=objStr[:-5]+"]" 
     return objStr  
 
-def showPlot(PlotSS, PlotII, PlotRR):
-    plt.plot(PlotSS[0,:]) # just plot node 0's susceptible over time
-    plt.plot(PlotII[0,:]) # just plot node 0's infection over time
-    plt.plot(PlotRR[0,:]) # just plot node 0's recovery over time
+def showPlot(PlotSS, PlotII, PlotRR, node, ts):
+    plt.title(f"Node {node}")
+    S_i = plt.plot(PlotSS[node,:], label=f'S{node}({ts})') # just plot node 0's susceptible over time
+    I_i = plt.plot(PlotII[node,:], label=f'I{node}({ts})') # just plot node 0's infection over time
+    R_i = plt.plot(PlotRR[node,:], label=f'R{node}({ts})') # just plot node 0's recovery over time
+    plt.legend()
     plt.show() 
 
-def SIR(beta, gamma, A, I0, timesteps, show_plot=False) :
+def SIR(beta, gamma, A, I0, timesteps, show_plot=False, node=1) :
     ''' 
     Notes: 
       - assumes that everything is dimensioned correctly
@@ -39,12 +41,13 @@ def SIR(beta, gamma, A, I0, timesteps, show_plot=False) :
         bigS = np.diag(SS[:,t-1])
         new_infections = beta * bigS @ A @ II[:,t-1]
         heals = gamma*II[:,t-1]
+
         SS[:,t] = SS[:,t-1] - new_infections
         II[:,t] = II[:,t-1] + new_infections - heals
         RR[:,t] = RR[:,t-1] + heals
-
+        
     if show_plot:
-        showPlot(SS, II, RR)
+        showPlot(SS, II, RR, node, timesteps)
 
     return SS,II,RR
 
@@ -61,13 +64,14 @@ Q1_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
 q1_timesteps = 1
-Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps, show_plot=False)
-print("S_i(t):\t")
+
+Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps+1, show_plot=False)
+print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q1_SS))
-print("I_i(t):\t")
+print("\tI_i(t):\t")
 print(printPrettyMatrix("",  Q1_II))
-print("R_i(t):\t")
-print(printPrettyMatrix("", Q1_SS))
+print("\tR_i(t):\t")
+print(printPrettyMatrix("", Q1_RR))
 
 #########################################################
 # Homework 05: Question 2
@@ -79,15 +83,23 @@ Q2_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
-q2_timesteps = 7
-Q2_SS, Q2_II, Q2_RR = SIR(beta, gamma, Q2_graph_adj, Q2_og_infection, q2_timesteps, show_plot=True)
-print("S_i(t):\t")
+q2_timesteps = 0
+
+while  True:
+    Q2_SS, Q2_II, Q2_RR = SIR(beta, gamma, Q2_graph_adj, Q2_og_infection, q2_timesteps+1, show_plot=False)
+    if np.all(Q2_II[:, q2_timesteps] != 0.0):
+        print(f"all nodes are infected at time step {q2_timesteps} \t{Q2_II[:, q2_timesteps]}")
+        break
+
+    q2_timesteps += 1   
+
+print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q2_SS))
-print("I_i(t):\t")
+print("\tI_i(t):\t")
 print(printPrettyMatrix("",  Q2_II))
-print("R_i(t):\t")
-print(printPrettyMatrix("", Q2_SS))
-print("At time step 6 all nodes are infected . . .")
+print("\tR_i(t):\t")
+print(printPrettyMatrix("", Q2_RR))
+
 
 #########################################################
 # Homework 05: Question 3
@@ -97,21 +109,40 @@ print("\tSuppose that the connection between node 2 and node 1 is removed. If\n"
       "\tnothing else changes in the network, would this change the spread of\n",
       "\tthe epidemic? Can you predict how many people in node 2 would eventually\n",
       "\tget sick?\n")
-Q3_og_infection = [0.0, 0.1, 0.0, 0.0, 0.0]
+Q3_og_infection = [0.1, 0.0, 0.0, 0.0, 0.0]
 Q3_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.0, 0.0, 0.0],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
-q3_timesteps = 50
-Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps, show_plot=True)
+q3_timesteps = 0
 
-print("S_i(t):\t")
-print(printPrettyMatrix("", Q3_SS))
-print("I_i(t):\t")
-print(printPrettyMatrix("",  Q3_II))
-print("R_i(t):\t")
-print(printPrettyMatrix("", Q3_SS))
+while  True:
+    Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps+1, node=2, show_plot=False)
+    if (Q3_II[:, q3_timesteps][1] != 0.0):
+        print(f"Node 2 is infected are infected at time step {q3_timesteps} \t{Q3_II[:, q3_timesteps]}")
+        break
+    if q3_timesteps % 5 == 0:
+        print(f"Step:\t{q3_timesteps}")
+        print(f"Node 2 infection %:{Q3_II[:, q3_timesteps][1]}")
+        print(F"The rest of the network {Q3_II[:, q3_timesteps]}")
+        showPlot(Q3_SS, Q3_II, Q3_RR, 2, q3_timesteps)
+    if q3_timesteps > 45:
+        break
+    q3_timesteps += 1
+
+
+
+print(f"Last ten time steps of {q3_timesteps-1}")
+print("\tS_i(t):\t")
+print(printPrettyMatrix("",Q3_SS[:, q3_timesteps-10:q3_timesteps]))
+print("\tI_i(t):\t")
+print(printPrettyMatrix("",  Q3_II[:, q3_timesteps-10:q3_timesteps]))
+print("\tR_i(t):\t")
+print(printPrettyMatrix("", Q3_RR[:, q3_timesteps-10:q3_timesteps]))
+
+input()
+
 
 #########################################################
 # Homework 05: Question 4
@@ -128,14 +159,14 @@ Q4_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
 q4_timesteps = 50
-Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps, show_plot=True)
+Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps, show_plot=False)
 
-print("S_i(t):\t")
+print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q4_SS))
-print("I_i(t):\t")
+print("\tI_i(t):\t")
 print(printPrettyMatrix("",  Q4_II))
-print("R_i(t):\t")
-print(printPrettyMatrix("", Q4_SS))
+print("\tR_i(t):\t")
+print(printPrettyMatrix("", Q4_RR))
 
 #########################################################
 # Homework 05: Question 5
@@ -153,11 +184,11 @@ Q5_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
 q5_timesteps = 20
-Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps, show_plot=True)
+Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps, show_plot=False)
 
-print("S_i(t):\t")
+print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q5_SS))
-print("I_i(t):\t")
+print("\tI_i(t):\t")
 print(printPrettyMatrix("",  Q5_II))
-print("R_i(t):\t")
-print(printPrettyMatrix("", Q5_SS))
+print("\tR_i(t):\t")
+print(printPrettyMatrix("", Q5_RR))
