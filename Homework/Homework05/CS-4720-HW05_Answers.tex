@@ -354,7 +354,7 @@ Answers:
 Answers:
 \begin{enumerate}
 	\setcounter{enumi}{3}
-	\item Repeat that same thought experiment, but this time let the initial infection start on node 2 (so $I_2(0) = 0.01$ and $S_2(0) = 0.99$, but all other nodes have $S_i(0)=1$, $I_i(0)=0$  and $R_i(0)=0$). Now can you predict how many people in node 2 would eventually get sick?
+	\item After adjusting the adjacent matrix and first infected node we see that the number of people that can inffected is about the same bust seems to be prolonged over a longer period of time. We can see this in Figure 1.3 which might seem to have a smiliar peak to figure 1.2 but this graph is prolonged over 50 and we can see that the peak seems to happen in latter time steps. 
 \begin{center}
 	\includegraphics[scale=0.8]{Figure1.3}\\
 	Figure 1.3
@@ -372,7 +372,11 @@ Answers:
 Answers:
 \begin{enumerate}
 	\setcounter{enumi}{4}
-	\item Instead, suppose you remove the connection from node 2 to node 1, and replace it with a self-loop on 2 with weight 1. If nothing else changes in the network (and the infection starts at node 1), would this change the spread of the epidemic? Can you predict how many people in node 2 would eventually get sick?
+	\item Once again it seem like node 2 has a vary small infection percentage overall, however the curve of infected at node 2 does seem to be more prolonged and doesn't seem to fully fall back to 0.0 as fast as in the other questions.  This can probably be assumed to be because the self loop keeps the infection in population longer.  However it would also be safe to assume the that other nodes are not influences much by this change since node 2 has no outgoing edges. In Figure 1.4 below we that this curve seems to not be as smooth which may also be contributed to the infection not being able to infect the percentage of the population that are immune and the population the is contagious.
+\begin{center}
+	\includegraphics[scale=0.8]{Figure1.4}\\
+	Figure 1.4
+\end{center}
 \end{enumerate}
 }
 \end{document}
