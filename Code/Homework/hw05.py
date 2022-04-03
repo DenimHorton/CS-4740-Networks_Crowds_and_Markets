@@ -65,7 +65,7 @@ Q1_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
 q1_timesteps = 1
 
-Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps+1, show_plot=False)
+Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps+1, show_plot=True)
 print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q1_SS))
 print("\tI_i(t):\t")
@@ -86,7 +86,7 @@ Q2_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q2_timesteps = 0
 
 while  True:
-    Q2_SS, Q2_II, Q2_RR = SIR(beta, gamma, Q2_graph_adj, Q2_og_infection, q2_timesteps+1, show_plot=False)
+    Q2_SS, Q2_II, Q2_RR = SIR(beta, gamma, Q2_graph_adj, Q2_og_infection, q2_timesteps+1, show_plot=True)
     if np.all(Q2_II[:, q2_timesteps] != 0.0):
         print(f"all nodes are infected at time step {q2_timesteps} \t{Q2_II[:, q2_timesteps]}")
         break
@@ -118,7 +118,7 @@ Q3_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q3_timesteps = 0
 
 while  True:
-    Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps+1, node=2, show_plot=False)
+    Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps+1, node=2, show_plot=True)
     if (Q3_II[:, q3_timesteps][1] != 0.0):
         print(f"Node 2 is infected are infected at time step {q3_timesteps} \t{Q3_II[:, q3_timesteps]}")
         break
@@ -157,7 +157,7 @@ Q4_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q4_timesteps = 0
 
 while True:
-    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps+1, node = 2, show_plot=False)
+    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps+1, node = 2, show_plot=True)
     if q4_timesteps % 25 == 0:
         print(f"Step:\t{q4_timesteps}")
         print(f"Node 2 infection %:{Q4_II[:, q4_timesteps][1]}")
@@ -195,7 +195,7 @@ Q5_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q5_timesteps = 0
 
 while True:
-    Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps+1, node = 2, show_plot=False)
+    Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps+1, node = 2, show_plot=True)
     if q5_timesteps % 25 == 0:
         print(f"Step:\t{q5_timesteps}")
         print(f"Node 2 infection %:{Q5_II[:, q5_timesteps][1]}")
