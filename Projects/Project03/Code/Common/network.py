@@ -120,11 +120,7 @@ class NetWork(nx.DiGraph):
         new_lambda_diag = np.column_stack((new_lambda_diag, new_row))
         self.lambda_opinions = self.lambda_opinions.copy()
         self.network_np_matrix = new_network
-        print(self.lambda_opinions)
-        print(np.array([0]))
-
         self.lambda_opinions = np.r_[self.lambda_opinions, np.array([0])]
-        print(self.lambda_opinions)
         self.add_node(f"q_{network_n_size+1}")
 
 

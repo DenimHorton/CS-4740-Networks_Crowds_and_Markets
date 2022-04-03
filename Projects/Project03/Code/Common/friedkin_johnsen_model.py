@@ -43,15 +43,19 @@ class FriedkinJohnsenModel:
 
   def performFriedkinJohnsenStep(self, mx_stps, og_opnins, step, I, Lam,  verbose):
     if verbose:
-      print("Lam:")
-      print(Lam)
-      print(f"Adj.:")
-      print(self.network.network_np_matrix)
-      print(f"???:")
-      print(self.step_t_db[:,step-1])
-      print(f"I matrix:")
-      print(I)
-      print(Lam@self.network.network_np_matrix@self.step_t_db[:,step-1] + (I-Lam)@og_opnins)
+      # print("Lam:")
+      # print(Lam)
+      # print(f"Adj.:")
+      # print(self.network.network_np_matrix)
+      # print(f"???:")
+      # print(self.step_t_db[:,step-1])
+      # print(f"I matrix:")
+      # print(I)
+      print("<Lam> @ <adj.> @ <step-t matrix [t-1]> + (<identity matrix> - <lambda diag>) @ <original opinions>" )
+      print(Lam, " @ ", self.network.network_np_matrix, f" @ {self.step_t_db[:,step-1]} + ({I} - {Lam})@{og_opnins.T} ")
+      print(Lam@self.network.network_np_matrix, f" @ {self.step_t_db[:,step-1]} + ({I} - {Lam})@{og_opnins.T} ")
+      print(Lam@self.network.network_np_matrix@self.step_t_db[:,step-1], f" + ({I - Lam})@{og_opnins.T} ")
+      print(f"{Lam@self.network.network_np_matrix@self.step_t_db[:,step-1]} + {(I-Lam)@og_opnins}")
 
     self.step_t_db[:,step] = Lam@self.network.network_np_matrix@self.step_t_db[:,step-1] + (I-Lam)@og_opnins
     
