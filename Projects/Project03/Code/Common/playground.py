@@ -14,17 +14,13 @@ graph1 = NetWork(grph_nm="Play Ground Graph 01", jsn_fl_pth='.\\Inputs\\GraphTes
 jfModel = FriedkinJohnsenModel(graph1)
 
 
-
-
-
-print(jfModel.performTrainingSes(verbose=True))
-print(jfModel)
-
+# print(jfModel.performTrainingSes(verbose=True))
+# print(jfModel)
+jfModel.addNodeToNetwork()
+jfModel.addEdgeToNetwork(10, 11)
 
 # graph1.showNetworkGraph()
-
 
 # for i in graph1.adjacency():
 #     print(i)
  
-

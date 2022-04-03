@@ -1,9 +1,10 @@
-from network import NetWork
 import numpy as np
 import matplotlib.pyplot as plt
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Tools.print_matrix_pretty import *
+from Common.network import NetWork
+
 
 
 class FriedkinJohnsenModel:
@@ -43,4 +44,11 @@ class FriedkinJohnsenModel:
       print(Lam@self.network.network_np_matrix@self.step_t_db[:,step-1] + (I-Lam)@og_opnins)
     self.step_t_db[:,step] = Lam@self.network.network_np_matrix@self.step_t_db[:,step-1] + (I-Lam)@og_opnins
     return self.step_t_db
+
+  def addNodeToNetwork(self):
+    self.network.addNode(self.n_size)
+    self.n_size += 1
+
+  def addEdgeToNetwork(self, residence, new_neighbor):
+    self.network.addEdge(residence, new_neighbor)
 

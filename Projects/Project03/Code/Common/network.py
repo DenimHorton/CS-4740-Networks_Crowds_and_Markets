@@ -61,7 +61,7 @@ class NetWork(nx.DiGraph):
             for col in range(n):
                 effect = self.network_np_matrix[row][col]
                 if effect != 0.0:
-                    self.add_edge(f"q_{row}", f"q_{col}", weight=effect)
+                    self.add_edge(f"q_{row+1}", f"q_{col+1}", weight=effect)
                     
     def showNetworkGraph(self, network_graph_title=""):
         # Set tittle of graph
@@ -107,6 +107,22 @@ class NetWork(nx.DiGraph):
         self.network_np_matrix = np.array(np_lst_rows)
         jsonFile.close()
         self.buildGraphFromNPArray_withForLoop(self.network_np_matrix) 
+
+    def addNode(self, network_n_size):
+        new_col = np.array([0.0 for i in range(network_n_size)])
+        new_row = np.array([0.0 for i in range(network_n_size+1)])
+        new_network = self.network_np_matrix.copy()
+        new_network = np.vstack((new_network, new_col))
+        new_network = np.column_stack((new_network, new_row))
+        self.network_np_matrix = new_network
+        self.add_node(f"q_{network_n_size+1}")
+
+    def addEdge(self, residence, new_neighbor):
+        self.add_edge(f"q_{residence}", f"q_{new_neighbor}", weight=0.5)
+        node_row = self.network_np_matrix[residence-1]
+        self.network_np_matrix[residence-1] = node_row * 0.5
+        self.network_np_matrix[residence-1][new_neighbor-1]=0.5
+
 
     # def performStep(self, max_steps=10, method="Friedkin-Johnsen"):
     #     t = 0
