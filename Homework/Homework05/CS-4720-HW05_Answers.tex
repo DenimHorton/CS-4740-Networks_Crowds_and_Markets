@@ -101,7 +101,7 @@ Now, to solve the percentage for each nodes populations for time step $t=1$ we c
 \begin{align*}
 	S(1) &=
 		\begin{bmatrix} 
-		0.01 &
+		0.01   &
 		0.0 	&
 		0.0 	&
 		0.0 	&
@@ -131,7 +131,7 @@ Now, to solve the percentage for each nodes populations for time step $t=1$ we c
 		\end{bmatrix}\\
 &=
 		\begin{bmatrix} 
-		0.01 &
+		0.01   &
 		0.0 	&
 		0.0 	&
 		0.0 	&
@@ -139,7 +139,7 @@ Now, to solve the percentage for each nodes populations for time step $t=1$ we c
 		\end{bmatrix}
 		 - 
 		\begin{bmatrix} 
-		0.72  & 0.0 & 0.0 & 0.0 & 0.0 \\
+		0.792  & 0.0 & 0.0 & 0.0 & 0.0 \\
 		0.0  & 0.8 & 0.0 & 0.0   & 0.0 \\
 		0.0  & 0.0 & 0.8 & 0.0 & 0.0 \\
 		0.0  & 0 .0 & 0.0 & 0.8 & 0.0 \\
@@ -169,11 +169,11 @@ Now, to solve the percentage for each nodes populations for time step $t=1$ we c
 		\end{bmatrix}
 		 - 
 		\begin{bmatrix} 
-		0.576  	& 0.0 	& 0.0 	& 0.036 	& 0.108 \\
-		0.8  		& 0.0 	& 0.0 	&  0.0   	& 0.0 \\
-		0.24  	& 0.16 	& 0.4 	& 0.0 	& 0.0 \\
-		0.0  		& 0.0 	& 0.04 	& 0.76 	& 0.0 \\
-		0.0  		& 0.0 	& 0.0 	& 0.16 	& 0.64 \\
+		0.6336  	& 0.0 		& 0.0 		& 0.0396 		& 0.1188 \\
+		0.8  		& 0.0 		& 0.0 		&  0.0   		& 0.0 \\
+		0.24  		& 0.16 	& 0.4 		& 0.0 			& 0.0 \\
+		0.0  		& 0.0 		& 0.04 	& 0.76 		& 0.0 \\
+		0.0  		& 0.0 		& 0.0 		& 0.16 		& 0.64 \\
 		\end{bmatrix}
 		\begin{bmatrix} 
 		0.01 \\
@@ -192,17 +192,17 @@ Now, to solve the percentage for each nodes populations for time step $t=1$ we c
 		\end{bmatrix}
 		 - 
 		\begin{bmatrix} 
-		0.05925912    &
-		0.09257881    &
-		0.09738077 	&
-		0.02193127 	&
-		0.00471134 	&
+		0.006336    &
+		0.008    	&
+		0.0024 	&
+		0.0 		&
+		0.0 		&
 		\end{bmatrix}\\
 &=
 		\begin{bmatrix} 
-		0.8424    &
-		0.92    	&
-		0.976 	&
+		0.983664    &
+		0.992    	&
+		0.9976 	&
 		1.0 		&
 		1.0 		&
 		\end{bmatrix}\\
@@ -211,49 +211,49 @@ Now with out found percentage of people infected at each node for time step 0 we
 \begin{align*}
 	I(1) &=
 		\begin{bmatrix} 
-		0.1    	&
-		0.0    	&
+		0.01    	&
+		0.0    		&
 		0.0 		&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}
 		+
 		\begin{bmatrix} 
-		0.8424   	&
-		0.92    	&
-		0.976 	&
-		1.0 		&
-		1.0 		&
+		0.006336    &
+		0.008    	&
+		0.0024 	&
+		0.0 		&
+		0.0 		&
 		\end{bmatrix}
 		- \gamma
 		\begin{bmatrix} 
-		0.1    	&
-		0.0    	&
+		0.004	&
+		0.0    		&
 		0.0 		&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}\\
 	      &=
 		\begin{bmatrix} 
-		0.1576    	&
-		0.08    	&
-		0.024	&
+		0.016336    &
+		0.008    	&
+		0.0024 	&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}
 		- 
 		\begin{bmatrix} 
-		0.04    	&
-		0.0    	&
+		0.0016    	&
+		0.0    		&
 		0.0 		&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}\\
 	      &=
 		\begin{bmatrix} 
-		0.1176    	&
-		0.08    	&
-		0.024	&
+		0.01636    	&
+		0.008  	&
+		0.0024	&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}\\
@@ -262,15 +262,15 @@ Now that we have found the percentage of people infected at each node we can eas
 \begin{align*}
 	R(1) &=
 		\begin{bmatrix} 
-		0.0    	&
-		0.0    	&
+		0.0    		&
+		0.0    		&
 		0.0 		&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}
 		+
 		\begin{bmatrix} 
-		0.04   	&
+		0.004   	&
 		0.0    	&
 		0.0	 	&
 		0.0 		&
@@ -278,35 +278,35 @@ Now that we have found the percentage of people infected at each node we can eas
 		\end{bmatrix}\\
 	      &=
 		\begin{bmatrix} 
-		0.04    	&
-		0.0    	&
+		0.004    	&
+		0.0    		&
 		0.0 		&
 		0.0 		&
 		0.0 		&
 		\end{bmatrix}\\
 \end{align*}
-So as we can see after one time step with only node 1 being infectious and all the nodes being susceptible that the infection has moved to two more nodes, nodes 2 \& 3, and node 1's population has recovered by 4\%. For our values we found,\\
+So as we can see after one time step with only node 1 being infectious and all the nodes being susceptible that the infection has moved to two more nodes, nodes 2 \& 3, and node 1's population has recovered by 0.4\%. For our values we found,\\
 \begin{center}
  	$S(1)=\begin{bmatrix} 
-		0.8424    &
-		0.92    	&
-		0.976 	&
+		0.983664    &
+		0.992    	&
+		0.9976 	&
 		1.0 		&
 		1.0 		&
 	\end{bmatrix}$\\
  	$I(1)=\begin{bmatrix} 
-		0.1176    	&
-		0.08    	&
-		0.024	&
+		0.01636    	&
+		0.008  	&
+		0.0024	&
 		0.0 		&
 		0.0 		&
 	\end{bmatrix}$\\
  	$R(1)=\begin{bmatrix} 
-		0.04  &
-		0.0  &
-		0.0  &
-		0.0  &
-		0.0  &
+		0.004    	&
+		0.0    		&
+		0.0 		&
+		0.0 		&
+		0.0 		&
 	\end{bmatrix}$\\
 \end{center}
 \end{enumerate}
