@@ -20,10 +20,12 @@ jfModel = FriedkinJohnsenModel(graph1)
 jfModel.addNodeToNetwork()
 jfModel.addEdgeToNetwork(10, 11)
 
+jfModel.performTrainingSes(verbose=True)
 
-print(jfModel.performTrainingSes(verbose=True))
+jfModel.performTrainingSes(verbose=False)
 
-graph1.showNetworkGraph()
+
+# graph1.showNetworkGraph()
 
 # for i in graph1.adjacency():
 #     print(i)

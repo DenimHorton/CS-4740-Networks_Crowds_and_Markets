@@ -12,15 +12,15 @@ def printPrettyMatrix(objStr, matrix):
     objStr=objStr[:-5]+"]" 
     return objStr  
 
-def showPlot(PlotSS, PlotII, PlotRR, node, ts):
-    plt.title(f"Node {node} Infctd:{np.max(PlotII)}")
+def showPlot(PlotSS, PlotII, PlotRR, node, ts, main_title):
+    plt.title(f"{main_title}\nNode {node} Infctd:{np.max(PlotII)}")
     S_i = plt.plot(PlotSS[node,:], label=f'S_{node}({ts})') # just plot node 0's susceptible over time
     I_i = plt.plot(PlotII[node,:], label=f'I_{node}({ts})') # just plot node 0's infection over time
     R_i = plt.plot(PlotRR[node,:], label=f'R_{node}({ts})') # just plot node 0's recovery over time
     plt.legend()
     plt.show() 
 
-def SIR(beta, gamma, A, I0, timesteps, show_plot=False, node=1) :
+def SIR(beta, gamma, A, I0, timesteps, show_plot=False, node=1, main_title="Question 00") :
     ''' 
     Notes: 
       - assumes that everything is dimensioned correctly
@@ -47,7 +47,7 @@ def SIR(beta, gamma, A, I0, timesteps, show_plot=False, node=1) :
         RR[:,t] = RR[:,t-1] + heals
 
     if show_plot:
-        showPlot(SS, II, RR, node, timesteps)
+        showPlot(SS, II, RR, node, timesteps, main_title)
 
     return SS,II,RR
 
@@ -57,15 +57,19 @@ def SIR(beta, gamma, A, I0, timesteps, show_plot=False, node=1) :
 print("\nQuestion 1:")
 beta = 0.8
 gamma = 0.4
-Q1_og_infection = [0.1, 0.0, 0.0, 0.0, 0.0]
+Q1_og_infection = [0.01, 0.0, 0.0, 0.0, 0.0]
 Q1_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [1.0, 0.0, 0.0, 0.0, 0.0],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
                          [0.0, 0.0, 0.05, 0.95, 0.0],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
-q1_timesteps = 1
+q1_timesteps = 2
 
+<<<<<<< HEAD
 Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps+1, show_plot=True)
+=======
+Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps, show_plot=True, main_title="Question 01")
+>>>>>>> 053701a3beaaad8ebfd5bfb9d10a01b42ae7a173
 print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q1_SS))
 print("\tI_i(t):\t")
@@ -77,7 +81,7 @@ print(printPrettyMatrix("", Q1_RR))
 # Homework 05: Question 2
 #########################################################
 print("\nQuestion 2:")
-Q2_og_infection = [0.1, 0.0, 0.0, 0.0, 0.0]
+Q2_og_infection = [0.01, 0.0, 0.0, 0.0, 0.0]
 Q2_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [1.0, 0.0, 0.0, 0.0, 0.0],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
@@ -90,6 +94,9 @@ while  True:
     if np.all(Q2_II[:, q2_timesteps] != 0.0):
         print(f"all nodes are infected at time step {q2_timesteps} \t{Q2_II[:, q2_timesteps]}")
         break
+    if q2_timesteps % 2 == 0:    
+        showPlot(Q2_SS, Q2_II, Q2_RR, 2, q2_timesteps, main_title="Question 02")
+
 
     q2_timesteps += 1   
 
@@ -109,7 +116,7 @@ print("\tSuppose that the connection between node 2 and node 1 is removed. If\n"
       "\tnothing else changes in the network, would this change the spread of\n",
       "\tthe epidemic? Can you predict how many people in node 2 would eventually\n",
       "\tget sick?\n")
-Q3_og_infection = [0.1, 0.0, 0.0, 0.0, 0.0]
+Q3_og_infection = [0.01, 0.0, 0.0, 0.0, 0.0]
 Q3_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.0, 0.0, 0.0],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
@@ -120,14 +127,14 @@ q3_timesteps = 0
 while  True:
     Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps+1, node=2, show_plot=True)
     if (Q3_II[:, q3_timesteps][1] != 0.0):
-        print(f"Node 2 is infected are infected at time step {q3_timesteps} \t{Q3_II[:, q3_timesteps]}")
+        print(f"Node 2 is infected at time step {q3_timesteps} \t{Q3_II[:, q3_timesteps]}")
         break
     if q3_timesteps % 5 == 0:
         print(f"Step:\t{q3_timesteps}")
         print(f"Node 2 infection %:{Q3_II[:, q3_timesteps][1]}")
         print(F"The rest of the network {Q3_II[:, q3_timesteps]}")
-        # showPlot(Q3_SS, Q3_II, Q3_RR, 2, q3_timesteps)
-    if q3_timesteps > 10:
+        showPlot(Q3_SS, Q3_II, Q3_RR, 2, q3_timesteps, "Question 03")
+    if q3_timesteps > 50:
         break
     q3_timesteps += 1
 
@@ -157,12 +164,12 @@ Q4_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q4_timesteps = 0
 
 while True:
-    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps+1, node = 2, show_plot=True)
-    if q4_timesteps % 25 == 0:
+    Q4_SS, Q4_II, Q4_RR = SIR(beta, gamma, Q4_graph_adj, Q4_og_infection, q4_timesteps+1, node = 2, show_plot=False, main_title="Question 04")
+    if q4_timesteps % 10 == 0:
         print(f"Step:\t{q4_timesteps}")
         print(f"Node 2 infection %:{Q4_II[:, q4_timesteps][1]}")
         print(F"The rest of the network {Q4_II[:, q4_timesteps]}")
-        showPlot(Q4_SS, Q4_II, Q4_RR, 2, q4_timesteps)
+        showPlot(Q4_SS, Q4_II, Q4_RR, 2, q4_timesteps, main_title="Question 04")
     if q4_timesteps > 50:
         break
     q4_timesteps += 1
@@ -185,7 +192,7 @@ print("\tInstead, suppose you remove the connection from node 2 to node 1\n",
       "\tchanges in the network (and the infection starts at node 1), would \n",
       "\tthis change the spread of the epidemic? Can you predict how many\n",
       "\tpeople in node 2 would eventually get sick?\n")
-Q5_og_infection = [0.0, 0.1, 0.0, 0.0, 0.0]
+Q5_og_infection = [0.0, 0.01, 0.0, 0.0, 0.0]
 Q5_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 1.0, 0.0, 0.0, 0.0],
                          [0.3, 0.2, 0.5, 0.0, 0.0],
@@ -195,12 +202,12 @@ Q5_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q5_timesteps = 0
 
 while True:
-    Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps+1, node = 2, show_plot=True)
-    if q5_timesteps % 25 == 0:
+    Q5_SS, Q5_II, Q5_RR = SIR(beta, gamma, Q5_graph_adj, Q5_og_infection, q5_timesteps+1, node = 2, show_plot=False, main_title="Question 05")
+    if q5_timesteps % 10 == 0:
         print(f"Step:\t{q5_timesteps}")
         print(f"Node 2 infection %:{Q5_II[:, q5_timesteps][1]}")
         print(F"The rest of the network {Q5_II[:, q5_timesteps]}")
-        showPlot(Q5_SS, Q5_II, Q5_RR, 2, q5_timesteps)
+        showPlot(Q5_SS, Q5_II, Q5_RR, 2, q5_timesteps, "Question 05")
 
     if q5_timesteps > 50:
         break

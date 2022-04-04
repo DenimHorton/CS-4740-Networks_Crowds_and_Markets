@@ -113,10 +113,16 @@ class NetWork(nx.DiGraph):
         new_col = np.array([0.0 for i in range(network_n_size)])
         new_row = np.array([0.0 for i in range(network_n_size+1)])
         new_network = self.network_np_matrix.copy()
+        new_lambda_diag = self.lambda_opinions_diag.copy()
         new_network = np.vstack((new_network, new_col))
         new_network = np.column_stack((new_network, new_row))
+        new_lambda_diag = np.vstack((new_lambda_diag, new_col))
+        new_lambda_diag = np.column_stack((new_lambda_diag, new_row))
+        self.lambda_opinions = self.lambda_opinions.copy()
         self.network_np_matrix = new_network
+        self.lambda_opinions = np.r_[self.lambda_opinions, np.array([0])]
         self.add_node(f"q_{network_n_size+1}")
+
 
     def addEdge(self, residence, new_neighbor):
         self.add_edge(f"q_{residence}", f"q_{new_neighbor}", weight=0.5)
