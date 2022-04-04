@@ -65,11 +65,7 @@ Q1_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
                          [0.0, 0.0, 0.0, 0.2, 0.8]])
 q1_timesteps = 2
 
-<<<<<<< HEAD
-Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps+1, show_plot=True)
-=======
 Q1_SS, Q1_II, Q1_RR = SIR(beta, gamma, Q1_graph_adj, Q1_og_infection, q1_timesteps, show_plot=True, main_title="Question 01")
->>>>>>> 053701a3beaaad8ebfd5bfb9d10a01b42ae7a173
 print("\tS_i(t):\t")
 print(printPrettyMatrix("", Q1_SS))
 print("\tI_i(t):\t")
