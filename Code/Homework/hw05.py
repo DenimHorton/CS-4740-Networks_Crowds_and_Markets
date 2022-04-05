@@ -86,7 +86,7 @@ Q2_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q2_timesteps = 0
 
 while  True:
-    Q2_SS, Q2_II, Q2_RR = SIR(beta, gamma, Q2_graph_adj, Q2_og_infection, q2_timesteps+1, show_plot=False)
+    Q2_SS, Q2_II, Q2_RR = SIR(beta, gamma, Q2_graph_adj, Q2_og_infection, q2_timesteps+1, show_plot=True)
     if np.all(Q2_II[:, q2_timesteps] != 0.0):
         print(f"all nodes are infected at time step {q2_timesteps} \t{Q2_II[:, q2_timesteps]}")
         break
@@ -121,7 +121,7 @@ Q3_graph_adj = np.array([[0.8, 0.0, 0.0, 0.05, 0.15],
 q3_timesteps = 0
 
 while  True:
-    Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps+1, node=2, show_plot=False)
+    Q3_SS, Q3_II, Q3_RR = SIR(beta, gamma, Q3_graph_adj, Q3_og_infection, q3_timesteps+1, node=2, show_plot=True)
     if (Q3_II[:, q3_timesteps][1] != 0.0):
         print(f"Node 2 is infected at time step {q3_timesteps} \t{Q3_II[:, q3_timesteps]}")
         break
