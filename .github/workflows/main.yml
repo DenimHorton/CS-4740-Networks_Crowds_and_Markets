@@ -48,6 +48,8 @@ jobs:
               echo "Saving Iamge to .tar and pushing to repo" 
               docker save --output project03.tar mcr.microsoft.com/windows/nanoserver 
               git status
+              git config --global user.email "denim_horton@hotmail.com"
+              git config --global user.name "DenimHorton"
               git add ./project03.tar
               git commit -m "Adding image from pipeline"
               git push
