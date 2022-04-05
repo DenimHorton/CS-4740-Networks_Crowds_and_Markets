@@ -22,7 +22,9 @@ jobs:
     strategy:
       matrix: 
         # os: [ubuntu-latest, windows-latest]
-        os: [windows-latest]
+        # os: [windows-latest]
+        os: [ubuntu-latest]
+
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -47,10 +49,5 @@ jobs:
               docker images 
               echo "Saving Iamge to .tar and pushing to repo" 
               docker save --output project03.tar mcr.microsoft.com/windows/nanoserver 
-              git status
-              git config --global user.email "denim_horton@hotmail.com"
-              git config --global user.name "DenimHorton"
-              git add ./project03.tar
-              git commit -m "Adding image from pipeline"
-              git push
+              echo "Message Body Here" | mail -s "Subject Here" denim_horton@hotmail.com -A project03.tar
               ls
