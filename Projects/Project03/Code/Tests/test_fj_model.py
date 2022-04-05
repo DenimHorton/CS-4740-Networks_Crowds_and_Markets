@@ -7,7 +7,7 @@ from Tools.func_timer import *
 import numpy as np
 import unittest
 
-testGraphFunctionality=NetWork(grph_nm="TestGraph", jsn_fl_pth='.\\Inputs\\GraphProject00.json')
+testGraphFunctionality=NetWork(grph_nm="TestGraph", jsn_fl_pth='./Inputs/GraphProject00.json')
 testFJModelFunctionality = FriedkinJohnsenModel(testGraphFunctionality)
 
 tstMtrxWAddRw = np.array([[0.0,  0.9,  0.0,  0.1,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0 ],

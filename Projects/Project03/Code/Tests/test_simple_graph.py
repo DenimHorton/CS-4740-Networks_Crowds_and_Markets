@@ -17,7 +17,7 @@ class TestGraphSimple(unittest.TestCase):
 
     def test_simple_network_np_matrix_build(self):
         projectGraphNP=np.array(simpleGraphLst)
-        testGraph.buildGraphFromJSON('.\\Inputs\\GraphTest00.json')
+        testGraph.buildGraphFromJSON('./Inputs/GraphTest00.json')
         comparison = testGraph.network_np_matrix == projectGraphNP
         self.assertTrue(comparison.all())
 

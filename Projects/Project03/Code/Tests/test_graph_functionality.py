@@ -6,7 +6,7 @@ from Tools.func_timer import *
 import numpy as np
 import unittest
 
-testGraphFunctionality=NetWork(grph_nm="TestGraph", jsn_fl_pth='.\\Inputs\\GraphTest03.json')
+testGraphFunctionality=NetWork(grph_nm="TestGraph", jsn_fl_pth='./Inputs/GraphTest03.json')
 
 class TestGraphFunctionality(unittest.TestCase):
     
