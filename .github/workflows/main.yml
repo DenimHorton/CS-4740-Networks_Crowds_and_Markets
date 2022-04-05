@@ -46,6 +46,6 @@ jobs:
         run: |
               git status
               docker images  
-              docker --output project03.tar mcr.microsoft.com/dotnet/framework/runtime 
+              docker save --output project03.tar mcr.microsoft.com/dotnet/framework/runtime 
               git push 
               ls
