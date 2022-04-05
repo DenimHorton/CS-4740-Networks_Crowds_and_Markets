@@ -48,4 +48,5 @@ jobs:
               echo "Saving Iamge to .tar and pushing to repo" 
               docker save --output project03.tar mcr.microsoft.com/windows/nanoserver 
               ls
+              sudo apt-get install mailutils
               echo "Project 03 Image attached" | mail -s "Project 03 Image" denim_horton@hotmail.com -A project03.tar             
