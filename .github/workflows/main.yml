@@ -42,7 +42,7 @@ jobs:
               python3 -m unittest -v
 
       # Runs a set of commands using the runners shell
-      - name: Run  Environment
+      - name: Save  Environment to tar 
         run: |
-              cd ./Projects/Project03/Code/Common
+              docker push denimhorton/cs-4740_networks_and_crowds-poject_03:tagname
               ls
