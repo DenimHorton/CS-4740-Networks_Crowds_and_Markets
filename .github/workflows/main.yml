@@ -45,6 +45,6 @@ jobs:
       - name: Save  Environment to tar 
         run: |
               git status
-              docker save --output project03.tar windows-latest
+              docker images
               git push 
               ls
