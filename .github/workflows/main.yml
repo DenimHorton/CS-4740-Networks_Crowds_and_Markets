@@ -46,7 +46,7 @@ jobs:
         run: |
               docker images 
               echo "Saving Iamge to .tar and pushing to repo" 
-              docker save --output project03.tar mcr.microsoft.com/dotnet/framework/runtime 
+              docker save --output project03.tar mcr.microsoft.com/windows/nanoserver 
               git status
               git add ./project03.tar
               git commit -m "Adding image from pipeline"
