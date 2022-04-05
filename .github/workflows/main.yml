@@ -44,7 +44,11 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Save  Environment to tar 
         run: |
-              docker images  
+              docker images 
+              echo "Saving Iamge to .tar and pushing to repo" 
               docker save --output project03.tar mcr.microsoft.com/dotnet/framework/runtime 
               git status
+              git add ./project03.tar
+              git commit -m "Adding image from pipeline"
+              git push
               ls
