@@ -44,5 +44,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Save  Environment to tar 
         run: |
+              docker pull denimhorton/cs-4740_networks_and_crowds-poject_03:tagname
               docker push denimhorton/cs-4740_networks_and_crowds-poject_03:tagname
               ls
