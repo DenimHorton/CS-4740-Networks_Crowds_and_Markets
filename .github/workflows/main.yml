@@ -45,6 +45,7 @@ jobs:
       - name: Save  Environment to tar 
         run: |
               git status
-              docker images
+              docker images  
+              docker --output project03.tar mcr.microsoft.com/dotnet/framework/runtime 
               git push 
               ls
