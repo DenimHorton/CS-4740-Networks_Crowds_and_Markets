@@ -9,7 +9,7 @@ from Tools.func_timer import *
 from Tools.print_matrix_pretty import *
 
 class NetWork(nx.DiGraph):
-    def __init__(self, grph_nm="", jsn_fl_pth='.\\Inputs\\GraphTest00.json'):
+    def __init__(self, grph_nm="", jsn_fl_pth='./Inputs/GraphTest00.json'):
         super().__init__()
         self.graph_name = f"Graph--{grph_nm}"
         self.network_np_matrix = np.array
