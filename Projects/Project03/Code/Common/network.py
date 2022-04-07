@@ -130,6 +130,10 @@ class NetWork(nx.DiGraph):
         self.network_np_matrix[residence-1] = node_row * 0.5
         self.network_np_matrix[residence-1][new_neighbor-1]=0.5
 
+    def addSelfEdge(self, node):
+        self.network_np_matrix[node-1][node-1] =1.0
+        self.add_edge(f"q_{node}", f"q_{node}", weight=1.0)
+
 
     # def performStep(self, max_steps=10, method="Friedkin-Johnsen"):
     #     t = 0

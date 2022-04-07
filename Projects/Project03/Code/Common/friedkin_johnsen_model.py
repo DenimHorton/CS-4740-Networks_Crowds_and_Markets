@@ -67,4 +67,8 @@ class FriedkinJohnsenModel:
 
   def addEdgeToNetwork(self, residence, new_neighbor):
     self.network.addEdge(residence, new_neighbor)
+    
+  def addSelfEdgeToNetwork(self, node):
+        self.network.addSelfEdge(node)
+        
 

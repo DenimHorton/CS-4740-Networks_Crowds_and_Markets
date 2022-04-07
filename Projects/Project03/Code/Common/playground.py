@@ -19,10 +19,11 @@ jfModel = FriedkinJohnsenModel(graph1)
 
 jfModel.addNodeToNetwork()
 jfModel.addEdgeToNetwork(10, 11)
+jfModel.addSelfEdgeToNetwork(11)
 
-jfModel.performTrainingSes(verbose=True)
+jfModel.performTrainingSes( max_steps=2, verbose=True)
 
-jfModel.performTrainingSes(verbose=False)
+# jfModel.performTrainingSes(verbose=False)
 
 
 # graph1.showNetworkGraph()
