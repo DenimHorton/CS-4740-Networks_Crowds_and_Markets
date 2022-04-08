@@ -9,7 +9,7 @@ from network import NetWork
 from end_point_worker import EndPointWorker
 from end_point import EndPoint
 
-graph1 = NetWork(grph_nm="Play Ground Graph 01", jsn_fl_pth='.\\Inputs\\GraphTest01.json'  )
+graph1 = NetWork(grph_nm="Play Ground Graph 04", jsn_fl_pth='.\\Inputs\\GraphTest04.json'  )
 
 jfModel = FriedkinJohnsenModel(graph1)
 
@@ -18,8 +18,8 @@ jfModel = FriedkinJohnsenModel(graph1)
 # print(jfModel)
 
 jfModel.addNodeToNetwork()
-jfModel.addEdgeToNetwork(10, 11)
-jfModel.addSelfEdgeToNetwork(11)
+jfModel.addEdgeToNetwork(3, 4)
+jfModel.addSelfEdgeToNetwork(4)
 
 jfModel.performTrainingSes( max_steps=2, verbose=True)
 
