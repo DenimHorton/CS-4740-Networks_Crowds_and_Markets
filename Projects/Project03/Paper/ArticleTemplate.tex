@@ -40,59 +40,142 @@ Colorado Springs, Colorado 80918\\
 % ----------------------------------------------- Abstract
 \begin{abstract}
 \begin{quote}
-In society when considering segregation amongst different groups, there seems to be just as many physiological phenomenons observed during this process but as there are seemingly counter intuitive revelations between relationships between the members of these different groups. Through coded implementation and passed parameters, an instance of a randomly generated graph can be made with different levels of how \textit{mixed} the members in the group are when considering two types of members.  When considering spacial awarness we also evaluate different percentage of \textit{open space} available in the simulated environment.  Then simulations of Schelling Segregations were performed with certain levels of \textit{contentedness}.  With multiple simulations and varying parameter values, we analyse dynamic graph interactions amongst members in a whole.
+This paper briefy studies an instance of a graph given for the project whee the network is studied along with the influences that a node with a set amount of opinion and information can affect the whole network in different ways through connections to different original existent nodes.
 \end{quote}
 \end{abstract}
 
 % ----------------------------------------------- Introduction
 \section{Introduction}
-
-When first implementing \textit{Schelling Integration} into a coded simulation there were not many constraints or requirements given for the assignment.  There was some information included inside the book for the class  (\cite{10.5555/1805895}). Python was the chosen language to code this project in.   After some research there were several different works that had already been done on the subject (\cite{AdilMoujahid}).  With out looking to much into the code done for these coded simulation, a general structure was built to generate different environments and runs simulations.  To make sure that the code could be followed along easily and verbosity of how the code executed were output to a .log file and many graphs and plots were generated.  To turn on this verbose setting and get the most information from running the simulations, when ever calling this method or any abstract methods that call this, turn the verbosity keyword argument to \texttt{True}.\\
+In class, we discussed the Friedkin-Johnsen model of opinion dynamics, where opinions spread on a network but people always remember their initial opinions. To refresh our memory, the model works like this: We’re given a society with n individuals connected on a social influence network described by an $n \times n$ row-stochastic, directed, weighted adjacency matrix A. An edge $(i, \  j)$ (arrow pointing from i to j with weight aij means that node i gives a fraction aij of its attention to node j. Each node i has a susceptibility $\lambda i \in [0, \ 1]$, and we collect these susceptibilities into an $n \times n$ diagonal matrix $\Lambda = (\lambda_0, \ \lambda_1, \ . \ . \ . \ , \ \lambda_{n-1})_{diag}$. Given an initial vector of opinions $x(0) = (x_0(0), \ x_1(0), \ . \ . \ . \ , \ x_{n-1}(0))^T$ , the opinion at time $t$ is given recursively by
+\begin{center}
+	$x(t) = \Lambda \ A \ x(t - 1) + (I - \Lambda) \ x(0)$,\\ 
+\end{center}
+where $I$ is the $n \times n$ identity matrix. \\ \\
+In this project, all questions consider the following weighted directed graph, with susceptibilities of $\lambda = (0.1,\ 0.2,\ 0.3,\ 0.4, \ 0.5, \ 0.6, \ 0.7, \ 0.8,\ 0.9, \ 0.95)$.  
 
 \begin{center}
-\includegraphics[scale=0.7]{./Images/TestExample_Figure_1.1}
-Figure 1.1
+	\includegraphics[scale=0.7]{./Images/Figure1.1} \\
+	Figure 1.1
 \end{center}
+\begin{center}
+	\includegraphics[scale=0.7]{./Images/Figure1.2} \\
+	 Figure 1.2
+\end{center}
+
+\noindent Consider the following model of misinformation: let $x(0) = (0,\ 0, \ . \ . \ . \ , \ 0)^T$ so that everybody starts out at 0. Then, choose a node to influence (let’s say our influencing node $i$), and connect i to a new “fake” node whose initial “opinion” is 1. To make this connect, cut the weights of each of $i$’s out-edges in half, and give the new edge a weight of $0.5$. So the math works, the new fake node should have a single self-loop with weight $1$. See Figures 1.1 and 1.2 to show an example of a edge being added to node 9 to the new "fake node".  Because everybody starts out at 0, you can measure the effect of your misinformation simply by adding up everybody’s opinion. We’ll call this sum the propaganda value of your misinformation scheme, and denote it by $P(t) := \sum^{n-1}_{i=0} x_i(t)$ . An ineffective misinformation scheme would have $P(t)$ close to 0 for all time, but a very effective one would have $P(t)$ close to $n$.
 
 % ----------------------------------------------- Implementation
 \section{Implementation}  
 
-To first implement the graph in which there would be different agents with spacial awareness, we used the NumPy library to generate two dimensional array's to represent the locations of each agents locations and their immediate neighbours.  Through this implementation we can evaluate different agents and keep track of where they are residing on the graphical grid.  On the graph there are two different types of agents, Red or Blue, with open spaces being the third option of what can occupy any of the array indexes at any point in time.  0 represents what are called open address or open spaces. The Red and Blue agents are also refereed to as Red or Blue residence being represented by the numerical value -1 and 1 respectively.  To generate these different graphs that would hold different values to essentially represent the 'Residence' of the 'City'.  There were a couple requirements in how generate the randomly placed residence and open spots.\\
-To generate the City, there are two parameters that have to be chosen and set. The first one was the amount of open spot available in the City.  The second was how mixed the population should be in the city.  These two arguments can be used to generate a city which was done by first building a list that was populated with the different calculated numbers of each residence or open space to make up the entire city size.  The list was then shuffled and put into a NumPy array. Through a third key argument the simulation can be controlled to handle how each agent being evaluated reacts in its given environment.  The agent can be set to satisfied with its amount of same types direct Neighbors and choose to not move locations.  However, if the agent being evaluated does not have enough Neighbors of the same type, they will choice to move to a random address out of all the empty locations.  This was done through a simple method call that takes the index given for the residence under evaluation, and then index its direct neighbours.\\\\
-Once the city has been generated and the contentedness levels for each residence are set, the simulation was left up to us to code in the way we thought best to evaluate the city for each iteration and its CTF value. The CTF was a metric discussed in class that was essentially the amount of cross type neighbours through the whole graph dived by the total number of total neighbours.  Therefore it is basically seeing how content the 'City' is with the current locations of where all the 'Residence' are located.  My first implementation was to choosing random locations and evaluate that way so I coded it to evaluate each residence one by one.  By the time I realized that the better to code this was to have contentedness level for each agent stored to either an object or dictionary it was to late.  So an implementation of evaluating each location in the graph in row major order.  After evaluating each index in the 'City' and possibly some of the same agents more than once, the CTF was calculated.  This implementation would move agents as evaluating so empty spots to move to could run out.  Evaluating each move seem to also maybe raise some concerns as sometimes it might get to the point where an agent has no where to move to, to make it content.  Although this would show convergence we have metrics to show this with a bit more tangibility.\\\\
-Along with being able to control other key word arguments the user can choose the max number of iterations to perform on each simulation along with other attributes to keep track of graph logging and other verbose purposes. When evaluating direct neighbour and calling the method to check for neighbours we can count how many different type neighbours their are for that residence.  To make sure that direct neighbourhood spaces that are considered out of bounds we use a try block.  This way we can set the counter to not count the spaces that the residence cant move to.  The NumPy library was also used to randomly pick a empty location from a list of found locations that are holding 0.  By looking at the .logs files provided we can see that where ever an agent is discontent and by how much.  When turning the verbosity keyword argument to True, we can see all the information proved to show that this implementation works. To run multiple simulations and collect the average for each simulation run, the method \texttt{avd\_ctf} was created.  With this method, it runs 10 training sessions by default and returns the ending average for all the training sessions. There is a keyword available to control the number of runs test runs to training sessions to perform.\\\\
-Through a passed list during initialization or by using one of the setter methods, we can select how often or at which points we would like to to capture and see points plotted for the simulation.  For the deliverable part 2 \& 3 a frequency global constant was given for the simulation to perform average runs with varying values.  The list of capture points also controls the resolution on the .gif generated by the simulations. 
- 
+Well to implement this first an object oriented approach was taken which was causing more over head and dependencies so a Jupyter Notebook was create to create the basic foundations for simpler to read and read code.  The following is a description of this implemented code.  First an adjacency matrix was built and hard codded into a python two dimensional array.  This we then proceed to use other code provided and earlier handout for the class to print the network out and to show that the network it represented correctly by the adjacency matrix.  
+\begin{center}
+	\includegraphics[scale=1.5]{./Images/Figure1.3} \\
+	Figure 1.3
+\end{center}
+Although it might be hard to see the graph shown by Networkx that is used in a function provided to use, we can see that all the same nodes exist with the same existing edges as on the picture of the graph shown in Figure 1.1.  Now to demonstrate that we can add nodes to this adjacency matrix we build two more function that handle building the matrix and then will print it you to show that it works in connected a fake node to node 9 as in Figure 1.2.\\\\
+The first function built I called addNodeToNetwork() which took two parameters which are the network we built an adjacency matrix for and the original opinion of all the existing nodes at time step $t=0$.  This functions take the network, as a two dimensional list and builds new rows with 0's added to the end of them and setting them to a new two dimension list to continue to modify before returning.  Next the two dimensional list will have a row of all zeros added at the bottom of the list. finally before returning the new network with an added node we set the new node to have a self loop and we also add a new opinion to the list or original opinions to represent the opinion of the new node which we will call the "fake node".  Both the list of opinion and new network are passed back. \\\\
+Then the addBadEdgeToNetwork() method was created to be called right after adding a new node.  This function simply accepts three parameters to adjust the original network to having a edge between the fake node and what ever node is based as the 'node' argument.  To do this, the function multiplies every existing edge by 0.5 and then sets each element do that amount specific to the column in that node's row of edges.  Then a new edge of 0.5 is added between the fake node and the specified node.  This newly adjust network is then passed back.\\\\
+After using the draw\_from\_matrix() function provided to us we can show that the matrix does in fact add a new edge.  We also checked the matrix was right by checking the console output of printing the matrix. \\
+\begin{center}
+	\includegraphics[scale=0.6]{./Images/Figure1.4} \\
+	Figure 1.4
+\end{center}
+As we can see a new node has been added and the only added edge are the self loop to itslef and the new edge between node 9 and node 10, the fake node.\\\\
+After verifying that this was working we used the friedkin\_johnsen() provided to us through class handouts and modified it to print out a little bit more verbose information when setting its keyword argument, show\_plot, is set to true.  This function does what has already been discussed in class by essentially using the equation as described in the introduction.  By preforming these different time steps of Friedkin-Johnsen model we were able to map the rate at which the information, or "opinion", of the "fake" spreads depending on the node that it is connected to. To perform each instance of when a different node could be connected to the "fake" node we make an abstract layer to call of the methods previously discussed so that this method or model can be called upon in a for loop of each possible neighbor that the fake node could have a connection from.  Within this model a fresh new network of the original network is made sure to be passed in to this model to represent the only connection between the fake node and any other pre-existing node.\\
+Along with executing every possible connection, a list was made to capture the overall propaganda value of the network at each time step.  Another function was written to show this value as well as the opinion of each node at each iterated time step through the model and were used to display the results through other implemented methods plotAllProagandaValOverTime() \& plotAllProagandaValOverTime() to plot them individually between simulation runs and to call at the end of the for loop of all possible simulation runs to map all possible outcomes of $P(t)$ values specific to the node that the fake node was being connected from.  Unit test were also written to make sure that basic functionality is maintained through out the completion and development of this project.
+
 % ----------------------- Execution 
 \subsection{Execution}
-
-During execution the segregation amongst the map seemed to stay pretty consistent in between training sessions of the same original generated city and often would converge to looking very similar in where the clusters of 'Red' and 'Blue' residence were first densely populated.  Once we started to change the values for different parameters such as \texttt{red\_blue\_split} and \texttt{pct\_empty} completely new random Cities were generated and populated. The shapes of the segregated Cities would lose their consistent shape in between varying values for this reasons.  This is not to say that it would or would not if we simply took out residence or change the colour amongst the residence but something that could be implemented further to keep the consistent shape of the randomized populated city would be interesting to further research.  When implementing i Wasn't sure which way would be best, whether to pick randomnly thorugh the city and evaluate residence ro to go through each one for each iteration.  So a keyword has been added to choose which method to execute during simulation.  This is done throuh the user input interface that ask the user whether to get one of the deliverable out puts or all of them.  This helped keep the program from crashing when asking it to develop only one deliverable.  The All option was added and for every 10 runs it seems to fail on the last deliverable.  Once a proper output has been chosen, the user input interface then ask ths user to choose which method of execution to run.   To run in iteration over each resident, choose 'Row' to choose at random choose "Random".  Row major seems to be the fastest and get higher results for CTF.
-
+To help mitigate any dependencies that may cause issues with running the program a requirments.txt file was provided which can be used with the below command to make sure that all the libraries used for this project are pre installed.\\
+\begin{center}
+py -m pip install -r requirments.txt\\
+\quad \\
+\end{center}
+Execution is set up to simply run the missinformationProjecy.py file with the commad\\
+\begin{center}
+py project03.py\\
+\quad \\
+\end{center}
+from the same working directory as this file. When running this file, without modifying it, it should display different graphs that will require the user to exit out of to continue to run the file.  If the user wishes to run the file without the printout of all the graphs they must go through and change the plot\_resultargument to False as well as comment out the method calls of the functions timestepsToPTable() and plotAllProagandaValOverTime().  This will still display the tables required of in the deliverables and will be presented as such to exclude ambiguity with which deliverables are what. 
+Include in this zip are other unit tests and outputs they were saved from previous runs to make sure that the grader is getting all the required deliverables \\
 % ----------------------- Analyisis 
 \subsection{Analyisis}
+After personal execution with collected data and observations, I was then able to continue with providing the deliverable for the project.  First off a quick overview of each overview asked of in the project and what it consists of.\\\\
+\begin{enumerate}
+	\item Implement the Friedkin-Johnsen model on the given graph. As always, I will check for copy-pasted code from the internet so if you use someone else’s code, you must cite them.
+	\begin{enumerate}
+		\setcounter{enumi}{1}
+		\item  Deliverable 1: Either the computer code for your implementation, or a complete description of the maths you used to prove the other deliverables. CS 5740 students, this deliverable includes your epidemic code as well. 
+	\end{enumerate}
+	\item If you want to influence opinions over the short-term, which node should you influence?
+	\begin{enumerate}
+		\setcounter{enumi}{2}
+		\item  Deliverable 2: The graph has 10 nodes; create a table which shows $P(1)$ (the total opinion of society after 1 time step) for each node to be influenced. That is, compute $P(1)$ in the case that you influence node 0; then compute $P(1)$ in the case that you influence node 1, and so on. If you care most about $P(1)$ (society’s opinions in the very short term), which node is best to influence? Which is worst? Write a few sentences explaining why you think this is the case.
+	\end{enumerate}
+	\item If you want to influence opinions over the long-term, which node should you influence?	
+	\begin{enumerate}
+		\setcounter{enumi}{3}
+		\item Deliverable 3: The graph has 10 nodes; create a table which shows $P^\infty := \lim_{t to \infty} \ P(t)$ (the opinion that society converges to after a long time) for each node to be influenced. That is, compute $P^\infty$ in the case that you influence node 0; then compute $P^\infty$ in the case that you influence node 1, and so on. If you care most about $P^\infty$ (society’s opinions in the very long term), which node is best to influence? Which is worst? Write a few sentences explaining why you think this is the case. If the answer is different from what you got in Deliverable 2, try to explain why.\\\\
+	\end{enumerate}
+\end{enumerate}
 
-When performing training sessions with varying mixed population values It seemed like there didn't really seem to be much difference when keeping the rest of the values constant all though this could be different with other varying open percentage and open space values.  Signs of segregation would show them selves through various runs but still seem to have the same max CTF and rate of convergence with some slight differnces between training simulations.  When looking at the varying valued simulations it seemed to show that the CTF between runs would seem to drop as the mixed percetage got closed to 0.5 compared to the other values that seem to have a slightly higher CTF value.  Figure 1.2 and this suggests that the more offset a population is the higher the CTF value will be which makes sense.\\ 
+% ----------------------- Delveriable 1 
+\subsection{ Deliverable 1 }
+The code for this assignment will be turned in via a zip file, so this will take care of Deliverable 1
+
+% ----------------------- Delveriable 2
+\subsection{ Deliverable 2 }
+For Deliverable 2 we are to evaluate the overall networks opinions in the short term.  After exciton of only 10 steps we can see a fairly quick convergence in the different nodes and the opinions in the network over just that many time steps.  What we are interested in is which connection from one of the existing node to the fake node will cause the networks propaganda value to get closer to 0, meaning that this fake nodes new connection to it is highly ineffective.  The closer the propaganda value gets to $n$, the size of the network minus the fake node, the more effective the propaganda is from the fake node. So when looking at the graph in Figure 1.5 we see all the propaganda values of the network when the fake node has an edge coming to it from one of the 10 (0-9) existing nodes.
 \begin{center}
-\includegraphics[scale=0.6]{./Images/DeliverableA_Figure1.2}
-Figure 1.2
+	\includegraphics[scale=0.34]{./Images/Figure1.5} \\
+	Figure 1.5
 \end{center}
-As for the training sessions for varying t-values we seem where the CTF  has a almost linear decline as the t-value gets higher.  Ultimately these values give us the lost CTF out of all the other combinations or varying values. This suggests that to achieve a high CTF, the t-values that are closer to higher are the best value to achieve higher CTF values and more segregation. \\
+As we can see from this chart in Figure 1.5, nodes 9 and 5 seem to have the lowest propaganda values after the first initial time step.  The chart seems to show a slightly sharp up tick in p values among the networks for the different connections made between the original network and the fake node.  We can see that nodes 6 and 7 seem to have the highest p value when connected to the fake connection.  We can see that the p-value jumps up to 4.7.  When looking at the graph in figure 1.2, it seems to make since as the first to set of nodes that seem to go the same high point being also the lowest in the network of just above 4.5.  This makes since because these nodes share most of the connection of other incoming edges that have not yet been affected by the p-value.  Since they have a lot more edge coming from original value it is smaller.  As for nodes 6 and 7 we see that these two nodes are some of the few that node 4 listens to while having many listen to it.  For this reason when connected to these few nodes that are directly connected to node 4 seem to have a more rapid expansion of p-values after the first time step.  
+
+% ----------------------- Delveriable 3
+\subsection{ Deliverable 3}
+For Deliverable 3 we are to evaluate the overall networks opinions in the long term. Although it seems to converge rather quickly and only 10 iterations is really needed, 99 iterations were perfromed foe each possible node connection and below is a table that show these values 
 \begin{center}
-\includegraphics[scale=0.6]{./Images/Deliverableb_Figure1.3} 
-Figure 1.3
+	\begin{tabular}{| c | c | c | c | c |}
+		\hline  
+		 $P(t)_{ij}= (node_i, \ node_j)$    & t=0 & t=1 & . . . & t=99\\
+		\hline
+		 (0, fake) & 4.5 & 4.545  &  . . .  &  3.78796\\  
+		\hline
+		 (1, fake) & 4.5 & 4.558 & . . .  & 3.85022 \\ 
+		\hline
+		(2, fake) & 4.5 & 4.566  & . . .  & 3.87118 \\  
+		\hline
+		(3, fake) & 4.5 & 4.606  & . . .  & 3.87118 \\  
+		\hline
+		(4, fake) & 4.5 & 4.576  & . . .  & 4.22463 \\  
+		\hline
+		(5, fake) & 4.5 & 4.521  & . . .  & 3.98291 \\   
+		\hline
+		(6, fake) & 4.5 & 4.702  & . . .  & 4.32722  \\  
+		\hline
+		(7, fake) & 4.5 & 4.706  & . . .  & 4.29062  \\  
+		\hline
+		(8, fake) & 4.5 & 4.596  & . . .  & 3.98346  \\  
+		\hline
+		(9, fake) & 4.5 & 4.506  & . . .  &  3.98179 \\  
+		\hline
+	\end{tabular}
 \end{center}
-When performing the different training sessions with varying open space percentage we would still see clusters start to form but when the open space got big enough for most neighbours to be content with their environment we start to see very little to no clusters.  Any clusters that do form do not seem to be very dense and will have lots of open hole in the collection of like type neighbours.  This probably also led to there being little to no spaces to move to and their fore were forced to either move randomly or stay were that are.  When looking at CTF values we see a spike when the percentage gets to 0.5 .  In Figure 1.4 we that the CTF values go down a little bit more when closer 0.7 then when using .02 percent open spots.  As for 0.5 we see it go to the highest CTF.  Ultimately less to half percentage ended in higher CTF values.  In the end their usually tended to be more open space often leading to very scattered less dense collection of like type neighbours. \\
-\begin{center}
-\includegraphics[scale=0.6]{./Images/DeliverableC_Figure1.4}
-Figure 1.4
-\end{center}
+After looking at the table we see that node 1 seem to have the lowest p-value meaning it is the least effective node to connect to when trying to maximize the p-value to spread misinformation.  However, node 6 seems to be be the best connection for the fake node to have a connection to it from since it yields a higher p-value and is the most effective on the network. This makes since as we look at the graph provided in Figure 1.5 and see although the lower nodes, 9 and 5, only get as low as just above 0.4.  We see that nodes 0 and 1 seems to get to the lowest p-value over a long period time to almost as low as 3.8.  Although the initial effect on the network seems to have and seemingly average spike in p-value compared to the rest, it does drop to be the lowest p values over  a long period of time.  This can probably be attributed to the fact that these nodes do not seem have heavy influence on any of the highly influential nodes with lots of other nodes listening to them.  This explains why the p-values seem to have lasting affect but for nodes like 6, 7, and 4 with create networks with high p-values because  the nodes are or share strong connections with highly influential nodes that overall affect the whole network.   
 
 % ----------------------------------------------- Conclusion
 \section{Conclusion}
-In conclusion i learned alot about this subject and the interesting correlation it has with different values.  I learned alot about rendering gifs and using the NumPy library.  Ultimately I learned how to try to think about coding more efficient and after coding this up twice I still ran into or thought of different ways i could have implemented it better.  In the end the higher the t-value generally the loser the CTF.
+
+In conclusion we can see that for a complete graph with a given set of opinions has some very specific phenomenons that seem to happen. Through other generated table in the code written we wee also able to see that only nodes with high opinion values seem to vary greatly for their original opinions so ultimately nodes with lower opinions are going to ultimately come out of the simulations with an opinion that is not very different from its original.  Nodes like 9 for example, with a high opinion of 0.95 will drop down to as low as 3.7 as seen in Figure 1.6.
+\begin{center}
+	\includegraphics[scale=0.4]{./Images/Figure1.6} \\
+	Figure 1.6
+\end{center}
+All these tables for all possible connections can be found in the provided text output.txt file turned in with the zip for this assignment.
 
 % ----------------------------------------------- References 
-
-\bibliography{ArticleTemplate}
+\section{References}
+Credit to Dr. Philliph Brown's Jupyter note books and other class handouts
 
 \end{document}
