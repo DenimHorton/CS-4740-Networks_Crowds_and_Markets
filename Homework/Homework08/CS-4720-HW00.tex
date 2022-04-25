@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}  
+\usepackage[margin=1in]{geometry}
+\parindent=0in
+\parskip=8pt
+\usepackage{fancyhdr,amssymb,amsmath, graphicx, listings,float,subfig,enumerate,epstopdf,color,multirow,setspace,bm,textcomp}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{./Images}}
+
+\pagestyle{fancy}
+
+\begin{document} 
+
+\lhead{Assignment \#  \textcolor{red}{CHANGE ME!}}
+\chead{Robert Denim Horton}
+\rhead{\today}
+
+\begin{center}\begin{Large}
+CS 4720 Networks, Crowds, and Markets
+
+Homework \#  \textcolor{red}{CHANGE ME!}
+
+Student: (Robert Denim Horton)
+\end{Large}
+\end{center}
+
+Suppose there are 2 ad slots each with its own clickthrough rate: 
+\begin{center}
+\begin{tabular}{ |c|c|} 
+ \hline
+ Slot & Click Through Rate \\ 
+ \hline\hline
+ a & 10 \\ 
+ \hline
+ b & 7 \\ 
+ \hline
+\end{tabular}
+\end{center}
+And suppose there are 3 advertisers:
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ Advertiser & Valuation Per Click \\ 
+ \hline\hline
+ x & 10 \\
+ \hline 
+ y & 9 \\
+ \hline
+z & 2 \\ 
+ \hline
+\end{tabular}
+\end{center}
+We also suppose that the search engine assigns ad slots using a Gnereralized Second-Price (GSP) auction, and answer the following questions:
+\begin{enumerate}
+	% Question 1
+	 \item In this problem, is truthful bidding a Nash equilibrium? To receive full credit, you must either prove that truthful bidding is a Nash equilibrium or show which advertiser(s) could profit by changing their bid away from truthful bidding.
+
+	% Question 2
+	\item  Find a Nash equilibrium for this problem (without truthful bidding) in which the total advertiser valuation is maximized (i.e., advertiser x is assigned slot a and advertiser y is assigned slot b). You may use any technique you want to find this Nash equilibrium, but you must convince me that it is an actual Nash equilibrium.
+	
+	% Question 3
+	\item Create a new sponsored search problem with at least 2 slots and at least 3 bidders in which truthful bidding is a Nash equilibrium.
+\end{enumerate}
+\end{document}
